@@ -1,1 +1,1 @@
-# tourist-route-selection
+Diploma of RSREU 2023. Software for selecting the optimal tourist route in terms of duration and cost.
