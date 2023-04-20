@@ -1,0 +1,59 @@
+.custom-label {
+    border-radius: 20px;
+    margin-left: 3%;
+}
+
+.custom-label.city {
+    background-color: #D1F2EB;
+}
+
+.custom-label.category {
+    background-color: #D6EAF8;
+}
+
+.custom-label.name {
+    background-color: #FFA2D7;
+}
+
+.custom-label.price {
+    background-color: #FF9393;
+}
+
+.custom-label.owner {
+    background-color: #FFC398;
+}
+
+.custom-label.time {
+    background-color: #FCF3CF;
+}
+
+.custom-label.length {
+    background-color: #E2BDFB;
+}
+
+.custom-label-text {
+    font-family: Roboto;
+    font-size: 12pt;
+    line-height: 33px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.custom-label-point {
+    padding-left: 10px;
+    font-size: 17pt;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.custom-label-point.city {
+    color: #1ABC9C;
+}
+
+.custom-label-point.category {
+    color: #0080DA;
+}
+
+.labels {
+    display: flex;
+}

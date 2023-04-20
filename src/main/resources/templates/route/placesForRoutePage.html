@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+    <div class="navigation">
+        <div class="navigation-block nickname">
+            <label class="nickname-text" th:text="${username}"/>
+        </div>
+        <div class="navigation-block menu admin">
+            <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
+            <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
+            <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
+            <label class="navigation-text submenu">Пройденные маршруты</label> <br/>
+        </div>
+    </div>
+
+    <div class="main-page-content">
+        <div class="heading-panel">
+
+            <div style="width: 160vh;">
+                <h1 class="heading">Добавьте места в маршрут</h1>
+            </div>
+
+            <div class="labels">
+                <form th:method="get" th:action="@{/route/characteristics}">
+                    <button class="custom-label m-l-60" style="margin-top: 25%">
+                        <img src="/static/images/search.png" th:src="@{/images/search.png}"
+                             height="20" width="20">
+                    </button>
+                </form>
+                <div class="custom-label category m-t-16 m-l-20">
+                    <label class="custom-label-text" th:text="${category}"></label>
+                </div>
+            </div>
+
+            <div class="place-labels" style="height: 60vh;">
+                <div class="place-label" style="height: 27vh;" th:each="activitySet : ${activities}">
+                    <label class="place-name"
+                           style="padding-left: 25px; padding-top: 0;"
+                           th:text="${activitySet.activity.name}">
+                    </label><br/>
+                    <textarea readonly class="description-textarea"
+                              th:text="${activitySet.activity.description}"/>
+                    <div style="display: flex;">
+                        <label class="info-label" th:text="${activitySet.activity.duration}"></label>
+                        <label class="info-label" th:text="${activitySet.activity.price} + ' руб.'"></label>
+                        <span th:if="${activitySet.status}">
+                            <form th:method="post"
+                                  th:action="@{/route/places/add/{id}(id=${activitySet.activity.id})}">
+                                <button class="login100-form-btn"
+                                        style="width: fit-content; height: fit-content; margin-left: 3px;">
+                                    Добавить
+                                </button>
+                            </form>
+                        </span>
+                        <span th:unless="${activitySet.status}">
+                            <form th:method="post"
+                                  th:action="@{/route/places/delete/{id}(id=${activitySet.activity.id})}">
+                                <button class="login100-form-btn"
+                                        style="width: fit-content;
+                                        height: fit-content;
+                                        background-color: #7DC4F7;
+                                        margin-left: 3px;
+                                        color: black;">
+                                    Добавлено
+                                </button>
+                            </form>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container-login100-form-btn"
+                 style="width: 160vh; margin-top: 40px; text-align: center;">
+                <form th:method="post" th:action="@{/route/create}">
+                    <button class="login100-form-btn" style="width: fit-content;">
+                        Создать маршрут
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

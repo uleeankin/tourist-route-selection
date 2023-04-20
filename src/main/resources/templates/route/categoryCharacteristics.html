@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tourist Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form method="post" th:action="@{/route/characteristics}"
+                  class="login100-form validate-form p-l-55 p-r-55 p-t-120">
+                        <span class="login100-form-title">
+                            Выберите характеристики поиска
+                        </span>
+
+                <div class="wrap-input100 m-b-16">
+                    <input th:id="categoryValue" class="input100"
+                           type="text" name="categoryValue"
+                           list="categoriesSet" placeholder="Категория мест" autocomplete="on">
+                    <datalist th:id="categoriesSet" id="categoriesSet">
+                        <option th:each="category : ${categories}"
+                                th:value="${category}" th:text="${category}">
+
+                        </option>
+                    </datalist>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="container-login100-form-btn m-b-16">
+                    <button class="login100-form-btn">
+                        Применить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/admin/moderators}" class="navigation-text submenu">Главная</a> <br/>
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Категории</label> <br/>
+      </div>
+      <a th:href="@{/admin/cities}" class="navigation-text submenu">Города</a> <br/>
+    </div>
+  </div>
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Категории</h1>
+      </div>
+
+    </div>
+
+    <div class="cities">
+      <form th:method="post" th:action="@{/admin/categories}">
+        <div class="adding-panel">
+          <div class="wrap-input100 m-b-16 m-l-60">
+            <input th:id="category" class="input100" type="text" name="category"
+                   placeholder="Название категории">
+            <span class="focus-input100"></span>
+          </div>
+          <div class="container-login100-form-btn">
+            <input type="submit" value="Добавить категорию" class="login100-form-btn adding-button">
+          </div>
+        </div>
+        <label th:id="errorCategory" class="error-massage m-b-16 m-l-60 m-t-16"></label>
+      </form>
+
+      <div class="m-t-50 m-l-60">
+        <div class="table-name">
+          <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Категории</h1>
+        </div>
+        <div class="scroll-table-body">
+          <table class="table-body">
+            <tbody>
+            <tr th:each="category : ${categories}">
+              <td th:text="${category.name}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

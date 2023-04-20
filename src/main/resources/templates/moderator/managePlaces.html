@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Места</label> <br/>
+        <a th:href="@{/moderator/places}" class="navigation-text current-navigation-text">
+          Все места
+        </a> <br/>
+        <label class="navigation-text current-navigation-text">
+          <u>Управление местами</u></label> <br/>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Управление местами</h1>
+      </div>
+
+      <div class="cities">
+        <form th:method="post" th:action="@{/moderator/places/manage}">
+          <div class="activity-adding-panel">
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
+                     placeholder="Название">
+              <span class="focus-input100 name-label"></span>
+            </div>
+
+            <div class="wrap-input60 m-b-16 m-l-60">
+              <textarea th:id="description" class="input100 description-label" name="description"
+                        placeholder="Описание" style="resize: none; height: 100px"></textarea>
+              <span class="focus-input100 description-label"></span>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="city" class="input100 city-label custom-input"
+                      type="text" readonly th:value="${city}">
+            </div>
+
+            <div style="display: flex">
+              <div class="wrap-input20 m-b-16 m-l-60">
+                <input th:id="latitude" class="input100 coordinate-label custom-input" type="number"
+                       step="0.0000001" name="latitude" placeholder="Широта">
+                <span class="focus-input100 coordinate-label"></span>
+              </div>
+              <div class="wrap-input20 m-b-16 m-l-60">
+                <input th:id="longitude" class="input100 coordinate-label custom-input" type="number"
+                       step="0.0000001" name="longitude" placeholder="Долгота">
+                <span class="focus-input100 coordinate-label"></span>
+              </div>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="categoryList" class="input category-label custom-input"
+                     type="text" name="categoryList"
+                     list="categoriesSet" placeholder="Категория" autocomplete="on">
+              <datalist th:id="categoriesSet" id="categoriesSet">
+                <option th:each="category : ${categories}" th:value="${category}" th:text="${category}">
+
+                </option>
+              </datalist>
+              <span class="focus-input100 category-label"></span>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="time" class="input100 time-label custom-input" type="time" name="time"
+                     placeholder="~Время прохождения">
+              <span class="focus-input100 time-label"></span>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="price" class="input100 price-label custom-input" type="number"
+                     step="0.1" name="price" placeholder="Цена">
+              <span class="focus-input100 price-label"></span>
+            </div>
+
+            <div class="container-login100-form-btn m-b-16 m-l-60">
+              <input type="submit" value="Добавить" class="login100-form-btn adding-button">
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tourist Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form th:method="post" th:action="@{/register}"
+                    class="login100-form validate-form p-l-55 p-r-55 p-t-120">
+					<span class="login100-form-title">
+						Регистрация
+					</span>
+
+                <div class="wrap-input100 m-b-16">
+                    <input class="input100" type="text" th:id="login" name="login" placeholder="Логин">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 m-b-16">
+                    <input class="input100" type="text" th:id="password" name="password" placeholder="Пароль">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 m-b-16">
+                    <input class="input100" type="text" th:id="name" name="name" placeholder="Имя">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 m-b-16">
+                    <input class="input100" type="text" th:id="surname" name="surname" placeholder="Фамилия">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 m-b-16">
+                    <input class="input100" type="text" th:id="lastname" name="lastname" placeholder="Отчество">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 m-b-35">
+                    <input th:id="cityname" class="input100" type="text" name="cityname"
+                           list="cityList" placeholder="Родной город" autocomplete="on">
+                    <datalist th:id="cityList" id="cityList">
+                        <option th:each="city : ${cities}" th:value="${city}" th:text="${city}">
+
+                        </option>
+                    </datalist>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="container-login100-form-btn m-b-35">
+                    <input class="login100-form-btn" type="submit" value="Зарегистрироваться">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

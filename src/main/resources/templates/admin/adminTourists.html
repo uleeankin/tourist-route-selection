@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Главная</label> <br/>
+        <a th:href="@{/admin/moderators}" class="navigation-text current-navigation-text">
+          Модераторы
+        </a> <br/>
+        <label class="navigation-text current-navigation-text">
+          <u>Туристы</u></label> <br/>
+      </div>
+      <a th:href="@{/admin/categories}" class="navigation-text submenu">Категории</a> <br/>
+      <a th:href="@{/admin/cities}" class="navigation-text submenu">Города</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Туристы</h1>
+      </div>
+
+    </div>
+    <div class="cities">
+      <div class="m-t-50 m-l-60">
+        <div class="table-name">
+          <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Зарегистрированные туристы</h1>
+        </div>
+        <div class="scroll-table">
+          <table class="table-body">
+            <thead>
+              <tr>
+                <th class="tourist-td">Логин</th>
+                <th class="tourist-td">Фамилия</th>
+                <th class="tourist-td">Имя</th>
+                <th class="tourist-td">Город</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="scroll-table-body">
+            <table class="table-body">
+              <tbody>
+              <tr th:each="tourist : ${tourists}">
+                <td class="tourist-td" th:text="${tourist.user.login}"></td>
+                <td class="tourist-td" th:text="${tourist.surname}"></td>
+                <td class="tourist-td" th:text="${tourist.name}"></td>
+                <td class="tourist-td" th:text="${tourist.user.city.name}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

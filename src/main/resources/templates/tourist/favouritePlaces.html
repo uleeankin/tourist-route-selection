@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
+      <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Избранное</label> <br/>
+        <label class="navigation-text current-navigation-text">
+          <u>Места</u>
+        </label> <br/>
+        <a th:href="@{/route/favourites}" class="navigation-text current-navigation-text">
+          Маршруты</a> <br/>
+      </div>
+      <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Избранные места</h1>
+      </div>
+
+      <div class="place-labels">
+        <div class="place-label" th:each="activity : ${activities}">
+          <div style="display: flex;">
+            <form action="#" th:method="get" th:action="@{/tourist/place/{id}(id=${activity.id})}">
+              <button class="place-name"
+                      style="padding-left: 25px; padding-top: 0;"
+                      th:text="${activity.name}">
+              </button>
+            </form>
+          </div>
+          <label class="info-label" th:text="${activity.category.name}"></label>
+          <label class="info-label" th:text="${activity.city.name}"></label><br/>
+          <textarea class="description-textarea" th:text="${activity.description}"/>
+          <label class="info-label" th:text="${activity.duration}"></label>
+          <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

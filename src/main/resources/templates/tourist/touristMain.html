@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+    <div class="main">
+        <div class="navigation">
+            <div class="navigation-block nickname">
+                <label class="nickname-text" th:text="${username}"/>
+            </div>
+            <div class="navigation-block menu admin">
+                <div class="current-page-block">
+                    <label class="navigation-text submenu current-submenu">Личный кабинет</label> <br/>
+                </div>
+                <a th:href="@{/tourist/places}" class="navigation-text submenu">Главная</a> <br/>
+                <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
+                <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
+            </div>
+        </div>
+
+        <div class="main-page-content">
+            <div class="user-panel">
+                <div class="cities">
+                    <img class="user-logo" src="/static/images/user.png"
+                         th:src="@{/images/user.png}" width="200" height="200"><br/>
+                    <label class="nickname-user-panel"  th:text="${username}"/>
+                </div>
+                <div class="user-data">
+                    <label class="user-panel-name" th:text="${name}"/><br/><br/>
+                    <label class="user-panel-info" th:text="'Родной город ' + ${city}"/><br/><br/>
+                </div>
+            </div>
+            <div class="user-panel" style="margin-top: 40px">
+                <h1 class="heading">Мои маршруты</h1>
+                <form th:method="get" th:action="@{/route}">
+                    <input type="submit" value="Создать маршрут"
+                           class="login100-form-btn adding-button create-route-button">
+                </form>
+            </div>
+            <div class="place-labels" style="height: 40vh;">
+                <div class="place-label" style="height: 28vh;" th:each="route : ${routes}">
+                    <div style="display: flex;">
+                        <form action="#" th:method="get" th:action="@{/route/owner/{id}(id=${route.id})}">
+                            <button class="place-name"
+                                    style="padding-left: 25px; padding-top: 0; line-height: normal;"
+                                    th:text="${route.name}">
+                            </button>
+                        </form>
+                        <span th:if="${route.status}">
+                            <img th:src="@{/images/unblock.png}" src="/static/images/unblock.png"
+                                 height="20" width="20">
+                        </span>
+                        <span th:unless="${route.status}">
+                            <img th:src="@{/images/block.png}" src="/static/images/block.png"
+                                 height="20" width="20">
+                        </span>
+                    </div>
+                    <label class="info-label" th:text="${route.city.name}"></label><br/>
+                    <textarea readonly class="description-textarea"
+                              th:text="${route.description}"
+                              style="overflow-y: scroll; height: 37%;"/>
+                    <div>
+                        <label class="info-label" style="margin-top: 5px;"
+                               th:text="'Время: ' + ${route.time}"></label><br/>
+                        <label class="info-label" style="margin-top: 5px;"
+                               th:text="'Длина пути: ' + ${route.length} + ' км'"></label><br/>
+                        <label class="info-label" style="margin-top: 5px;"
+                               th:text="'Цена: ' + ${route.price} + ' руб.'"></label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

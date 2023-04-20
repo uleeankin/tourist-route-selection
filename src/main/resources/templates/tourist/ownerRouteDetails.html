@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
+      <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
+      <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
+      <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div style="display: flex">
+        <h1 class="heading" th:text="${routeName}"/>
+        <span th:if="${routeStatus}">
+                    <form action="#" th:method="post"
+                          th:action="@{/route/status/{id}(id=${routeId})}">
+                        <button style="padding-left: 25px; padding-top: 25px;">
+                            <img th:src="@{/images/unblock.png}" src="/static/images/unblock.png"
+                                 height="30" width="30">
+                        </button>
+                    </form>
+                </span>
+        <span th:unless="${routeStatus}">
+                    <form action="#" th:method="post" th:action="@{/route/status/{id}(id=${routeId})}">
+                        <button style="padding-left: 25px; padding-top: 25px;">
+                            <img th:src="@{/images/block.png}" src="/static/images/block.png"
+                                 height="30" width="30">
+                        </button>
+                    </form>
+                </span>
+      </div>
+
+      <div class="labels" style="width: 150vh;">
+        <div class="custom-label city m-t-16 m-l-60">
+          <label class="custom-label-text" th:text="${city}"></label>
+        </div>
+        <div class="custom-label price m-t-16 m-l-20">
+          <label class="custom-label-text" th:text="'Стоимость: ' + ${price}"></label>
+        </div>
+        <div class="custom-label time m-t-16 m-l-20">
+          <label class="custom-label-text" th:text="'Время: ' + ${time}"></label>
+        </div>
+        <div class="custom-label length m-t-16 m-l-20">
+          <label class="custom-label-text" th:text="${length} + ' км'"></label>
+        </div>
+        <div class="custom-label name m-t-16 m-l-20">
+          <label class="custom-label-text" th:text="'Прошли маршрут: ' + ${usesNumber}"></label>
+        </div>
+      </div>
+
+      <div class="place-labels" style="height: 22vh;">
+        <div class="place-label" style="height: 20vh;" th:each="activity : ${activities}">
+          <label class="place-name"
+                 style="padding-left: 25px; padding-top: 0; line-height: normal;"
+                 th:text="${activity.name}">
+          </label>
+          <label class="info-label"
+                 th:text="${activity.category.name}"></label><br/>
+          <textarea readonly class="description-textarea"
+                    th:text="${activity.description}" style="height: 40%;"/>
+          <div style="display: flex;">
+            <label class="info-label" th:text="${activity.duration}"></label>
+            <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 20px;">
+      <label class="nickname-user-panel"
+             th:text="'Отзывы ' + ${averageAssessment}"/><br/>
+      <label class="m-t-16 user-panel-info" style="margin-left: 125px; color: #7B7D7D;"
+             th:text="'Количество отзывов: ' + ${commentNumber}"/>
+
+      <div class="m-t-16 comments-block"
+           style="width: 150vh;  text-align: center; height: 30vh;">
+        <div class="detailed-textarea m-b-16" style="height: 150px;" th:each="feedback : ${feedbacks}">
+          <label class="feedback-user"
+                 th:text="'@' + ${feedback.userLogin} + '  ' + ${feedback.assessment} + '/5'"/>
+          <label class="feedback-date" th:text="${feedback.date}"/><br/>
+          <textarea class="feedback-textarea" th:text="${feedback.feedback}"
+                    readonly></textarea>
+        </div><br/>
+      </div>
+    </div>
+
+    <div class="container-login100-form-btn"
+         style="width: 160vh; margin-top: 40px; text-align: center;">
+      <form th:method="get" th:action="@{/tourist}">
+        <button class="login100-form-btn" style="width: fit-content;">
+          Назад
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

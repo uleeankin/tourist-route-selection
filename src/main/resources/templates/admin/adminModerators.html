@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+    <div class="navigation">
+        <div class="navigation-block nickname">
+            <label class="nickname-text" th:text="${username}"/>
+        </div>
+        <div class="navigation-block menu admin">
+            <div class="current-page-block">
+                <label class="navigation-text submenu current-submenu">Главная</label> <br/>
+                <label class="navigation-text current-navigation-text">
+                    <u>Модераторы</u>
+                </label> <br/>
+                <a th:href="@{/admin/tourists}" class="navigation-text current-navigation-text">
+                    Туристы</a> <br/>
+            </div>
+            <a th:href="@{/admin/categories}" class="navigation-text submenu">Категории</a> <br/>
+            <a th:href="@{/admin/cities}" class="navigation-text submenu">Города</a> <br/>
+        </div>
+    </div>
+
+    <div class="main-page-content">
+        <div class="heading-panel">
+
+            <div>
+                <h1 class="heading">Модераторы</h1>
+            </div>
+
+        </div>
+        <div class="cities">
+            <form th:method="post" th:action="@{/admin/moderators}">
+                <div class="adding-panel moders">
+                    <div class="container-login100-form-btn m-b-16 m-l-60">
+                        <input type="submit" value="Добавить" class="login100-form-btn adding-button">
+                    </div>
+                    <div class="wrap-input100 m-b-16 m-l-60">
+                        <input th:id="login" class="input100" type="text" name="login"
+                               placeholder="Логин">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-16 m-l-20">
+                        <input th:id="password" class="input100" type="text" name="password"
+                               placeholder="Пароль">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-16 m-l-20">
+                        <input th:id="cityname" class="input100" type="text" name="cityname"
+                               list="cityList" placeholder="Город" autocomplete="on">
+                        <datalist th:id="cityList" id="cityList">
+                            <option th:each="city : ${cities}" th:value="${city}" th:text="${city}">
+
+                            </option>
+                        </datalist>
+                        <span class="focus-input100"></span>
+                    </div>
+                </div>
+            </form>
+            <div class="m-t-20 m-l-60">
+                <div class="table-name moders">
+                    <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Зарегистрированные модераторы</h1>
+                </div>
+                <div class="scroll-table moders">
+                    <table class="table-body">
+                        <thead>
+                        <tr>
+                            <th class="ex-td">Логин</th>
+                            <th class="ex-td">Город</th>
+                            <th class="t-td">Статус</th>
+                            <th class="t-td">Управление</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="table-body">
+                            <tbody>
+                            <tr th:each="moderator : ${moderators}">
+                                <form action="#" th:action="@{/admin/moderators/{login}(login=${moderator.login})}" th:method="post">
+                                    <td class="ex-td" th:id="moderId" th:text="${moderator.login}"></td>
+                                    <td class="ex-td" th:text="${moderator.city.name}"></td>
+                                    <td class="t-td">
+                                        <span th:text="${moderator.status} ? 'Неактивен' : 'Активен'">
+                                        </span>
+                                    </td>
+                                    <td class="t-td">
+                                            <button class="change-button" type="submit">Изменить</button>
+                                    </td>
+                                </form>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
