@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tourist_route_selection
+    username: postgres
+    password: admin
+
+city:
+  all: select city_id, city_name from city where city_name <> 'none';
+  one: select city_id, city_name from city where city_name = ?;
+  save: insert into city (city_name) values (?);
+
+category:
+  all: select category_id, category_name from category;
+  one: select category_id, category_name from category where category_name = ?;
+  save: insert into category (category_name) values (?);
+
+user:
+  userAdding: insert into user_info (login, user_password, user_role, city) values (?, ?, ?, ?);
+  statusChanging: update user_info set user_status = ? where login = ?;
+  userByLogin: select login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status from (user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id where login = ?;
+  touristAdding: insert into tourist (login, tourist_name, tourist_surname, tourist_lastname) values (?, ?, ?, ?);
+  moderators: select user_info.login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status from (user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id where role_name = ?;
+  touristByLogin: select user_info.login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status, tourist_name, tourist_surname, tourist_lastname from ((user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id) join tourist on user_info.login = tourist.login where user_info.login = ?;

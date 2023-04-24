@@ -9,8 +9,6 @@ public interface UserRepository {
 
     User findByLogin(String login);
 
-    List<Tourist> findAllTourists();
-
     List<User> findAllModerators();
 
     void saveUser(String login, String password, Long role, Long city);

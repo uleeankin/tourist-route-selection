@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table(name = "roles")
+@Table(name = "user_role")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

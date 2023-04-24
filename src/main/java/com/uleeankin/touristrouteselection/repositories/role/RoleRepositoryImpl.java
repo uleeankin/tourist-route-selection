@@ -12,7 +12,7 @@ import java.util.Optional;
 public class RoleRepositoryImpl implements RoleRepository {
 
     private static final String ROLE_BY_NAME =
-            "select role_id, role_name from roles where role_name = ?;";
+            "select role_id, role_name from user_role where role_name = ?;";
 
     private final JdbcTemplate jdbcTemplate;
 

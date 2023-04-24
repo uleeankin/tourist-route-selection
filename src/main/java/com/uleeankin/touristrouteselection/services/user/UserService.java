@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<Tourist> getAllTourists();
-
     List<User> getAllModerators();
 
     void saveUser(String login, String password, String roleName, String cityName);

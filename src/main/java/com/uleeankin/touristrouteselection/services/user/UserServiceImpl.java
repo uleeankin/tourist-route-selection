@@ -30,11 +30,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Tourist> getAllTourists() {
-        return this.repository.findAllTourists();
-    }
-
-    @Override
     public List<User> getAllModerators() {
         return this.repository.findAllModerators();
     }

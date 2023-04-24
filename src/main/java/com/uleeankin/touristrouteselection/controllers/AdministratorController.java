@@ -1,7 +1,6 @@
 package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.models.City;
-import com.uleeankin.touristrouteselection.models.activity.Category;
 import com.uleeankin.touristrouteselection.services.category.CategoryService;
 import com.uleeankin.touristrouteselection.services.city.CityService;
 import com.uleeankin.touristrouteselection.services.user.UserService;
@@ -63,13 +62,6 @@ public class AdministratorController {
         return "redirect:/admin/moderators";
     }
 
-    @GetMapping("/tourists")
-    public String getTouristsPage(Model model) {
-        model.addAttribute("tourists", this.userService.getAllTourists());
-        SessionContext.addUserNameToPage(model);
-        return "admin/adminTourists";
-    }
-
     @GetMapping("/cities")
     public String getCitiesPage(Model model) {
         model.addAttribute("cities", this.cityService.getAll());
@@ -78,7 +70,7 @@ public class AdministratorController {
     }
 
     @PostMapping("/cities")
-    public String addCity(@RequestParam("city") String cityName, Model model) {
+    public String addCity(@RequestParam("city") String cityName) {
         if (!cityName.isEmpty()) {
             this.cityService.save(cityName);
         }
@@ -94,7 +86,7 @@ public class AdministratorController {
     }
 
     @PostMapping("/categories")
-    public String addCategory(@RequestParam("category") String categoryName, Model model) {
+    public String addCategory(@RequestParam("category") String categoryName) {
         if (!categoryName.isEmpty()) {
             this.categoryService.save(categoryName);
         }
