@@ -23,3 +23,8 @@ user:
   touristAdding: insert into tourist (login, tourist_name, tourist_surname, tourist_lastname) values (?, ?, ?, ?);
   moderators: select user_info.login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status from (user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id where role_name = ?;
   touristByLogin: select user_info.login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status, tourist_name, tourist_surname, tourist_lastname from ((user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id) join tourist on user_info.login = tourist.login where user_info.login = ?;
+  orgAdding: insert into organization (login, organization_name) values (?, ?);
+  orgs: select user_info.login, user_password, user_info.user_role, role_name, user_info.city, city_name, user_status, organization_name from ((user_info join city on user_info.city = city.city_id) join user_role on user_info.user_role = user_role.role_id) join organization on user_info.login = organization.login where user_role.role_name = ?;
+
+role:
+  name: select role_id, role_name from user_role where role_name = ?;

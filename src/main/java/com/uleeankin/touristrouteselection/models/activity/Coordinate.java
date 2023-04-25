@@ -1,6 +1,7 @@
 package com.uleeankin.touristrouteselection.models.activity;
 
 
+import com.uleeankin.touristrouteselection.models.City;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table(name = "coordinates")
+@Table(name = "coordinate")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Coordinate {
@@ -19,5 +20,7 @@ public class Coordinate {
     private double latitude;
 
     private double longitude;
+
+    private City city;
 
 }

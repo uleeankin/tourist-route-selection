@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/moderator/places}" class="navigation-text submenu">Места</a> <br/>
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Организации</label> <br/>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+      <div>
+        <h1 class="heading">Организации</h1>
+      </div>
+    </div>
+    <div class="cities">
+      <form th:method="post" th:action="@{/moderator/orgs}">
+        <div class="adding-panel moders">
+          <div class="wrap-input100 m-b-16 m-l-20">
+            <input th:id="orgName" class="input100" type="text" name="orgName"
+                   placeholder="Название">
+            <span class="focus-input100"></span>
+          </div>
+          <div class="wrap-input100 m-b-16 m-l-20">
+            <input th:id="login" class="input100" type="text" name="login"
+                   placeholder="Логин">
+            <span class="focus-input100"></span>
+          </div>
+          <div class="wrap-input100 m-b-16 m-l-20">
+            <input th:id="password" class="input100" type="text" name="password"
+                   placeholder="Пароль">
+            <span class="focus-input100"></span>
+          </div>
+          <div class="wrap-input100 m-b-16 m-l-20">
+            <label>
+              <select th:id="roleName" class="input100" name="roleName" autocomplete="on">
+                <option>Агентство</option>
+                <option>Организация</option>
+              </select>
+            </label>
+            <span class="focus-input100"></span>
+          </div>
+          <div class="container-login100-form-btn m-b-16 m-l-20">
+            <input type="submit" value="Добавить" class="login100-form-btn adding-button">
+          </div>
+        </div>
+      </form>
+      <div  style="display: flex; width: 155vh;">
+        <div class="m-t-20 m-l-60">
+          <div class="table-name">
+            <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Туристические агентства</h1>
+          </div>
+          <div class="scroll-table">
+            <table class="table-body">
+              <thead>
+              <tr>
+                <th class="ex-td">Название</th>
+                <th class="t-td">Статус</th>
+                <th class="t-td">Управление</th>
+              </tr>
+              </thead>
+            </table>
+            <div class="scroll-table-body" style="height: 390px;">
+              <table class="table-body">
+                <tbody>
+                <tr th:each="agency : ${agencies}">
+                  <form action="#" th:action="@{/moderator/orgs/{login}(login=${agency.user.login})}" th:method="post">
+                    <td class="ex-td" th:id="agencyId" th:text="${agency.name}"></td>
+                    <td class="t-td">
+                    <span th:text="${agency.user.status} ? 'Неактивен' : 'Активен'">
+                    </span>
+                    </td>
+                    <td class="t-td">
+                      <button class="change-button" type="submit">Изменить</button>
+                    </td>
+                  </form>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div class="m-t-20 m-l-60">
+          <div class="table-name">
+            <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Туристические организации</h1>
+          </div>
+          <div class="scroll-table">
+            <table class="table-body">
+              <thead>
+              <tr>
+                <th class="ex-td">Название</th>
+                <th class="t-td">Статус</th>
+                <th class="t-td">Управление</th>
+              </tr>
+              </thead>
+            </table>
+            <div class="scroll-table-body" style="height: 390px;">
+              <table class="table-body">
+                <tbody>
+                <tr th:each="org : ${orgs}">
+                  <form action="#" th:action="@{/moderator/orgs/{login}(login=${org.user.login})}" th:method="post">
+                    <td class="ex-td" th:id="orgID" th:text="${org.name}"></td>
+                    <td class="t-td">
+                    <span th:text="${org.user.status} ? 'Неактивен' : 'Активен'">
+                    </span>
+                    </td>
+                    <td class="t-td">
+                      <button class="change-button" type="submit">Изменить</button>
+                    </td>
+                  </form>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

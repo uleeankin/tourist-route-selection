@@ -25,6 +25,7 @@
         <label class="navigation-text current-navigation-text">
           <u>Управление местами</u></label> <br/>
       </div>
+      <a th:href="@{/moderator/orgs}" class="navigation-text submenu">Организации</a> <br/>
     </div>
   </div>
 
@@ -70,7 +71,7 @@
             </div>
 
             <div class="wrap-input20 m-b-16 m-l-60">
-              <input th:id="categoryList" class="input category-label custom-input"
+              <input th:id="categoryList" class="input100 category-label custom-input"
                      type="text" name="categoryList"
                      list="categoriesSet" placeholder="Категория" autocomplete="on">
               <datalist th:id="categoriesSet" id="categoriesSet">

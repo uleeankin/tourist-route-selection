@@ -1,5 +1,6 @@
 package com.uleeankin.touristrouteselection.services.user;
 
+import com.uleeankin.touristrouteselection.models.user.Organization;
 import com.uleeankin.touristrouteselection.models.user.Tourist;
 import com.uleeankin.touristrouteselection.models.user.User;
 import com.uleeankin.touristrouteselection.repositories.city.CityRepository;
@@ -13,6 +14,9 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final String AGENCY = "Туристическое агентство";
+    private static final String ORGANIZATION = "Организация";
 
     private final UserRepository repository;
 
@@ -54,6 +58,25 @@ public class UserServiceImpl implements UserService {
         Long city = this.cityRepository.findByName(cityName).get().getId();
         this.repository.saveUser(login, password, role, city);
         this.repository.saveTourist(login, name, surname, lastname);
+    }
+
+    @Override
+    public void saveOrganization(String login, String password,
+                                 String roleName, String cityName, String name) {
+        Long role = this.roleRepository.findByName(roleName).get().getId();
+        Long city = this.cityRepository.findByName(cityName).get().getId();
+        this.repository.saveUser(login, password, role, city);
+        this.repository.saveOrganization(login, name);
+    }
+
+    @Override
+    public List<Organization> getAllAgencies() {
+        return this.repository.findOrganizationsByRole(AGENCY);
+    }
+
+    @Override
+    public List<Organization> getAllOrganizations() {
+        return this.repository.findOrganizationsByRole(ORGANIZATION);
     }
 
     @Override

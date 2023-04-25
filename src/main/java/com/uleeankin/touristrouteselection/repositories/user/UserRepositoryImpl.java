@@ -1,8 +1,10 @@
 package com.uleeankin.touristrouteselection.repositories.user;
 
+import com.uleeankin.touristrouteselection.models.user.Organization;
 import com.uleeankin.touristrouteselection.models.user.Tourist;
 import com.uleeankin.touristrouteselection.models.user.User;
-import com.uleeankin.touristrouteselection.utils.config.UserQueryConfigurator;
+import com.uleeankin.touristrouteselection.utils.config.UserConfig;
+import com.uleeankin.touristrouteselection.utils.mappers.OrganizationRowMapper;
 import com.uleeankin.touristrouteselection.utils.mappers.TouristRowMapper;
 import com.uleeankin.touristrouteselection.utils.mappers.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,11 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private final UserQueryConfigurator queryConfigurator;
+    private final UserConfig queryConfigurator;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public UserRepositoryImpl(UserQueryConfigurator queryConfigurator, JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(UserConfig queryConfigurator, JdbcTemplate jdbcTemplate) {
         this.queryConfigurator = queryConfigurator;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -31,9 +33,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAllModerators() {
-        System.out.println(this.queryConfigurator.getModerators());
         return this.jdbcTemplate.query(
                 this.queryConfigurator.getModerators(), new UserRowMapper(), "Модератор");
+    }
+
+    @Override
+    public List<Organization> findOrganizationsByRole(String roleName) {
+        return this.jdbcTemplate.query(
+                this.queryConfigurator.getOrgs(), new OrganizationRowMapper(), roleName);
     }
 
     @Override
@@ -45,6 +52,12 @@ public class UserRepositoryImpl implements UserRepository {
     public void saveTourist(String login, String name, String surname, String lastname) {
         this.jdbcTemplate.update(
                 this.queryConfigurator.getTouristAdding(), login, name, surname, lastname);
+    }
+
+    @Override
+    public void saveOrganization(String login, String name) {
+        this.jdbcTemplate.update(
+                this.queryConfigurator.getOrgAdding(), login, name);
     }
 
     @Override

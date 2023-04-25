@@ -1,7 +1,7 @@
 package com.uleeankin.touristrouteselection.repositories.city;
 
 import com.uleeankin.touristrouteselection.models.City;
-import com.uleeankin.touristrouteselection.utils.config.CityQueryConfigurator;
+import com.uleeankin.touristrouteselection.utils.config.CityConfig;
 import com.uleeankin.touristrouteselection.utils.mappers.CityRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,26 +13,26 @@ import java.util.Optional;
 
 @Repository
 public class CityRepositoryImpl implements CityRepository {
-    private final CityQueryConfigurator cityQueryConfigurator;
+    private final CityConfig cityConfig;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public CityRepositoryImpl(CityQueryConfigurator cityQueryConfigurator, JdbcTemplate jdbcTemplate) {
-        this.cityQueryConfigurator = cityQueryConfigurator;
+    public CityRepositoryImpl(CityConfig cityConfig, JdbcTemplate jdbcTemplate) {
+        this.cityConfig = cityConfig;
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void save(String cityName) {
         this.jdbcTemplate.update(
-                this.cityQueryConfigurator.save, cityName);
+                this.cityConfig.getSave(), cityName);
     }
 
     @Override
     public Optional<City> findByName(String cityName) {
         try {
             City city = this.jdbcTemplate.queryForObject(
-                    this.cityQueryConfigurator.one, new CityRowMapper(), cityName);
+                    this.cityConfig.getOne(), new CityRowMapper(), cityName);
             return Optional.ofNullable(city);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -42,6 +42,6 @@ public class CityRepositoryImpl implements CityRepository {
     @Override
     public List<City> findAll() {
         return this.jdbcTemplate.query(
-                this.cityQueryConfigurator.all, new CityRowMapper());
+                this.cityConfig.getAll(), new CityRowMapper());
     }
 }

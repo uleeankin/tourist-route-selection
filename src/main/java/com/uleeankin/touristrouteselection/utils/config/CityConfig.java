@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "city")
-public class CityQueryConfigurator {
+public class CityConfig {
 
-    public String all;
-    public String one;
-    public String save;
+    private String all;
+    private String one;
+    private String save;
 
 }

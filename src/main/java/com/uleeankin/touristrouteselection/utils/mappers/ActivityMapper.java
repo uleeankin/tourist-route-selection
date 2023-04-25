@@ -17,11 +17,11 @@ public class ActivityMapper implements RowMapper<Activity> {
                 rs.getString("description"),
                 new Coordinate(rs.getLong("coordinates_id"),
                         rs.getDouble("latitude"),
-                        rs.getDouble("longitude")),
+                        rs.getDouble("longitude"),
+                        new City(rs.getLong("city_id"),
+                                rs.getString("city_name"))),
                 new Category(rs.getLong("category_id"),
                         rs.getString("category_name")),
-                new City(rs.getLong("city_id"),
-                        rs.getString("city_name")),
                 rs.getDouble("price"),
                 rs.getTime("duration"));
     }

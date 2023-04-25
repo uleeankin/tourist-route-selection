@@ -22,18 +22,18 @@ public class ActivityRepositoryImpl implements ActivityRepository {
                     "values (?, ?, ?, ?, ?, ?, ?);";
 
     private static final String GET_ALL_ACTIVITIES =
-            "select activity_id, activity_name, description, coordinates_id, latitude, longitude, " +
-                    "category_id, category_name, city_id, city_name, price, duration " +
-                    "from ((activities join coordinates on activities.activity_id = coordinates.coordinates_id) " +
-                    "join categories on activities.category = categories.category_id) " +
-                    "join city on activities.city = city.city_id;";
+            "select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name," +
+                    "category_id, category_name, price, duration " +
+                    "from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) " +
+                    "join category on activity.category = category.category_id) " +
+                    "join city on coordinate.city = city.city_id;";
 
     private static final String CITY_ACTIVITIES =
-            "select activity_id, activity_name, description, coordinates_id, latitude, longitude, " +
-                    "category_id, category_name, city_id, city_name, price, duration " +
-                    "from ((activities join coordinates on activities.activity_id = coordinates.coordinates_id) " +
-                    "join categories on activities.category = categories.category_id) " +
-                    "join city on activities.city = city.city_id where city_name = ?;";
+            "select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, " +
+                    "category_id, category_name, price, duration " +
+                    "from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) " +
+                    "join category on activity.category = category.category_id) " +
+                    "join city on coordinate.city = city.city_id where city_name = ?;";
 
     private static final String ACTIVITY_BY_ID =
             "select activity_id, activity_name, description, coordinates_id, latitude, longitude, " +

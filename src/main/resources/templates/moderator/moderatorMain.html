@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Tourist Guide</title>
-    <link rel="stylesheet" href="/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
-    <link rel="stylesheet" href="/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
 </head>
 <body>
 <div class="main">
@@ -16,6 +16,7 @@
         </div>
         <div class="navigation-block menu admin">
             <a th:href="@{/moderator/places}" class="navigation-text submenu">Места</a> <br/>
+            <a th:href="@{/moderator/orgs}" class="navigation-text submenu">Организации</a> <br/>
         </div>
     </div>
 

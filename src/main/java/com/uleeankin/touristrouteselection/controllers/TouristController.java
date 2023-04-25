@@ -152,7 +152,7 @@ public class TouristController {
         Activity activity = this.activityService.getById(id);
         model.addAttribute("placeName", activity.getName());
         model.addAttribute("activityId", activity.getId());
-        model.addAttribute("city", activity.getCity().getName());
+        //model.addAttribute("city", activity.getCity().getName());
         model.addAttribute("category", activity.getCategory().getName());
         model.addAttribute("description", activity.getDescription());
         List<ActivityFeedback> feedback =

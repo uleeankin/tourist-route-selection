@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.sql.Time;
 
 @Data
-@Table(name = "activities")
+@Table(name = "activity")
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
@@ -29,9 +29,6 @@ public class Activity implements GraphNode {
 
     @NonNull
     private Category category;
-
-    @NonNull
-    private City city;
 
     @NonNull
     private Double price;

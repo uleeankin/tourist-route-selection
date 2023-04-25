@@ -6,11 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "category")
-public class CategoryQueryConfigurator {
+@ConfigurationProperties(prefix = "role")
+public class RoleConfig {
 
-    public String all;
-    public String one;
-    public String save;
+    private String name;
 
 }
