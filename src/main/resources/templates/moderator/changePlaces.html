@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <div class="current-page-block">
+        <label class="navigation-text submenu current-submenu">Места</label> <br/>
+        <a th:href="@{/moderator/places}" class="navigation-text current-navigation-text">
+          Все места
+        </a> <br/>
+        <a th:href="@{/moderator/places/add}" class="navigation-text current-navigation-text">
+          Добавление места</a> <br/>
+        <label class="navigation-text current-navigation-text">
+          <u>Управление</u></label> <br/>
+      </div>
+      <a th:href="@{/moderator/orgs}" class="navigation-text submenu">Организации</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Управление местами</h1>
+      </div>
+
+      <div class="cities">
+        <div class="m-t-20 m-l-60">
+          <div class="table-name moders" style="width: 150vh;">
+            <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Места</h1>
+          </div>
+          <div class="scroll-table moders" style="width: 150vh;">
+            <table class="table-body">
+              <thead>
+              <tr>
+                <th class="ex-td">Название</th>
+                <th class="t-td">Категория</th>
+                <th class="t-td">Широта</th>
+                <th class="t-td">Долгота</th>
+                <th class="t-td">Цена</th>
+                <th class="t-td">Время</th>
+                <th class="t-td">Управление</th>
+                <th class="t-td">Удаление</th>
+              </tr>
+              </thead>
+            </table>
+            <div class="scroll-table-body" style="width: 150vh;">
+              <table class="table-body">
+                <tbody>
+                <tr th:each="activity : ${activities}">
+                  <form action="#" th:action="@{/moderator/places/change/{activityId}(activityId=${activity.id})}" th:method="get">
+                    <td class="ex-td" th:id="activityName" th:text="${activity.name}"></td>
+                    <td class="t-td" th:id="category" th:text="${activity.category.name}"></td>
+                    <td class="t-td" th:id="latitude" th:text="${activity.coordinate.latitude}"></td>
+                    <td class="t-td" th:id="longitude" th:text="${activity.coordinate.longitude}"></td>
+                    <td class="t-td" th:id="price" th:text="${activity.price}"></td>
+                    <td class="t-td" th:id="time" th:text="${activity.duration}"></td>
+                    <td class="t-td">
+                      <button class="change-button" type="submit">Изменить</button>
+                    </td>
+                  </form>
+                  <form action="#" th:action="@{/moderator/places/delete/{id}(id=${activity.id})}" th:method="post">
+                    <td class="t-td">
+                      <button class="change-button" type="submit">Удалить</button>
+                    </td>
+                  </form>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

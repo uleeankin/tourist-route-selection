@@ -54,8 +54,8 @@ public class ModeratorController {
         return "moderator/moderatorAllPlaces";
     }
 
-    @GetMapping("places/manage")
-    public String getPlacesManagementPage(Model model) {
+    @GetMapping("places/add")
+    public String getPlacesAddingPage(Model model) {
         this.setModeratorData(model);
 
         List<String> categories =
@@ -67,7 +67,7 @@ public class ModeratorController {
         return "moderator/managePlaces";
     }
 
-    @PostMapping("places/manage")
+    @PostMapping("places/add")
     public String addNewActivity(@RequestParam("name") String name,
                                  @RequestParam("description") String description,
                                  @RequestParam("latitude") Double latitude,
@@ -82,6 +82,26 @@ public class ModeratorController {
                 category, latitude, longitude, time, price, new byte[]{0}));
 
         return "redirect:/moderator/places";
+    }
+
+    @GetMapping("places/change")
+    public String getPlacesManagementPage(Model model) {
+        SessionContext.addUserNameToPage(model);
+        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
+        List<Activity> activities = this.activityService.getByCity(user.getCity().getName());
+        model.addAttribute("activities", activities);
+        return "moderator/changePlaces";
+    }
+
+    @GetMapping("places/change/{activityId}")
+    public String getPlaceUpdatePage(@PathVariable("activityId") Long id, Model model) {
+        SessionContext.addUserNameToPage(model);
+        Activity activity = this.activityService.getById(id);
+        model.addAttribute("name", activity.getName());
+        model.addAttribute("description", activity.getDescription());
+        model.addAttribute("time", activity.getDuration());
+        model.addAttribute("price", activity.getPrice());
+        return "moderator/updatePlace";
     }
 
     @GetMapping("/orgs")
