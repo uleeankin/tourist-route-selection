@@ -28,3 +28,19 @@ user:
 
 role:
   name: select role_id, role_name from user_role where role_name = ?;
+
+activity:
+  activityAdding: insert into activity (activity_name, description, coordinates, category, photo, price, duration) values (?, ?, ?, ?, ?, ?, ?);
+  all: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id;
+  byCity: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ?;
+  byId: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id = ?;
+  byCityAndCategory: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and category_name = ?;
+  toFavourite: insert into favourite_activity (user_id, activity_id) values (?, ?);
+  deleteFromFavouriteQuery: delete from favourite_activity where user_id = ? and activity_id = ?;
+  allFavourites: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id in (select activity_id from favourite_activity where user_id = ?);
+  favouritesByCityAndCategory: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and category_name = ? and activity_id in (select activity_id from favourite_activity where user_id = ?);
+  existence: select exists (select * from favourite_activity where user_id = ? and activity_id = ?);
+
+coordinate:
+  adding: insert into coordinate (latitude, longitude, city) values (?, ?, ?);
+  object: select coordinates_id, latitude, longitude, city_id, city_name from coordinate join city on coordinate.city = city.city_id where latitude = ? and longitude = ?;

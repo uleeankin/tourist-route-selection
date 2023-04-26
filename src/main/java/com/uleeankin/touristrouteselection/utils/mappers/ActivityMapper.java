@@ -22,6 +22,7 @@ public class ActivityMapper implements RowMapper<Activity> {
                                 rs.getString("city_name"))),
                 new Category(rs.getLong("category_id"),
                         rs.getString("category_name")),
+                rs.getBytes("photo"),
                 rs.getDouble("price"),
                 rs.getTime("duration"));
     }

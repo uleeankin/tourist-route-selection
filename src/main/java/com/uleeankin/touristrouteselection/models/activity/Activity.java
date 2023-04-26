@@ -1,7 +1,6 @@
 package com.uleeankin.touristrouteselection.models.activity;
 
 import com.uleeankin.touristrouteselection.algorithm.GraphNode;
-import com.uleeankin.touristrouteselection.models.City;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -29,6 +28,8 @@ public class Activity implements GraphNode {
 
     @NonNull
     private Category category;
+
+    private byte[] photo;
 
     @NonNull
     private Double price;

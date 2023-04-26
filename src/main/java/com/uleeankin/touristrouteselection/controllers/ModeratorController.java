@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/moderator")
@@ -76,9 +77,9 @@ public class ModeratorController {
                                  @RequestParam("price") Double price) {
 
 
-        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
-        this.activityService.addActivity(name, description, user.getCity().getName(),
-                category, latitude, longitude, time, price);
+        Optional<User> user = this.userService.getByLogin(SessionContext.getUserLogin());
+        user.ifPresent(value -> this.activityService.addActivity(name, description, value.getCity().getName(),
+                category, latitude, longitude, time, price, new byte[]{0}));
 
         return "redirect:/moderator/places";
     }
@@ -100,8 +101,12 @@ public class ModeratorController {
         if (roleName.equals(MODEL_AGENCY_NAME)) {
             roleName = DB_AGENCY_NAME;
         }
-        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
-        this.userService.saveOrganization(login, password, roleName, user.getCity().getName(), name);
+        Optional<User> user = this.userService.getByLogin(SessionContext.getUserLogin());
+
+        if (user.isPresent()) {
+            this.userService.saveOrganization(login, password, roleName, user.get().getCity().getName(), name);
+        }
+
         return "redirect:/moderator/orgs";
     }
 

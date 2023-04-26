@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ActivityRepository {
 
     void addActivity(String name, String description,
-                     Long city, Long coordinate, Long category,
-                     Time time, Double price);
+                     Long coordinate, Long category,
+                     byte[] photo, Time time, Double price);
 
     List<Activity> findAll();
 

@@ -8,7 +8,7 @@ public interface ActivityService {
     void addActivity(String name, String description,
                      String cityName, String categoryName,
                      Double latitude, Double longitude,
-                     String time, Double price);
+                     String time, Double price, byte[] photo);
 
     List<Activity> getByCity(String cityName);
 

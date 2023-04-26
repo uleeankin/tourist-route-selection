@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -40,17 +41,23 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public void addActivity(String name, String description, String cityName,
                             String categoryName, Double latitude, Double longitude,
-                            String time, Double price) {
+                            String time, Double price, byte[] photo) {
 
-        City city = this.cityRepository.findByName(cityName).get();
-        Category category = this.categoryRepository.findByName(categoryName).get();
-        this.coordinateRepository.addCoordinate(latitude, longitude);
-        Coordinate coordinate = this.coordinateRepository.getCoordinate(latitude, longitude).get();
 
-        Time sqlTime = StringToTimeConverter.convert(time);
+        Optional<City> city = this.cityRepository.findByName(cityName);
+        Optional<Category> category = this.categoryRepository.findByName(categoryName);
 
-        this.activityRepository.addActivity(name, description, city.getId(),
-                coordinate.getId(), category.getId(), sqlTime, price);
+        if (city.isPresent() && category.isPresent()) {
+            this.coordinateRepository.addCoordinate(latitude, longitude, city.get().getId());
+            Optional<Coordinate> coordinate = this.coordinateRepository.getCoordinate(latitude, longitude);
+
+            if (coordinate.isPresent()) {
+                Time sqlTime = StringToTimeConverter.convert(time);
+                //TODO: добавить фото
+                this.activityRepository.addActivity(name, description,
+                        coordinate.get().getId(), category.get().getId(), photo, sqlTime, price);
+            }
+        }
     }
 
     @Override
