@@ -101,4 +101,10 @@ public class ActivityServiceImpl implements ActivityService {
     public boolean isExists(String userId, Long activityId) {
         return this.activityRepository.isExists(userId, activityId);
     }
+
+    @Override
+    public void update(Long id, String name, String description, String time, Double price) {
+        this.activityRepository.update(
+                id, name, description, StringToTimeConverter.convert(time), price);
+    }
 }

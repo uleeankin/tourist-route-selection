@@ -88,4 +88,10 @@ public class ActivityRepositoryImpl implements ActivityRepository {
                 this.activityConfig.getExistence(),
                 (rs, rowNum) -> rs.getBoolean(1), userId, activityId));
     }
+
+    @Override
+    public void update(Long id, String name, String description, Time time, Double price) {
+        this.jdbcTemplate.update(this.activityConfig.getUpdate(),
+                name, description, time, price, id);
+    }
 }

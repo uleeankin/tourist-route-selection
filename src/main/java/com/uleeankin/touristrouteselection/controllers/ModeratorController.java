@@ -97,11 +97,23 @@ public class ModeratorController {
     public String getPlaceUpdatePage(@PathVariable("activityId") Long id, Model model) {
         SessionContext.addUserNameToPage(model);
         Activity activity = this.activityService.getById(id);
+        model.addAttribute("placeId", activity.getId());
         model.addAttribute("name", activity.getName());
         model.addAttribute("description", activity.getDescription());
         model.addAttribute("time", activity.getDuration());
         model.addAttribute("price", activity.getPrice());
         return "moderator/updatePlace";
+    }
+
+    @PostMapping("/places/update/{id}")
+    public String updatePlace(@PathVariable("id") Long placeID,
+                              @RequestParam("name") String name,
+                              @RequestParam("description") String description,
+                              @RequestParam("time") String time,
+                              @RequestParam("price") Double price) {
+
+        this.activityService.update(placeID, name, description, time, price);
+        return "redirect:/moderator/places/change";
     }
 
     @GetMapping("/orgs")

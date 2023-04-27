@@ -40,6 +40,7 @@ activity:
   allFavourites: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id in (select activity_id from favourite_activity where user_id = ?);
   favouritesByCityAndCategory: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.activity_id = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and category_name = ? and activity_id in (select activity_id from favourite_activity where user_id = ?);
   existence: select exists (select * from favourite_activity where user_id = ? and activity_id = ?);
+  update: update activity set activity_name = ?, description = ?, duration = ?, price = ? where activity_id = ?;
 
 coordinate:
   adding: insert into coordinate (latitude, longitude, city) values (?, ?, ?);

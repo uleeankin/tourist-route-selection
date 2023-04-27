@@ -19,5 +19,6 @@ public class ActivityConfig {
     private String allFavourites;
     private String favouritesByCityAndCategory;
     private String existence;
+    private String update;
 
 }

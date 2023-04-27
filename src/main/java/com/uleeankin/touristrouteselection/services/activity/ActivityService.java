@@ -26,4 +26,6 @@ public interface ActivityService {
     Activity getById(Long id);
 
     boolean isExists(String userId, Long activityId);
+
+    void update(Long id, String name, String description, String time, Double price);
 }

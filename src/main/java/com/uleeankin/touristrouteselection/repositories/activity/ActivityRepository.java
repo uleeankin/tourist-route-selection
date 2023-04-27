@@ -31,4 +31,6 @@ public interface ActivityRepository {
                                                    String category);
 
     boolean isExists(String userId, Long activityId);
+
+    void update(Long id, String name, String description, Time time, Double price);
 }
