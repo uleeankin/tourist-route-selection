@@ -47,7 +47,13 @@ activity:
 coordinate:
   adding: insert into coordinate (latitude, longitude, city) values (?, ?, ?);
   object: select coordinates_id, latitude, longitude, city_id, city_name from coordinate join city on coordinate.city = city.city_id where latitude = ? and longitude = ?;
+  delete: delete from coordinate where coordinates_id = ?;
 
 event:
+  update: update actual_event set start_date = ?, end_date = ? where event_id = ?;
   save: insert into actual_event (event_id, start_date, end_date, event_owner) values (?, ?, ?, ?);
   saveSession: insert into event_session (event_id, session_time) values (?, ?);
+  all: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, start_date, end_date, event_owner from (((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id) join actual_event on activity.activity_id = actual_event.event_id;
+  delete: delete from actual_event where event_id = ?;
+  deleteSession: delete from event_session where event_id = ?;
+  byId: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, start_date, end_date, event_owner from (((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id) join actual_event on activity.activity_id = actual_event.event_id where activity.activity_id = ?;

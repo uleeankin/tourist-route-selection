@@ -11,5 +11,6 @@ public class CoordinateConfig {
 
     private String adding;
     private String object;
+    private String delete;
 
 }

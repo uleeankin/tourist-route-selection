@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/organization/events}" class="navigation-text submenu">Мероприятия</a> <br/>
+      <a th:href="@{/organization/add}" class="navigation-text submenu">Добавление</a> <br/>
+      <a th:href="@{/organization/manage}" class="navigation-text submenu">Управление</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Управление местами</h1>
+      </div>
+
+      <div class="cities">
+        <form th:method="post" th:action="@{/organization/event/update/{id}(id = ${eventId})}">
+          <div class="activity-adding-panel">
+
+            <div class="wrap-input100 m-b-16 m-l-60" style="width: fit-content;">
+              <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
+                     placeholder="Название" th:value="${name}" style="width: fit-content;">
+              <span class="focus-input100 name-label"></span>
+            </div>
+
+            <div class="wrap-input60 m-b-16 m-l-60">
+              <textarea th:id="description" class="input100 description-label" name="description"
+                        placeholder="Описание" style="resize: none; height: 100px" th:text="${description}" th:value="${description}"></textarea>
+              <span class="focus-input100 description-label"></span>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60">
+              <input th:id="price" class="input100 price-label custom-input" type="number"
+                     step="0.1" name="price" th:value="${price}" placeholder="Цена">
+              <span class="focus-input100 price-label"></span>
+            </div>
+
+            <div style="display: flex;">
+              <div class="m-b-16" style="margin-left: 80px;">
+                <label class="input100 time-label custom-input"
+                       style="padding-top: 18px; background-color: white;">Дата начала</label>
+              </div>
+              <div class="wrap-input20 m-b-16">
+                <input th:id="startDate" class="input100 date-label custom-input"
+                       th:value="${startDate}" type="date" name="startDate">
+                <span class="focus-input100 date-label"></span>
+              </div>
+              <div class="m-b-16" style="margin-left: 120px;">
+                <label class="input100 time-label custom-input"
+                       style="padding-top: 18px; background-color: white;">Дата конца</label>
+              </div>
+              <div class="wrap-input20 m-b-16">
+                <input th:id="endDate" class="input100 date-label custom-input"
+                       th:value="${endDate}" type="date" name="endDate">
+                <span class="focus-input100 date-label"></span>
+              </div>
+            </div>
+
+            <div class="wrap-input20 m-b-16 m-l-60" style="visibility: hidden;">
+              <input th:id="time" class="input100 time-label custom-input" type="time" name="time"
+                     placeholder="~Время прохождения" th:value="${time}" readonly>
+              <span class="focus-input100 time-label"></span>
+            </div>
+
+            <div class="container-login100-form-btn m-b-16 m-l-60">
+              <input type="submit" value="Обновить" class="login100-form-btn adding-button">
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

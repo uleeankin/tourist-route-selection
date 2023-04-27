@@ -10,4 +10,6 @@ public interface CoordinateRepository {
 
     Optional<Coordinate> getCoordinate(Double latitude, Double longitude);
 
+    void deleteById(Long id);
+
 }

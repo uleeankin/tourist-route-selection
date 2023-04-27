@@ -115,6 +115,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void delete(Long id) {
+        Optional<Activity> activity = this.activityRepository.findById(id);
         this.activityRepository.deleteById(id);
+        this.coordinateRepository.deleteById(activity.get().getCoordinate().getId());
     }
 }

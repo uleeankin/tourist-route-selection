@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "event")
 public class EventConfig {
+    private String update;
     private String save;
     private String saveSession;
+    private String all;
+    private String byId;
+    private String delete;
+    private String deleteSession;
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+    <div class="navigation">
+        <div class="navigation-block nickname">
+            <label class="nickname-text" th:text="${username}"/>
+        </div>
+        <div class="navigation-block menu admin">
+            <a th:href="@{/organization/events}" class="navigation-text submenu">Мероприятия</a> <br/>
+            <a th:href="@{/organization/add}" class="navigation-text submenu">Добавление</a> <br/>
+            <div class="current-page-block">
+                <label class="navigation-text submenu current-submenu">Управление</label> <br/>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-page-content">
+        <div class="heading-panel">
+
+            <div>
+                <h1 class="heading">Управление мероприятиями</h1>
+            </div>
+
+            <div class="cities">
+                <div class="m-t-20 m-l-60">
+                    <div class="table-name moders" style="width: 150vh;">
+                        <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Мероприятия</h1>
+                    </div>
+                    <div class="scroll-table moders" style="width: 150vh;">
+                        <table class="table-body">
+                            <thead>
+                            <tr>
+                                <th class="ex-td">Название</th>
+                                <th class="t-td">Начало</th>
+                                <th class="t-td">Окончание</th>
+                                <th class="t-td">Цена</th>
+                                <th class="t-td">Время</th>
+                                <th class="t-td">Данные</th>
+                                <th class="t-td">Расписание</th>
+                                <th class="t-td">Удаление</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <div class="scroll-table-body" style="width: 150vh;">
+                            <table class="table-body">
+                                <tbody>
+                                <tr th:each="event : ${events}">
+                                    <form action="#" th:action="@{/organization/event/change/{eventId}(eventId=${event.activity.id})}" th:method="get">
+                                        <td class="ex-td" th:id="activityName" th:text="${event.activity.name}"></td>
+                                        <td class="t-td" th:id="latitude" th:text="${event.startDate}"></td>
+                                        <td class="t-td" th:id="longitude" th:text="${event.endDate}"></td>
+                                        <td class="t-td" th:id="price" th:text="${event.activity.price}"></td>
+                                        <td class="t-td" th:id="time" th:text="${event.activity.duration}"></td>
+                                        <td class="t-td">
+                                            <button class="change-button" type="submit">Изменить</button>
+                                        </td>
+                                    </form>
+                                    <form action="#" th:action="@{/organization/schedule/update/{id}(id=${event.activity.id})}" th:method="post">
+                                        <td class="t-td">
+                                            <button class="change-button" type="submit">Изменить</button>
+                                        </td>
+                                    </form>
+                                    <form action="#" th:action="@{/organization/event/delete/{id}(id=${event.activity.id})}" th:method="post">
+                                        <td class="t-td">
+                                            <button class="change-button" type="submit">Удалить</button>
+                                        </td>
+                                    </form>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

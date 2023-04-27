@@ -1,5 +1,7 @@
 package com.uleeankin.touristrouteselection.controllers;
 
+import com.uleeankin.touristrouteselection.models.activity.Activity;
+import com.uleeankin.touristrouteselection.models.activity.Event;
 import com.uleeankin.touristrouteselection.models.user.User;
 import com.uleeankin.touristrouteselection.services.activity.ActivityService;
 import com.uleeankin.touristrouteselection.services.event.EventService;
@@ -8,10 +10,7 @@ import com.uleeankin.touristrouteselection.utils.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -30,6 +29,14 @@ public class OrganizationController {
         this.activityService = activityService;
         this.eventService = eventService;
         this.userService = userService;
+    }
+
+    @GetMapping("/events")
+    public String showAllEvents(Model model) {
+        SessionContext.addUserNameToPage(model);
+        model.addAttribute("events",
+                this.eventService.getAll());
+        return "orgs/all";
     }
 
     @GetMapping("/add")
@@ -57,5 +64,46 @@ public class OrganizationController {
                 SessionContext.getUserLogin(), breakTime, startTime, endTime, duration);
 
         return "redirect:/organization/add";
+    }
+
+    @GetMapping("/manage")
+    public String showManageEventsPage(Model model) {
+        SessionContext.addUserNameToPage(model);
+        model.addAttribute("events",
+                this.eventService.getAll());
+        return "orgs/manage";
+    }
+
+    @GetMapping("/event/change/{eventId}")
+    public String getEventUpdatePage(@PathVariable("eventId") Long id, Model model) {
+        SessionContext.addUserNameToPage(model);
+        Event event = this.eventService.getById(id);
+        model.addAttribute("eventId", event.getActivity().getId());
+        model.addAttribute("name", event.getActivity().getName());
+        model.addAttribute("description", event.getActivity().getDescription());
+        model.addAttribute("time", event.getActivity().getDuration());
+        model.addAttribute("price", event.getActivity().getPrice());
+        model.addAttribute("startDate", event.getStartDate());
+        model.addAttribute("endDate", event.getEndDate());
+        return "orgs/update";
+    }
+
+    @PostMapping("/event/update/{eventId}")
+    public String updatePlace(@PathVariable("eventId") Long eventId,
+                              @RequestParam("name") String name,
+                              @RequestParam("description") String description,
+                              @RequestParam("time") String time,
+                              @RequestParam("price") Double price,
+                              @RequestParam("startDate") String startDate,
+                              @RequestParam("endDate") String endDate) {
+
+        this.eventService.update(eventId, name, description, time, price, startDate, endDate);
+        return "redirect:/organization/manage";
+    }
+
+    @GetMapping("event/delete/{eventId}")
+    public String deleteEvent(@PathVariable("eventId") Long id) {
+        this.eventService.delete(id);
+        return "redirect:/organization/manage";
     }
 }

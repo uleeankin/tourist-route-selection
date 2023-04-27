@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <div class="current-page-block">
+        <label class="navigation-text submenu">Мероприятия</label> <br/>
+      </div>
+      <a th:href="@{/organization/add}" class="navigation-text submenu">Добавление</a> <br/>
+      <a th:href="@{/organization/manage}" class="navigation-text submenu">Управление</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Мероприятия</h1>
+      </div>
+
+      <div class="place-labels">
+        <div class="place-label"  th:each="event : ${events}">
+          <label class="place-name" th:text="${event.activity.name}"></label></br>
+          <label class="info-label"
+                 th:text="'Категория: ' + ${event.activity.category.name}"></label></br>
+          <textarea readonly class="description-textarea" th:text="${event.activity.description}"></textarea>
+          <label class="info-label" th:text="${event.activity.duration}"></label>
+          <label class="info-label" th:text="${event.activity.price} + ' руб.'"></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

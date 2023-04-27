@@ -31,4 +31,9 @@ public class CoordinateRepositoryImpl implements CoordinateRepository {
         return Optional.ofNullable(this.jdbcTemplate.queryForObject(
                 this.coordinateConfig.getObject(), new CoordinateRowMapper(), latitude, longitude));
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.jdbcTemplate.update(this.coordinateConfig.getDelete(), id);
+    }
 }

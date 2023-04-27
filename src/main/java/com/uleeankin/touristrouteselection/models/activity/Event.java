@@ -18,6 +18,6 @@ public class Event {
 
     private Date endDate;
 
-    private Organization organization;
+    private String owner;
 
 }
