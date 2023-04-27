@@ -116,6 +116,12 @@ public class ModeratorController {
         return "redirect:/moderator/places/change";
     }
 
+    @PostMapping("/places/delete/{id}")
+    public String deletePlace(@PathVariable("id") Long placeId) {
+        this.activityService.delete(placeId);
+        return "redirect:/moderator/places/change";
+    }
+
     @GetMapping("/orgs")
     public String getOrganizations(Model model) {
         this.setModeratorData(model);

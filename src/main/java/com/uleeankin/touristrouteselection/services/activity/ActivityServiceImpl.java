@@ -107,4 +107,9 @@ public class ActivityServiceImpl implements ActivityService {
         this.activityRepository.update(
                 id, name, description, StringToTimeConverter.convert(time), price);
     }
+
+    @Override
+    public void delete(Long id) {
+        this.activityRepository.deleteById(id);
+    }
 }

@@ -20,5 +20,6 @@ public class ActivityConfig {
     private String favouritesByCityAndCategory;
     private String existence;
     private String update;
+    private String deleteById;
 
 }

@@ -33,4 +33,6 @@ public interface ActivityRepository {
     boolean isExists(String userId, Long activityId);
 
     void update(Long id, String name, String description, Time time, Double price);
+
+    void deleteById(Long id);
 }

@@ -94,4 +94,9 @@ public class ActivityRepositoryImpl implements ActivityRepository {
         this.jdbcTemplate.update(this.activityConfig.getUpdate(),
                 name, description, time, price, id);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.jdbcTemplate.update(this.activityConfig.getDeleteById(), id);
+    }
 }
