@@ -35,4 +35,6 @@ public interface ActivityRepository {
     void update(Long id, String name, String description, Time time, Double price);
 
     void deleteById(Long id);
+
+    Optional<Activity> findByCoordinates(String name, Double latitude, Double longitude);
 }

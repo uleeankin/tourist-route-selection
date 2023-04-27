@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/organization/events}" class="navigation-text submenu">Мероприятия</a> <br/>
+      <a th:href="@{/organization/add}" class="navigation-text submenu">Добавление</a> <br/>
+      <a th:href="@{/organization/manage}" class="navigation-text submenu">Управление</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading welcome">Добро пожаловать в Tourist Guide!</h1>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

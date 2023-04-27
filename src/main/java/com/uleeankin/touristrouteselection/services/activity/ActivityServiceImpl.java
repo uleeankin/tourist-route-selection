@@ -76,6 +76,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public Activity getActivity(String name, Double latitude, Double longitude) {
+        return this.activityRepository.findByCoordinates(name, latitude, longitude).get();
+    }
+
+    @Override
     public void deleteFromFavourites(String userId, Long activityId) {
         this.activityRepository.deleteFromFavourites(userId, activityId);
     }

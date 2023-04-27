@@ -99,4 +99,10 @@ public class ActivityRepositoryImpl implements ActivityRepository {
     public void deleteById(Long id) {
         this.jdbcTemplate.update(this.activityConfig.getDeleteById(), id);
     }
+
+    @Override
+    public Optional<Activity> findByCoordinates(String name, Double latitude, Double longitude) {
+        return Optional.ofNullable(this.jdbcTemplate.queryForObject(
+                this.activityConfig.getByCoordinates(), new ActivityMapper(), name, latitude, longitude));
+    }
 }

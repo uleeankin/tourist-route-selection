@@ -2,6 +2,7 @@ package com.uleeankin.touristrouteselection.services.activity;
 import com.uleeankin.touristrouteselection.models.activity.Activity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ActivityService {
 
@@ -15,6 +16,8 @@ public interface ActivityService {
     List<Activity> getByCityAndCategory(String city, String category);
 
     void addToFavourites(String userId, Long activityId);
+
+    Activity getActivity(String name, Double latitude, Double longitude);
 
     void deleteFromFavourites(String userId, Long activityId);
 

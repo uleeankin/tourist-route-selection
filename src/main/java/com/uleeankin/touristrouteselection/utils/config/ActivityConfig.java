@@ -21,5 +21,6 @@ public class ActivityConfig {
     private String existence;
     private String update;
     private String deleteById;
+    private String byCoordinates;
 
 }

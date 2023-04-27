@@ -368,7 +368,7 @@ iframe {
 }
 
 .name-label {
-  background-color: #FFA2D7;
+  background-color: #FF9393;
   color: black;
 }
 
@@ -393,12 +393,17 @@ iframe {
 }
 
 .price-label {
-  background-color: #FF9393;
+  background-color: #FFA2D7;
   color: black;
 }
 
 .coordinate-label {
   background-color: #FECDB6;
+  color: black;
+}
+
+.date-label {
+  background-color: #B6B9FF;
   color: black;
 }
 

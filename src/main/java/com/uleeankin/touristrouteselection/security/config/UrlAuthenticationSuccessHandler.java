@@ -1,6 +1,5 @@
 package com.uleeankin.touristrouteselection.security.config;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +24,7 @@ public class UrlAuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
 
         this.handle(request, response, authentication);
         this.clearAuthenticationAttributes(request);
@@ -50,6 +49,8 @@ public class UrlAuthenticationSuccessHandler
         roleTargetUrlMap.put("Администратор", "/admin");
         roleTargetUrlMap.put("Модератор", "/moderator");
         roleTargetUrlMap.put("Турист", "/tourist");
+        roleTargetUrlMap.put("Туристическое агентство", "/agency");
+        roleTargetUrlMap.put("Организация", "/organization");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
