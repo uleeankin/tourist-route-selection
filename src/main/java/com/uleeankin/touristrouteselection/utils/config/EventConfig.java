@@ -15,4 +15,7 @@ public class EventConfig {
     private String byId;
     private String delete;
     private String deleteSession;
+    private String schedule;
+    private String deleteEventSession;
+    private String addSession;
 }

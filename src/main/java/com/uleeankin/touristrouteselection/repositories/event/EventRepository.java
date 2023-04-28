@@ -1,6 +1,7 @@
 package com.uleeankin.touristrouteselection.repositories.event;
 
 import com.uleeankin.touristrouteselection.models.activity.Event;
+import com.uleeankin.touristrouteselection.models.activity.EventSession;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -21,4 +22,10 @@ public interface EventRepository {
     void deleteSessions(Long id);
 
     void update(Long id, Date startDate, Date endDate);
+
+    List<EventSession> findAllSessions(Long id);
+
+    void deleteSession(Long id, Time time);
+
+    void addSession(Long id, Time time);
 }

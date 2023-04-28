@@ -66,7 +66,7 @@
                                             <button class="change-button" type="submit">Изменить</button>
                                         </td>
                                     </form>
-                                    <form action="#" th:action="@{/organization/schedule/update/{id}(id=${event.activity.id})}" th:method="post">
+                                    <form action="#" th:action="@{/organization/sessions/{id}(id=${event.activity.id})}" th:method="get">
                                         <td class="t-td">
                                             <button class="change-button" type="submit">Изменить</button>
                                         </td>

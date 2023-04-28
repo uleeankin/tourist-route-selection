@@ -2,6 +2,7 @@ package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.models.activity.Activity;
 import com.uleeankin.touristrouteselection.models.activity.Event;
+import com.uleeankin.touristrouteselection.models.activity.EventSession;
 import com.uleeankin.touristrouteselection.models.user.User;
 import com.uleeankin.touristrouteselection.services.activity.ActivityService;
 import com.uleeankin.touristrouteselection.services.event.EventService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -101,9 +103,39 @@ public class OrganizationController {
         return "redirect:/organization/manage";
     }
 
-    @GetMapping("event/delete/{eventId}")
+    @GetMapping("/event/delete/{eventId}")
     public String deleteEvent(@PathVariable("eventId") Long id) {
         this.eventService.delete(id);
+        return "redirect:/organization/manage";
+    }
+
+    @GetMapping("/sessions/{id}")
+    public String getSchedulePage(@PathVariable("id") Long id, Model model) {
+        SessionContext.addUserNameToPage(model);
+        List<EventSession> sessions = this.eventService.getSchedule(id);
+        Activity activity = this.activityService.getById(id);
+        model.addAttribute("name", activity.getName());
+        model.addAttribute("eventId", activity.getId());
+        model.addAttribute("sessions", sessions);
+        return "orgs/schedule";
+    }
+
+    @PostMapping("/session/delete/{id}/{time}")
+    public String deleteSession(@PathVariable("id") Long id,
+                                @PathVariable("time") String time) {
+        this.eventService.deleteSession(id, time);
+        return "redirect:/organization/sessions/{id}";
+    }
+
+    @PostMapping("/session/add/{id}")
+    public String addSession(@PathVariable("id") Long id,
+                                @RequestParam("startTime") String time) {
+        this.eventService.addSession(id, time);
+        return "redirect:/organization/sessions/{id}";
+    }
+
+    @PostMapping("/session/back")
+    public String backToManagePage() {
         return "redirect:/organization/manage";
     }
 }

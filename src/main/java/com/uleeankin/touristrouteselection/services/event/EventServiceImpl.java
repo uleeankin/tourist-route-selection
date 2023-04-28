@@ -2,6 +2,7 @@ package com.uleeankin.touristrouteselection.services.event;
 
 import com.uleeankin.touristrouteselection.models.activity.Activity;
 import com.uleeankin.touristrouteselection.models.activity.Event;
+import com.uleeankin.touristrouteselection.models.activity.EventSession;
 import com.uleeankin.touristrouteselection.repositories.activity.ActivityRepository;
 import com.uleeankin.touristrouteselection.repositories.coordinate.CoordinateRepository;
 import com.uleeankin.touristrouteselection.repositories.event.EventRepository;
@@ -68,5 +69,21 @@ public class EventServiceImpl implements EventService {
                        Double price, String startDate, String endDate) {
         this.activityRepository.update(id, name, description, StringToTimeConverter.convert(time), price);
         this.eventRepository.update(id, Date.valueOf(startDate), Date.valueOf(endDate));
+    }
+
+    @Override
+    public List<EventSession> getSchedule(Long id) {
+        return this.eventRepository.findAllSessions(id);
+    }
+
+    @Override
+    public void deleteSession(Long id, String time) {
+        this.eventRepository.deleteSession(id, StringToTimeConverter.convert(time));
+    }
+
+    @Override
+    public void addSession(Long id, String time) {
+        this.eventRepository.addSession(id,
+                StringToTimeConverter.convert(time));
     }
 }

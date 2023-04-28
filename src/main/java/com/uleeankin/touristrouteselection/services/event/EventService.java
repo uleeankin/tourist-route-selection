@@ -1,7 +1,7 @@
 package com.uleeankin.touristrouteselection.services.event;
 
 import com.uleeankin.touristrouteselection.models.activity.Event;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.uleeankin.touristrouteselection.models.activity.EventSession;
 
 import java.util.List;
 
@@ -18,5 +18,11 @@ public interface EventService {
 
     void update(Long id, String name, String description, String time, Double price,
                 String startDate, String endDate);
+
+    List<EventSession> getSchedule(Long id);
+
+    void deleteSession(Long id, String time);
+
+    void addSession(Long id, String time);
 
 }
