@@ -28,43 +28,16 @@ public class RouteCreator {
 
     private Map<Long, Set<Long>> getConnections(List<Activity> routeActivities) {
         Map<Long, Set<Long>> connections = new HashMap<>();
-        List<Long> connectionList = new ArrayList<>();
-        if (routeActivities.size() == 1) {
-            connectionList.add(routeActivities.get(0).getId());
-            connections.put(routeActivities.get(0).getId(), new HashSet<>(connectionList));
-        } else if (routeActivities.size() == 2 || routeActivities.size() == 3) {
-            for (long i = 0; i < routeActivities.size() - 1; i++) {
-                connectionList = new ArrayList<>();
-                connectionList.add(routeActivities.get((int) i + 1).getId());
-                connections.put(routeActivities.get((int) i).getId(), new HashSet<>(connectionList));
-            }
-        } else {
-            for (long i = 0; i < routeActivities.size(); i++) {
-                connectionList = new ArrayList<>();
-                if (i == 0) {
-                    connectionList.add(routeActivities.get((int) i + 1).getId());
-                    connectionList.add(routeActivities.get((int) i + 2).getId());
-                } else if (i == routeActivities.size() - 1) {
-                    connectionList.add(routeActivities.get((int) i - 2).getId());
-                    connectionList.add(routeActivities.get((int) i - 3).getId());
-                } else {
-                    if (i == 1 || i == 2) {
-                        connectionList.add(routeActivities.get(0).getId());
-                    }
+        List<Long> connectionList;
 
-                    if (i == routeActivities.size() - 2
-                            || i == routeActivities.size() - 3) {
-                        connectionList.add(routeActivities.get(routeActivities.size() - 1).getId());
-                    }
-
-                    for (long j = 1; j < routeActivities.size() - 1; j++) {
-                        if (j != i) {
-                            connectionList.add(routeActivities.get((int) j).getId());
-                        }
-                    }
+        for (long i = 0; i < routeActivities.size(); i++) {
+            connectionList = new ArrayList<>();
+            for (long j = 0; j < routeActivities.size(); j++) {
+                if (j != i) {
+                    connectionList.add(routeActivities.get((int) j).getId());
                 }
-                connections.put(routeActivities.get((int) i).getId(), new HashSet<>(connectionList));
             }
+            connections.put(routeActivities.get((int) i).getId(), new HashSet<>(connectionList));
         }
 
         return connections;

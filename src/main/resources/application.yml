@@ -1,6 +1,11 @@
 server:
   port: 8081
+
 spring:
+  session:
+    jdbc:
+      initialize-schema: always
+
   datasource:
     url: jdbc:postgresql://localhost:5433/tourist_route_selection
     username: postgres

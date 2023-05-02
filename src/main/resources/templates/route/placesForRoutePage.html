@@ -26,11 +26,6 @@
 
     <div class="main-page-content">
         <div class="heading-panel">
-
-            <div style="width: 160vh;">
-                <h1 class="heading">Добавьте места в маршрут</h1>
-            </div>
-
             <div class="labels">
                 <form th:method="get" th:action="@{/route/characteristics}">
                     <button class="custom-label m-l-60" style="margin-top: 25%">
@@ -41,9 +36,14 @@
                 <div class="custom-label category m-t-16 m-l-20">
                     <label class="custom-label-text" th:text="${category}"></label>
                 </div>
+                <div class="custom-label date-label m-t-16 m-l-20">
+                    <label class="custom-label-text" th:text="${tourDate}"></label>
+                </div>
             </div>
-
-            <div class="place-labels" style="height: 60vh;">
+            <div style="width: 160vh;">
+                <h1 class="heading">Места</h1>
+            </div>
+            <div class="place-labels" style="height: 30vh;">
                 <div class="place-label" style="height: 27vh;" th:each="activitySet : ${activities}">
                     <label class="place-name"
                            style="padding-left: 25px; padding-top: 0;"
@@ -66,6 +66,46 @@
                         <span th:unless="${activitySet.status}">
                             <form th:method="post"
                                   th:action="@{/route/places/delete/{id}(id=${activitySet.activity.id})}">
+                                <button class="login100-form-btn"
+                                        style="width: fit-content;
+                                        height: fit-content;
+                                        background-color: #7DC4F7;
+                                        margin-left: 3px;
+                                        color: black;">
+                                    Добавлено
+                                </button>
+                            </form>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div style="width: 160vh;">
+                <h1 class="heading">Мероприятия</h1>
+            </div>
+            <div class="place-labels" style="height: 30vh;">
+                <div class="place-label" style="height: 27vh;" th:each="eventSet : ${events}">
+                    <label class="place-name"
+                           style="padding-left: 25px; padding-top: 0;"
+                           th:text="${eventSet.event.activity.name}">
+                    </label><br/>
+                    <textarea readonly class="description-textarea"
+                              th:text="${eventSet.event.activity.description}"/>
+                    <div style="display: flex;">
+                        <label class="info-label" th:text="${eventSet.event.activity.duration}"></label>
+                        <label class="info-label" th:text="${eventSet.event.activity.price} + ' руб.'"></label>
+                        <span th:if="${eventSet.event.status}">
+                            <form th:method="post"
+                                  th:action="@{/route/events/add/{id}(id=${eventSet.event.activity.id})}">
+                                <button class="login100-form-btn"
+                                        style="width: fit-content; height: fit-content; margin-left: 3px;">
+                                    Добавить
+                                </button>
+                            </form>
+                        </span>
+                        <span th:unless="${eventSet.event.status}">
+                            <form th:method="post"
+                                  th:action="@{/route/events/delete/{id}(id=${eventSet.event.activity.id})}">
                                 <button class="login100-form-btn"
                                         style="width: fit-content;
                                         height: fit-content;

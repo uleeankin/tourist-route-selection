@@ -48,6 +48,18 @@
             <span class="focus-input100 description-label"></span>
           </div>
 
+          <div style="display: flex;">
+            <div class="m-b-16" style="margin-left: 30px;">
+              <label class="input100 time-label custom-input"
+                     style="padding-top: 18px; background-color: white;">Дата поздки</label>
+            </div>
+            <div class="wrap-input20 m-b-16">
+              <input th:id="date" class="input100 date-label custom-input" type="date" name="date">
+              <span class="focus-input100 date-label"></span>
+            </div>
+          </div>
+
+
           <div class="wrap-input20 m-b-16 m-l-60">
             <input th:id="cityname" class="input100 city-label custom-input" type="text" name="cityname"
                    list="cityList" placeholder="Город" autocomplete="on">
