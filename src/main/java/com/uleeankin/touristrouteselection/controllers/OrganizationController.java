@@ -23,19 +23,21 @@ public class OrganizationController {
     private final ActivityService activityService;
     private final EventService eventService;
     private final UserService userService;
+    private final SessionContext sessionContext;
 
     @Autowired
     public OrganizationController(ActivityService activityService,
                                   EventService eventService,
-                                  UserService userService) {
+                                  UserService userService, SessionContext sessionContext) {
         this.activityService = activityService;
         this.eventService = eventService;
         this.userService = userService;
+        this.sessionContext = sessionContext;
     }
 
     @GetMapping("/events")
     public String showAllEvents(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         model.addAttribute("events",
                 this.eventService.getAll());
         return "orgs/all";
@@ -43,7 +45,7 @@ public class OrganizationController {
 
     @GetMapping("/add")
     public String getEventAddingPage(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "orgs/addingEvents";
     }
 
@@ -56,21 +58,21 @@ public class OrganizationController {
             @RequestParam("time") String duration, @RequestParam("breakTime") String breakTime,
             @RequestParam("startTime") String startTime, @RequestParam("endTime") String endTime) {
 
-        Optional<User> user = this.userService.getByLogin(SessionContext.getUserLogin());
+        Optional<User> user = this.userService.getByLogin(sessionContext.getUserLogin());
         user.ifPresent(value -> this.activityService.addActivity(name, description, value.getCity().getName(),
                 categoryName, latitude, longitude, duration, price, new byte[]{0}));
 
         this.eventService.save(
                 this.activityService.getActivity(
                         name, latitude, longitude).getId(), startDate, endDate,
-                SessionContext.getUserLogin(), breakTime, startTime, endTime, duration);
+                sessionContext.getUserLogin(), breakTime, startTime, endTime, duration);
 
         return "redirect:/organization/add";
     }
 
     @GetMapping("/manage")
     public String showManageEventsPage(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         model.addAttribute("events",
                 this.eventService.getAll());
         return "orgs/manage";
@@ -78,7 +80,7 @@ public class OrganizationController {
 
     @GetMapping("/event/change/{eventId}")
     public String getEventUpdatePage(@PathVariable("eventId") Long id, Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         Event event = this.eventService.getById(id);
         model.addAttribute("eventId", event.getActivity().getId());
         model.addAttribute("name", event.getActivity().getName());
@@ -111,7 +113,7 @@ public class OrganizationController {
 
     @GetMapping("/sessions/{id}")
     public String getSchedulePage(@PathVariable("id") Long id, Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         List<EventSession> sessions = this.eventService.getSchedule(id);
         Activity activity = this.activityService.getById(id);
         model.addAttribute("name", activity.getName());

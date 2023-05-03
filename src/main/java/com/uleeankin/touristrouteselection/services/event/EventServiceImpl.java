@@ -51,6 +51,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getByDate(String date) {
+        return this.eventRepository.findByDate(Date.valueOf(date));
+    }
+
+    @Override
     public Event getById(Long id) {
         return this.eventRepository.findById(id);
     }

@@ -12,6 +12,7 @@ public class EventConfig {
     private String save;
     private String saveSession;
     private String all;
+    private String byDate;
     private String byId;
     private String delete;
     private String deleteSession;

@@ -44,6 +44,12 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
+    public List<Event> findByDate(Date routeDate) {
+        return this.jdbcTemplate.query(
+                this.eventConfig.getByDate(), new EventRowMapper(), routeDate, routeDate);
+    }
+
+    @Override
     public Event findById(Long id) {
         return this.jdbcTemplate.queryForObject(
                 this.eventConfig.getById(), new EventRowMapper(), id);

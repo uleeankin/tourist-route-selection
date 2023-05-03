@@ -412,13 +412,12 @@ th, td {
     margin-top: 10px;
 }
 
-/* задаем относительное позиционирование контейнеру */
 .block{
     position:relative;
     margin-left: 20px;
     margin-top: 10px;
 }
-/* Оформление скрытого элемента по умолчанию */
+
 .hidden {
     width: 350px;
     display: none;
@@ -436,7 +435,7 @@ th, td {
     font-size: 14px;
     font-family: Roboto, serif;
 }
-/* Дополнительное оформление скрытого элемента(необязательно) */
+
 .hover + .hidden:before {
     content: " ";
     position: absolute;
@@ -452,7 +451,7 @@ th, td {
     border-color: #fff transparent transparent transparent;
     z-index: 1;
 }
-/* Дополнительное оформление скрытого элемента(необязательно) */
+
 .hover + .hidden:after {
     content: " ";
     position: absolute;
@@ -468,5 +467,5 @@ th, td {
     border-color: rgba(0,0,0,.16) transparent transparent transparent;
     z-index: 1;
 }
-/* Появление скрытого элемента при наведении */
+
 .hover:hover + .hidden{display: block;}

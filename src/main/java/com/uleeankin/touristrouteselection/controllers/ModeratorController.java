@@ -28,18 +28,21 @@ public class ModeratorController {
 
     private final ActivityService activityService;
 
+    private final SessionContext sessionContext;
+
     @Autowired
     public ModeratorController(UserService userService,
                                CategoryService categoryService,
-                               ActivityService activityService) {
+                               ActivityService activityService, SessionContext sessionContext) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.activityService = activityService;
+        this.sessionContext = sessionContext;
     }
 
     @GetMapping
     public String getMainPage(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "moderator/moderatorMain";
     }
 
@@ -47,7 +50,7 @@ public class ModeratorController {
     public String getAllPlacesPage(Model model) {
         this.setModeratorData(model);
 
-        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
+        User user = this.userService.getByLogin(sessionContext.getUserLogin()).get();
         List<Activity> activities = this.activityService.getByCity(user.getCity().getName());
         model.addAttribute("activities", activities);
 
@@ -77,7 +80,7 @@ public class ModeratorController {
                                  @RequestParam("price") Double price) {
 
 
-        Optional<User> user = this.userService.getByLogin(SessionContext.getUserLogin());
+        Optional<User> user = this.userService.getByLogin(sessionContext.getUserLogin());
         user.ifPresent(value -> this.activityService.addActivity(name, description, value.getCity().getName(),
                 category, latitude, longitude, time, price, new byte[]{0}));
 
@@ -86,8 +89,8 @@ public class ModeratorController {
 
     @GetMapping("places/change")
     public String getPlacesManagementPage(Model model) {
-        SessionContext.addUserNameToPage(model);
-        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
+        sessionContext.addUserNameToPage(model);
+        User user = this.userService.getByLogin(sessionContext.getUserLogin()).get();
         List<Activity> activities = this.activityService.getByCity(user.getCity().getName());
         model.addAttribute("activities", activities);
         return "moderator/changePlaces";
@@ -95,7 +98,7 @@ public class ModeratorController {
 
     @GetMapping("places/change/{activityId}")
     public String getPlaceUpdatePage(@PathVariable("activityId") Long id, Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         Activity activity = this.activityService.getById(id);
         model.addAttribute("placeId", activity.getId());
         model.addAttribute("name", activity.getName());
@@ -139,7 +142,7 @@ public class ModeratorController {
         if (roleName.equals(MODEL_AGENCY_NAME)) {
             roleName = DB_AGENCY_NAME;
         }
-        Optional<User> user = this.userService.getByLogin(SessionContext.getUserLogin());
+        Optional<User> user = this.userService.getByLogin(sessionContext.getUserLogin());
 
         if (user.isPresent()) {
             this.userService.saveOrganization(login, password, roleName, user.get().getCity().getName(), name);
@@ -155,8 +158,8 @@ public class ModeratorController {
     }
 
     private void setModeratorData(Model model) {
-        SessionContext.addUserNameToPage(model);
-        User user = this.userService.getByLogin(SessionContext.getUserLogin()).get();
+        sessionContext.addUserNameToPage(model);
+        User user = this.userService.getByLogin(sessionContext.getUserLogin()).get();
         model.addAttribute("city", user.getCity().getName());
     }
 }

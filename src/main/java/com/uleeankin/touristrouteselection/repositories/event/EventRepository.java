@@ -15,6 +15,8 @@ public interface EventRepository {
 
     List<Event> findAll();
 
+    List<Event> findByDate(Date routeDate);
+
     Event findById(Long id);
 
     void deleteById(Long id);

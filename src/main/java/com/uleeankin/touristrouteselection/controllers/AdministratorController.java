@@ -21,18 +21,22 @@ public class AdministratorController {
 
     private final UserService userService;
 
+    private final SessionContext sessionContext;
+
     @Autowired
     public AdministratorController(CityService cityService,
                                    CategoryService categoryService,
-                                   UserService userService) {
+                                   UserService userService,
+                                   SessionContext sessionContext) {
         this.cityService = cityService;
         this.categoryService = categoryService;
         this.userService = userService;
+        this.sessionContext = sessionContext;
     }
 
     @GetMapping
     public String getMainPage(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "admin/adminMain";
     }
 
@@ -42,7 +46,7 @@ public class AdministratorController {
 
         model.addAttribute("cities", cities);
         model.addAttribute("moderators", this.userService.getAllModerators());
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "admin/adminModerators";
     }
 
@@ -65,7 +69,7 @@ public class AdministratorController {
     @GetMapping("/cities")
     public String getCitiesPage(Model model) {
         model.addAttribute("cities", this.cityService.getAll());
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "admin/adminCities";
     }
 
@@ -81,7 +85,7 @@ public class AdministratorController {
     public String getCategoryPage(Model model) {
         model.addAttribute("categories",
                 this.categoryService.getAll());
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         return "admin/adminCategories";
     }
 

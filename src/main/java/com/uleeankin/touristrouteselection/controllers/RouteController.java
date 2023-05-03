@@ -14,6 +14,8 @@ import com.uleeankin.touristrouteselection.services.city.CityService;
 import com.uleeankin.touristrouteselection.services.feedback.RouteFeedbackService;
 import com.uleeankin.touristrouteselection.services.route.RouteService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,33 +38,26 @@ public class RouteController {
 
     private final RouteFeedbackService routeFeedbackService;
 
-    private String name;
-
-    private String description;
-
-    private String city;
-
-    private String category;
-
-    private final List<Activity> addedActivities;
+    private final SessionContext sessionContext;
 
     @Autowired
     public RouteController(CityService cityService,
                            CategoryService categoryService,
                            ActivityService activityService,
                            RouteService routeService,
-                           RouteFeedbackService routeFeedbackService) {
+                           RouteFeedbackService routeFeedbackService,
+                           SessionContext sessionContext) {
         this.cityService = cityService;
         this.categoryService = categoryService;
         this.activityService = activityService;
-        this.addedActivities = new ArrayList<>();
         this.routeService = routeService;
         this.routeFeedbackService = routeFeedbackService;
+        this.sessionContext = sessionContext;
     }
 
     @GetMapping
     public String getStartCreatingRoutePage(Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         model.addAttribute("cities",
                 this.cityService.getAll().stream()
                         .map(City::getName).toList());
@@ -72,11 +67,12 @@ public class RouteController {
     @PostMapping
     public String addRouteCharacteristics(@RequestParam("name") String name,
                                           @RequestParam("description") String description,
-                                          @RequestParam("cityname") String city) {
+                                          @RequestParam("cityname") String city,
+                                          HttpServletRequest request) {
 
-        this.name = name;
-        this.description = description;
-        this.city = city;
+        sessionContext.setRouteNameValueToSession(request, name);
+        sessionContext.setRouteDescriptionValueToSession(request, description);
+        sessionContext.setCityValueToSession(request, city);
 
         return "redirect:/route/characteristics";
     }
@@ -93,19 +89,23 @@ public class RouteController {
     }
 
     @PostMapping("/characteristics")
-    public String applyCategory(@RequestParam("categoryValue") String category) {
-        this.category = category;
+    public String applyCategory(@RequestParam("categoryValue") String category,
+                                HttpServletRequest request) {
+        sessionContext.setCategoryValueToSession(request, category);
         return "redirect:/route/places";
     }
 
     @GetMapping("/places")
-    public String getPlacesPage(Model model) {
-        SessionContext.addUserNameToPage(model);
-        model.addAttribute("category", this.category);
+    public String getPlacesPage(Model model, HttpSession session) {
+        this.sessionContext.addUserNameToPage(model);
+        model.addAttribute("category",
+                this.sessionContext.getCurrentCategory(session));
 
         List<Activity> activities = this.activityService
                 .getFavouritesByCityAndCategory(
-                SessionContext.getUserLogin(), this.city, this.category);
+                    this.sessionContext.getUserLogin(),
+                    this.sessionContext.getCurrentCity(session),
+                    this.sessionContext.getCurrentCategory(session));
         model.addAttribute("activities",
                 getActivities(activities));
         return "route/placesForRoutePage";
@@ -115,43 +115,47 @@ public class RouteController {
 
         List<ActivityStatus> activityStatuses = new ArrayList<>();
 
-        for (Activity activity : activities) {
+        /*for (Activity activity : activities) {
             activityStatuses.add(new ActivityStatus(activity,
                     !this.addedActivities.stream()
                             .map(Activity::getId).toList()
                             .contains(activity.getId())));
-        }
+        }*/
 
         return activityStatuses;
     }
 
     @PostMapping("/places/add/{id}")
     public String addPlaceToRoute(@PathVariable("id") Long id) {
-        this.addedActivities.add(this.activityService.getById(id));
+        //this.addedActivities.add(this.activityService.getById(id));
         return "redirect:/route/places";
     }
 
     @PostMapping("/places/delete/{id}")
     public String deletePlaceFromRoute(@PathVariable("id") Long id) {
-        this.addedActivities.remove(this.activityService.getById(id));
+        //this.addedActivities.remove(this.activityService.getById(id));
         return "redirect:/route/places";
     }
 
     @PostMapping("/create")
-    public String createRoute() {
-        List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
-        this.routeService.save(this.name, this.description,
-                SessionContext.getUserLogin(), this.city, route);
+    public String createRoute(HttpSession session) {
+       /* List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
+        this.routeService.save(
+                this.sessionContext.getRouteNameAttribute(session),
+                this.sessionContext.getRouteDescriptionAttribute(session),
+                this.sessionContext.getUserLogin(),
+                this.sessionContext.getCurrentCity(session), route);*/
 
         return "redirect:/route/create";
     }
 
     @GetMapping("/create")
-    public String showCreatedRoute(Model model) {
-        SessionContext.addUserNameToPage(model);
+    public String showCreatedRoute(Model model, HttpSession session) {
+        sessionContext.addUserNameToPage(model);
 
         Route route = this.routeService.getByOwnerAndName(
-                SessionContext.getUserLogin(), this.name);
+                this.sessionContext.getUserLogin(),
+                this.sessionContext.getRouteNameAttribute(session));
         model.addAttribute("name", route.getName());
         this.addRouteDetailsToModel(model, route);
 
@@ -163,7 +167,7 @@ public class RouteController {
 
     @GetMapping("/owner/{id}")
     public String getOwnerRouteDetails(@PathVariable("id") Long routeId,  Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         Route route = this.routeService.getById(routeId);
 
         model.addAttribute("owner", route.getOwner());
@@ -184,7 +188,7 @@ public class RouteController {
 
     @GetMapping("/{id}")
     public String getRouteDetails(@PathVariable("id") Long routeId,  Model model) {
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
         Route route = this.routeService.getById(routeId);
 
         model.addAttribute("owner", route.getOwner());
@@ -198,10 +202,10 @@ public class RouteController {
         this.addFeedback(model, routeId);
 
         model.addAttribute("favourite",
-                this.routeService.isFavourite(SessionContext.getUserLogin(), routeId));
+                this.routeService.isFavourite(sessionContext.getUserLogin(), routeId));
 
         model.addAttribute("completed",
-                this.routeService.isCompleted(SessionContext.getUserLogin(), routeId));
+                this.routeService.isCompleted(sessionContext.getUserLogin(), routeId));
 
         return "tourist/routeDetails";
     }
@@ -217,7 +221,7 @@ public class RouteController {
                               @RequestParam("comment") String comment,
                               @RequestParam("assessment") Integer assessment) {
 
-        this.routeFeedbackService.addFeedback(SessionContext.getUserLogin(),
+        this.routeFeedbackService.addFeedback(sessionContext.getUserLogin(),
                 routeId, assessment, comment);
 
         return "redirect:/route/{id}";
@@ -226,7 +230,7 @@ public class RouteController {
     @PostMapping("/favourites/add/{id}")
     public String addToFavourites(@PathVariable("id") Long id) {
 
-        this.routeService.addToFavourites(SessionContext.getUserLogin(),
+        this.routeService.addToFavourites(sessionContext.getUserLogin(),
                 id);
 
         return "redirect:/route/{id}";
@@ -235,10 +239,10 @@ public class RouteController {
     @GetMapping("/favourites")
     public String getFavouritesPage(Model model) {
 
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
 
         List<Route> routes =
-                this.routeService.getFavourites(SessionContext.getUserLogin());
+                this.routeService.getFavourites(sessionContext.getUserLogin());
 
         model.addAttribute("routes", routes);
 
@@ -248,10 +252,10 @@ public class RouteController {
     @GetMapping("/completed")
     public String getCompletedRoutesPage(Model model) {
 
-        SessionContext.addUserNameToPage(model);
+        sessionContext.addUserNameToPage(model);
 
         List<CompletedRoute> routes =
-                this.routeService.getCompleted(SessionContext.getUserLogin());
+                this.routeService.getCompleted(sessionContext.getUserLogin());
 
         model.addAttribute("routes", routes);
 
@@ -261,7 +265,7 @@ public class RouteController {
     @PostMapping("/complete/{id}")
     public String completeRoute(@PathVariable("id") Long routeId) {
 
-        this.routeService.completeRoute(SessionContext.getUserLogin(), routeId);
+        this.routeService.completeRoute(sessionContext.getUserLogin(), routeId);
 
         return "redirect:/route/{id}";
     }
@@ -269,7 +273,7 @@ public class RouteController {
     @PostMapping("/favourites/delete/{id}")
     public String deleteFromFavourites(@PathVariable("id") Long id) {
 
-        this.routeService.deleteFromFavourites(SessionContext.getUserLogin(),
+        this.routeService.deleteFromFavourites(sessionContext.getUserLogin(),
                 id);
 
         return "redirect:/route/{id}";
