@@ -6,6 +6,7 @@ spring:
     jdbc:
       initialize-schema: always
 
+primary:
   datasource:
     url: jdbc:postgresql://localhost:5433/tourist_route_selection
     username: postgres
