@@ -21,11 +21,6 @@
       <a th:href="@{/tourist/places}" class="navigation-text submenu">Главная</a> <br/>
       <div class="current-page-block">
         <label class="navigation-text submenu current-submenu">Избранное</label> <br/>
-        <label class="navigation-text current-navigation-text">
-          <u>Места</u>
-        </label> <br/>
-        <a th:href="@{/route/favourites}" class="navigation-text current-navigation-text">
-          Маршруты</a> <br/>
       </div>
       <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
     </div>
@@ -35,10 +30,10 @@
     <div class="heading-panel">
 
       <div>
-        <h1 class="heading">Избранные места</h1>
+        <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Места</h1>
       </div>
 
-      <div class="place-labels">
+      <div class="place-labels" style="height: 30vh;">
         <div class="place-label" th:each="activity : ${activities}">
           <div style="display: flex;">
             <form action="#" th:method="get" th:action="@{/tourist/place/{id}(id=${activity.id})}">
@@ -53,6 +48,36 @@
           <textarea class="description-textarea" th:text="${activity.description}"/>
           <label class="info-label" th:text="${activity.duration}"></label>
           <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
+        </div>
+      </div>
+
+      <div>
+        <h1 class="heading">Маршруты</h1>
+      </div>
+
+      <div class="place-labels">
+        <div class="place-label" style="height: 28vh;" th:each="route : ${routes}">
+          <div style="display: flex;">
+            <form action="#" th:method="get" th:action="@{/route/{id}(id=${route.id})}">
+              <button class="place-name"
+                      style="padding-left: 25px; padding-top: 0; line-height: normal;"
+                      th:text="${route.name}">
+              </button>
+            </form>
+          </div>
+          <label class="info-label" th:text="${route.city.name}"></label><br/>
+          <textarea readonly class="description-textarea"
+                    th:text="${route.description}"
+                    style="overflow-y: scroll; height: 37%;"/>
+          <div>
+            <label class="info-label" style="margin-top: 5px;"
+                   th:text="'Время: ' + ${route.time}"></label><br/>
+            <label class="info-label" style="margin-top: 5px;"
+                   th:text="'Длина пути: ' + ${route.length} + ' км'"></label><br/>
+            <label class="info-label" style="margin-top: 5px;"
+                   th:text="'Цена: ' + ${route.price} + ' руб.'"></label>
+          </div>
+
         </div>
       </div>
 

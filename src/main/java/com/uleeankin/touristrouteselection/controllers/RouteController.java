@@ -2,6 +2,7 @@ package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.models.City;
+import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.models.route.CompletedRoute;
 import com.uleeankin.touristrouteselection.models.route.Route;
 import com.uleeankin.touristrouteselection.models.activity.Activity;
@@ -9,6 +10,7 @@ import com.uleeankin.touristrouteselection.models.activity.Category;
 import com.uleeankin.touristrouteselection.models.activity.ActivityStatus;
 import com.uleeankin.touristrouteselection.models.route.RouteFeedback;
 import com.uleeankin.touristrouteselection.services.activity.ActivityService;
+import com.uleeankin.touristrouteselection.services.activity.PreliminaryActivityService;
 import com.uleeankin.touristrouteselection.services.category.CategoryService;
 import com.uleeankin.touristrouteselection.services.city.CityService;
 import com.uleeankin.touristrouteselection.services.feedback.RouteFeedbackService;
@@ -38,6 +40,8 @@ public class RouteController {
 
     private final RouteFeedbackService routeFeedbackService;
 
+    private final PreliminaryActivityService preliminaryActivityService;
+
     private final SessionContext sessionContext;
 
     @Autowired
@@ -46,12 +50,14 @@ public class RouteController {
                            ActivityService activityService,
                            RouteService routeService,
                            RouteFeedbackService routeFeedbackService,
+                           PreliminaryActivityService preliminaryActivityService,
                            SessionContext sessionContext) {
         this.cityService = cityService;
         this.categoryService = categoryService;
         this.activityService = activityService;
         this.routeService = routeService;
         this.routeFeedbackService = routeFeedbackService;
+        this.preliminaryActivityService = preliminaryActivityService;
         this.sessionContext = sessionContext;
     }
 
@@ -100,6 +106,8 @@ public class RouteController {
         this.sessionContext.addUserNameToPage(model);
         model.addAttribute("category",
                 this.sessionContext.getCurrentCategory(session));
+        model.addAttribute("tourDate",
+                this.sessionContext.getSessionDateAttribute(session));
 
         List<Activity> activities = this.activityService
                 .getFavouritesByCityAndCategory(
@@ -107,40 +115,45 @@ public class RouteController {
                     this.sessionContext.getCurrentCity(session),
                     this.sessionContext.getCurrentCategory(session));
         model.addAttribute("activities",
-                getActivities(activities));
+                getActivities(activities, session));
         return "route/placesForRoutePage";
     }
 
-    private List<ActivityStatus> getActivities(List<Activity> activities) {
+    private List<ActivityStatus> getActivities(List<Activity> activities,
+                                               HttpSession session) {
 
         List<ActivityStatus> activityStatuses = new ArrayList<>();
+        List<PreliminaryRouteActivity> addedActivities =
+                this.preliminaryActivityService.getAll(session.getId());
 
-        /*for (Activity activity : activities) {
+        for (Activity activity : activities) {
             activityStatuses.add(new ActivityStatus(activity,
-                    !this.addedActivities.stream()
-                            .map(Activity::getId).toList()
+                    !addedActivities.stream()
+                            .map(PreliminaryRouteActivity::getActivityId).toList()
                             .contains(activity.getId())));
-        }*/
+        }
 
         return activityStatuses;
     }
 
     @PostMapping("/places/add/{id}")
-    public String addPlaceToRoute(@PathVariable("id") Long id) {
-        //this.addedActivities.add(this.activityService.getById(id));
+    public String addPlaceToRoute(@PathVariable("id") Long id,
+                                  HttpSession session) {
+        this.preliminaryActivityService.save(session.getId(), id);
         return "redirect:/route/places";
     }
 
     @PostMapping("/places/delete/{id}")
-    public String deletePlaceFromRoute(@PathVariable("id") Long id) {
-        //this.addedActivities.remove(this.activityService.getById(id));
+    public String deletePlaceFromRoute(@PathVariable("id") Long id,
+                                       HttpSession session) {
+        this.preliminaryActivityService.deleteById(session.getId(), id);
         return "redirect:/route/places";
     }
 
     @PostMapping("/create")
     public String createRoute(HttpSession session) {
-       /* List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
-        this.routeService.save(
+        //List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
+        /*this.routeService.save(
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),
                 this.sessionContext.getUserLogin(),
