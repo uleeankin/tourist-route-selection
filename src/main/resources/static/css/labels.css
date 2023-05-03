@@ -57,3 +57,7 @@
 .labels {
     display: flex;
 }
+
+.border {
+    border-bottom: 3px solid #0080DA;
+}

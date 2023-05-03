@@ -267,7 +267,7 @@ th, td {
 
 .place-labels {
     margin-top: 16px;
-    width: 160vh;
+    width: 160%;
     display: flex;
     flex-wrap: wrap;
     overflow-y: scroll;
@@ -411,3 +411,62 @@ th, td {
     margin-left: 200px;
     margin-top: 10px;
 }
+
+/* задаем относительное позиционирование контейнеру */
+.block{
+    position:relative;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+/* Оформление скрытого элемента по умолчанию */
+.hidden {
+    width: 350px;
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    margin-left: -21px;
+    background-color: #fff;
+    color: red;
+    padding: 5px;
+    text-align: left;
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    font-size: 14px;
+    font-family: Roboto, serif;
+}
+/* Дополнительное оформление скрытого элемента(необязательно) */
+.hover + .hidden:before {
+    content: " ";
+    position: absolute;
+    top: 98%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-right: 7px solid #fff;
+    border-color: #fff transparent transparent transparent;
+    z-index: 1;
+}
+/* Дополнительное оформление скрытого элемента(необязательно) */
+.hover + .hidden:after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-right: 7px solid #fff;
+    border-color: rgba(0,0,0,.16) transparent transparent transparent;
+    z-index: 1;
+}
+/* Появление скрытого элемента при наведении */
+.hover:hover + .hidden{display: block;}

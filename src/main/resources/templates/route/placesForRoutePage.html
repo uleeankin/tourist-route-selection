@@ -41,9 +41,9 @@
                 </div>
             </div>
             <div style="width: 160vh;">
-                <h1 class="heading">Места</h1>
+                <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Места</h1>
             </div>
-            <div class="place-labels" style="height: 30vh;">
+            <div class="place-labels border" style="height: 30vh; margin-left: 5px;">
                 <div class="place-label" style="height: 27vh;" th:each="activitySet : ${activities}">
                     <label class="place-name"
                            style="padding-left: 25px; padding-top: 0;"
@@ -77,13 +77,12 @@
                             </form>
                         </span>
                     </div>
-
                 </div>
             </div>
             <div style="width: 160vh;">
-                <h1 class="heading">Мероприятия</h1>
+                <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Мероприятия</h1>
             </div>
-            <div class="place-labels" style="height: 30vh;">
+            <div class="place-labels border" style="height: 30vh; margin-left: 5px;">
                 <div class="place-label" style="height: 27vh;" th:each="eventSet : ${events}">
                     <label class="place-name"
                            style="padding-left: 25px; padding-top: 0;"
@@ -122,7 +121,7 @@
             </div>
 
             <div class="container-login100-form-btn"
-                 style="width: 160vh; margin-top: 40px; text-align: center;">
+                 style="width: 160vh; margin-top: 20px; text-align: center;">
                 <form th:method="post" th:action="@{/route/create}">
                     <button class="login100-form-btn" style="width: fit-content;">
                         Создать маршрут
