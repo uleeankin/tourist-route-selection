@@ -16,7 +16,7 @@
     <div class="navigation-block nickname">
       <label class="nickname-text" th:text="${username}"/>
     </div>
-    <div class="navigation-block menu admin">
+    <div class="navigation-block menu admin" style="height: 100%;">
       <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
       <a th:href="@{/tourist/places}" class="navigation-text submenu">Главная</a> <br/>
       <div class="current-page-block">
@@ -33,7 +33,7 @@
         <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Места</h1>
       </div>
 
-      <div class="place-labels" style="height: 30vh;">
+      <div class="place-labels border" style="height: 30vh;">
         <div class="place-label" th:each="activity : ${activities}">
           <div style="display: flex;">
             <form action="#" th:method="get" th:action="@{/tourist/place/{id}(id=${activity.id})}">
@@ -44,7 +44,7 @@
             </form>
           </div>
           <label class="info-label" th:text="${activity.category.name}"></label>
-          <label class="info-label" th:text="${activity.city.name}"></label><br/>
+          <label class="info-label" th:text="${activity.coordinate.city.name}"></label><br/>
           <textarea class="description-textarea" th:text="${activity.description}"/>
           <label class="info-label" th:text="${activity.duration}"></label>
           <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
@@ -52,10 +52,32 @@
       </div>
 
       <div>
-        <h1 class="heading">Маршруты</h1>
+        <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Мероприятия</h1>
       </div>
 
-      <div class="place-labels">
+      <div class="place-labels border" style="height: 30vh;">
+        <div class="place-label" th:each="event : ${events}">
+          <div style="display: flex;">
+            <form action="#" th:method="get" th:action="@{/tourist/event/{id}(id=${event.activity.id})}">
+              <button class="place-name"
+                      style="padding-left: 25px; padding-top: 0;"
+                      th:text="${event.activity.name}">
+              </button>
+            </form>
+          </div>
+          <label class="info-label" th:text="${event.activity.coordinate.city.name}"></label>
+          <label class="info-label" th:text="${event.startDate} + '-' + ${event.endDate}"></label><br/>
+          <textarea class="description-textarea" th:text="${event.activity.description}"/>
+          <label class="info-label" th:text="${event.activity.duration}"></label>
+          <label class="info-label" th:text="${event.activity.price} + ' руб.'"></label>
+        </div>
+      </div>
+
+      <div>
+        <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Маршруты</h1>
+      </div>
+
+      <div class="place-labels border" style="height: 30vh;">
         <div class="place-label" style="height: 28vh;" th:each="route : ${routes}">
           <div style="display: flex;">
             <form action="#" th:method="get" th:action="@{/route/{id}(id=${route.id})}">

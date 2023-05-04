@@ -30,4 +30,6 @@ public interface EventRepository {
     void deleteSession(Long id, Time time);
 
     void addSession(Long id, Time time);
+
+    List<Event> findFavourites(String userId);
 }

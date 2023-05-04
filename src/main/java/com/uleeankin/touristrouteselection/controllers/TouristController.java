@@ -2,6 +2,7 @@ package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.models.City;
 import com.uleeankin.touristrouteselection.models.activity.*;
+import com.uleeankin.touristrouteselection.models.route.Route;
 import com.uleeankin.touristrouteselection.models.user.Tourist;
 import com.uleeankin.touristrouteselection.services.activity.ActivityService;
 import com.uleeankin.touristrouteselection.services.category.CategoryService;
@@ -218,6 +219,14 @@ public class TouristController {
 
         model.addAttribute("activities",
                 this.activityService.getFavourites(
+                        sessionContext.getUserLogin()));
+
+        model.addAttribute("events",
+                this.eventService.getFavourites(
+                        this.sessionContext.getUserLogin()));
+
+        model.addAttribute("routes",
+                this.routeService.getFavourites(
                         sessionContext.getUserLogin()));
 
         return "tourist/favouritePlaces";

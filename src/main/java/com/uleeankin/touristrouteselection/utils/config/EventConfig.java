@@ -19,4 +19,5 @@ public class EventConfig {
     private String schedule;
     private String deleteEventSession;
     private String addSession;
+    private String favourites;
 }

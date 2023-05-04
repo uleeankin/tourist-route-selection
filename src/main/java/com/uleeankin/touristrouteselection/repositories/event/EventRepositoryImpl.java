@@ -89,4 +89,11 @@ public class EventRepositoryImpl implements EventRepository {
         this.jdbcTemplate.update(this.eventConfig.getAddSession(),
                 id, time);
     }
+
+    @Override
+    public List<Event> findFavourites(String userId) {
+        return this.jdbcTemplate.query(
+                this.eventConfig.getFavourites(),
+                new EventRowMapper(), userId);
+    }
 }

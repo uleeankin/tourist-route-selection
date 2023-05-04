@@ -27,4 +27,6 @@ public interface EventService {
 
     void addSession(Long id, String time);
 
+    List<Event> getFavourites(String userId);
+
 }

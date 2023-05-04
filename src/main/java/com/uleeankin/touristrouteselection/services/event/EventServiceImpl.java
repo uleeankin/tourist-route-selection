@@ -91,4 +91,9 @@ public class EventServiceImpl implements EventService {
         this.eventRepository.addSession(id,
                 StringToTimeConverter.convert(time));
     }
+
+    @Override
+    public List<Event> getFavourites(String userId) {
+        return this.eventRepository.findFavourites(userId);
+    }
 }
