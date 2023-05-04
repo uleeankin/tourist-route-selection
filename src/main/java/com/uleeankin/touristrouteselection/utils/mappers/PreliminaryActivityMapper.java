@@ -12,8 +12,9 @@ public class PreliminaryActivityMapper
     public PreliminaryRouteActivity mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new PreliminaryRouteActivity(
                 rs.getString("preliminary_route_id"),
-                rs.getLong("activity_id"),
-                rs.getBoolean("status"),
+                new ActivityMapper().mapRow(rs, rowNum),
+                rs.getBoolean("isCompalsory"),
+                rs.getBoolean("isEvent"),
                 rs.getTime("event_time"));
     }
 }

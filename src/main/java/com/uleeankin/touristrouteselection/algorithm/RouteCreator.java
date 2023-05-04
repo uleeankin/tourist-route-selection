@@ -1,6 +1,7 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.models.activity.Activity;
+import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
 
 import java.util.*;
 
@@ -9,24 +10,20 @@ public class RouteCreator {
     public RouteCreator() {
     }
 
-    public List<Activity> createNewRoute(List<Activity> routeActivities) {
-        List<Activity> sortedList = this.sort(routeActivities);
-        Set<Activity> activities = new HashSet<>(sortedList);
+    public List<PreliminaryRouteActivity> createNewRoute(List<PreliminaryRouteActivity> routeActivities) {
+        List<PreliminaryRouteActivity> sortedList = this.sort(routeActivities);
+        Set<PreliminaryRouteActivity> activities = new HashSet<>(sortedList);
         Map<Long, Set<Long>> connections = getConnections(sortedList);
 
-        Graph<Activity> graph = new Graph<>(activities, connections);
-        RouteFinder<Activity> finder = new RouteFinder<>(
-                graph, new ActivityScorer(), new ActivityScorer());
+        Graph<PreliminaryRouteActivity> graph = new Graph<>(activities, connections);
+        RouteFinder<PreliminaryRouteActivity> finder = new RouteFinder<>(
+                graph, new ActivityScorer());
 
-        Activity firstPlace = sortedList.get(0);
-        Activity lastPlace = sortedList.get(sortedList.size() - 1);
-
-        List<Activity> route = finder.findRoute(firstPlace, lastPlace);
-
-        return route;
+        return finder.findRoute(sortedList.get(0),
+                sortedList.get(sortedList.size() - 1));
     }
 
-    private Map<Long, Set<Long>> getConnections(List<Activity> routeActivities) {
+    private Map<Long, Set<Long>> getConnections(List<PreliminaryRouteActivity> routeActivities) {
         Map<Long, Set<Long>> connections = new HashMap<>();
         List<Long> connectionList;
 
@@ -34,30 +31,32 @@ public class RouteCreator {
             connectionList = new ArrayList<>();
             for (long j = 0; j < routeActivities.size(); j++) {
                 if (j != i) {
-                    connectionList.add(routeActivities.get((int) j).getId());
+                    connectionList.add(routeActivities.get((int) j).getActivity().getId());
                 }
             }
-            connections.put(routeActivities.get((int) i).getId(), new HashSet<>(connectionList));
+            connections.put(
+                    routeActivities.get((int) i).getActivity().getId(),
+                    new HashSet<>(connectionList));
         }
 
         return connections;
     }
 
-    private List<Activity> sort(List<Activity> routeActivities) {
+    private List<PreliminaryRouteActivity> sort(List<PreliminaryRouteActivity> routeActivities) {
 
-        routeActivities.sort(new Comparator<Activity>() {
+        routeActivities.sort(new Comparator<PreliminaryRouteActivity>() {
             @Override
-            public int compare(Activity o1, Activity o2) {
+            public int compare(PreliminaryRouteActivity o1, PreliminaryRouteActivity o2) {
                 int latitudeCompare = Double.compare(
-                        o1.getCoordinate().getLatitude(),
-                        o2.getCoordinate().getLatitude());
+                        o1.getActivity().getCoordinate().getLatitude(),
+                        o2.getActivity().getCoordinate().getLatitude());
 
                 if (latitudeCompare != 0) {
                     return latitudeCompare;
                 }
 
-                return Double.compare(o1.getCoordinate().getLongitude(),
-                        o2.getCoordinate().getLongitude());
+                return Double.compare(o1.getActivity().getCoordinate().getLongitude(),
+                        o2.getActivity().getCoordinate().getLongitude());
             }
         });
 

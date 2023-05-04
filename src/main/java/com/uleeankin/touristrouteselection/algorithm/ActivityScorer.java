@@ -1,17 +1,20 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
-import com.uleeankin.touristrouteselection.models.activity.Activity;
+import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
 
-public class ActivityScorer implements Scorer<Activity> {
+import java.sql.Time;
+
+public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
 
     private static final double R = 6371.0;
 
     @Override
-    public double computeCost(Activity from, Activity to) {
-        double firstNodeLatitude = Math.toRadians(from.getCoordinate().getLatitude());
-        double firstNodeLongitude = Math.toRadians(from.getCoordinate().getLongitude());
-        double secondNodeLatitude = Math.toRadians(to.getCoordinate().getLatitude());
-        double secondNodeLongitude = Math.toRadians(to.getCoordinate().getLongitude());
+    public double computeCost(PreliminaryRouteActivity from
+            , PreliminaryRouteActivity to) {
+        double firstNodeLatitude = Math.toRadians(from.getActivity().getCoordinate().getLatitude());
+        double firstNodeLongitude = Math.toRadians(from.getActivity().getCoordinate().getLongitude());
+        double secondNodeLatitude = Math.toRadians(to.getActivity().getCoordinate().getLatitude());
+        double secondNodeLongitude = Math.toRadians(to.getActivity().getCoordinate().getLongitude());
         return 2 * R * Math.asin(
                 Math.sqrt(
                         Math.pow(Math.sin(
@@ -21,5 +24,29 @@ public class ActivityScorer implements Scorer<Activity> {
                                 * (Math.pow(Math.sin(
                                 secondNodeLongitude - firstNodeLongitude), 2))
                 ));
+    }
+
+    //todo override methods
+
+    @Override
+    public Time computeTime(PreliminaryRouteActivity from,
+                            PreliminaryRouteActivity to) {
+        return null;
+    }
+
+    @Override
+    public double computePrice(PreliminaryRouteActivity from,
+                               PreliminaryRouteActivity to) {
+        return 0;
+    }
+
+    @Override
+    public Time getTime(PreliminaryRouteActivity current) {
+        return current.getActivity().getDuration();
+    }
+
+    @Override
+    public double getPrice(PreliminaryRouteActivity current) {
+        return current.getActivity().getPrice();
     }
 }

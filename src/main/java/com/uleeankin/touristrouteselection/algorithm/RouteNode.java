@@ -1,5 +1,7 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import java.sql.Time;
+
 public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
 
     private final T current;
@@ -7,19 +9,28 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
 
     private double routeScore;
 
+    private Time timeScore;
+
+    private double priceScore;
+
     private double estimatedScore;
 
     public RouteNode(T current) {
         this(current, null,
                 Double.POSITIVE_INFINITY,
+                new Time(Long.MAX_VALUE),
+                Double.POSITIVE_INFINITY,
                 Double.POSITIVE_INFINITY);
     }
 
     public RouteNode(T current, T previous,
-                     double routeScore, double estimatedScore) {
+                     double routeScore, Time timeScore,
+                     double priceScore, double estimatedScore) {
         this.current = current;
         this.previous = previous;
         this.routeScore = routeScore;
+        this.timeScore = timeScore;
+        this.priceScore = priceScore;
         this.estimatedScore = estimatedScore;
     }
 

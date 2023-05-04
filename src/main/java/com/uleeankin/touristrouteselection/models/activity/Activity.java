@@ -13,7 +13,7 @@ import java.sql.Time;
 @NoArgsConstructor(force = true)
 @Getter
 @Setter
-public class Activity implements GraphNode {
+public class Activity {
 
     @Id
     private Long id;

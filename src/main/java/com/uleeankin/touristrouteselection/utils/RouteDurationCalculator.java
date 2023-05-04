@@ -17,7 +17,8 @@ public class RouteDurationCalculator {
         double duration = 0d;
         if (activities.size() > 1) {
             for (int i = 1; i < activities.size(); i++) {
-                duration += activityScorer.computeCost(activities.get(i - 1), activities.get(i));
+                //TODO ПЕРЕДЕЛАТЬ на graphhopper
+                //duration += activityScorer.computeCost(activities.get(i - 1), activities.get(i));
             }
         }
         return duration;

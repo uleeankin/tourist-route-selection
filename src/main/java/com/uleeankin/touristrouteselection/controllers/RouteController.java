@@ -129,7 +129,8 @@ public class RouteController {
         for (Activity activity : activities) {
             activityStatuses.add(new ActivityStatus(activity,
                     !addedActivities.stream()
-                            .map(PreliminaryRouteActivity::getActivityId).toList()
+                            .map(addedActivity -> addedActivity.getActivity().getId())
+                            .toList()
                             .contains(activity.getId())));
         }
 
