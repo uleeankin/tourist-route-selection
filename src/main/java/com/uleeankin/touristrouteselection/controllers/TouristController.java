@@ -1,10 +1,7 @@
 package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.models.City;
-import com.uleeankin.touristrouteselection.models.activity.Activity;
-import com.uleeankin.touristrouteselection.models.activity.ActivityFeedback;
-import com.uleeankin.touristrouteselection.models.activity.Category;
-import com.uleeankin.touristrouteselection.models.activity.Event;
+import com.uleeankin.touristrouteselection.models.activity.*;
 import com.uleeankin.touristrouteselection.models.user.Tourist;
 import com.uleeankin.touristrouteselection.services.activity.ActivityService;
 import com.uleeankin.touristrouteselection.services.category.CategoryService;
@@ -228,37 +225,69 @@ public class TouristController {
 
     @GetMapping("/place/{id}")
     public String getActivityDetails(@PathVariable("id") Long id, Model model) {
+        this.setActivityDetails(this.activityService.getById(id), model);
+        return "tourist/placeDetails";
+    }
+
+    @GetMapping("/event/{id}")
+    public String getEventDetails(@PathVariable("id") Long id, Model model) {
+        Event event = this.eventService.getById(id);
+        this.setActivityDetails(event.getActivity(), model);
+        model.addAttribute("dates",
+                event.getStartDate() + " - " + event.getEndDate());
+        model.addAttribute("times",
+                this.eventService.getSchedule(id)
+                        .stream()
+                        .map(EventSession::getSessionTime)
+                        .toList());
+        return "tourist/eventDetails";
+    }
+
+    private void setActivityDetails(Activity activity, Model model) {
         sessionContext.addUserNameToPage(model);
-        Activity activity = this.activityService.getById(id);
         model.addAttribute("placeName", activity.getName());
         model.addAttribute("activityId", activity.getId());
 
         model.addAttribute("category", activity.getCategory().getName());
+        model.addAttribute("city", activity.getCoordinate().getCity().getName());
         model.addAttribute("description", activity.getDescription());
-        List<ActivityFeedback> feedback =
-                this.activityFeedbackService.getAll(id);
-        model.addAttribute("feedbacks", feedback);
+        model.addAttribute("price", activity.getPrice() + " руб.");
+        model.addAttribute("time",
+                "Длительность: " + activity.getDuration());
+        model.addAttribute("feedbacks",
+                this.activityFeedbackService.getAll(activity.getId()));
         model.addAttribute("commentNumber",
-                this.activityFeedbackService.getFeedbackNumber(id));
+                this.activityFeedbackService.getFeedbackNumber(activity.getId()));
 
         model.addAttribute("averageAssessment",
-                this.activityFeedbackService.getAverageAssessment(id));
+                this.activityFeedbackService.getAverageAssessment(activity.getId()));
 
         model.addAttribute("favourite",
-                this.activityService.isExists(sessionContext.getUserLogin(), id));
-
-        return "tourist/placeDetails";
+                this.activityService.isExists(sessionContext.getUserLogin(),
+                        activity.getId()));
     }
 
-    @PostMapping("/feedback/{id}")
-    public String addFeedback(@PathVariable("id") Long activityId,
+    @PostMapping("/feedback/place/{id}")
+    public String addPlaceFeedback(@PathVariable("id") Long activityId,
                               @RequestParam("comment") String comment,
                               @RequestParam("assessment") Integer assessment) {
 
+        this.addFeedback(activityId, comment, assessment);
+        return "redirect:/tourist/place/{id}";
+    }
+
+    @PostMapping("/feedback/event/{id}")
+    public String addEventFeedback(@PathVariable("id") Long activityId,
+                                   @RequestParam("comment") String comment,
+                                   @RequestParam("assessment") Integer assessment) {
+
+        this.addFeedback(activityId, comment, assessment);
+        return "redirect:/tourist/event/{id}";
+    }
+
+    private void addFeedback(Long activityId, String comment, Integer assessment) {
         this.activityFeedbackService.addFeedback(sessionContext.getUserLogin(),
                 activityId, assessment, comment);
-
-        return "redirect:/tourist/place/{id}";
     }
 
     @GetMapping("/routes")

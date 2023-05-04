@@ -62,16 +62,41 @@
                 <div class="custom-label time m-t-16 m-l-20">
                     <label class="custom-label-text" th:text="${time}"></label>
                 </div>
+                <div class="custom-label date-label m-t-16 m-l-20">
+                    <label class="custom-label-text" th:text="${dates}"></label>
+                </div>
             </div>
 
         </div>
 
-        <div class="m-t-20" style="width: 150vh;  text-align: center;">
+        <div class="m-t-20" style="width: 160vh; display: flex; text-align: center;">
             <textarea readonly th:text="${description}"
-                      class="detailed-textarea" style="background-color: #D6EAF8"></textarea><br/>
+                      class="detailed-textarea"
+                      style="background-color: #D6EAF8; width: 45%;"></textarea><br/>
+            <div style="width: 25%; margin: 10px 90px 0 0">
+                <table class="table-body">
+                    <thead>
+                    <tr>
+                        <th class="ex-td">Время начала ежедневно</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="scroll-table">
+                    <div class="scroll-table-body"  style="height: 42px;">
+                        <table class="table-body">
+                            <tbody>
+                            <tr th:each="eventTime : ${times}">
+                                <td class="ex-td" th:text="${eventTime}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <form th:method="post" th:action="@{/tourist/feedback/place/{id}(id = ${activityId})}">
+        <form th:method="post" th:action="@{/tourist/feedback/event/{id}(id = ${activityId})}">
             <div style="display: flex; width: 150vh; margin-bottom: 16px;">
                 <textarea th:id="comment" name="comment"
                           class="detailed-textarea m-t-16" style="margin-right: 0"></textarea>

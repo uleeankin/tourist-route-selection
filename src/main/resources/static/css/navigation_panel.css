@@ -276,7 +276,7 @@ th, td {
 
 .comments-block {
     overflow-y: scroll;
-    height: 35vh;
+    height: 25vh;
 }
 
 .place-name {
@@ -324,7 +324,7 @@ th, td {
 
     position: relative;
     display: inline-block;
-    height: 70%;
+    height: 60%;
     background: #ebebeb;
     border-radius: 27px;
     padding: 0 35px 0 35px;
