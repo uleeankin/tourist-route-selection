@@ -22,6 +22,6 @@ public class RouteTimeCalculator {
             localTime = localTime.plusSeconds(activityTime.getSecond());
         }
 
-        return StringToTimeConverter.convert(localTime.toString());
+        return ToTimeConverter.convert(localTime.toString());
     }
 }

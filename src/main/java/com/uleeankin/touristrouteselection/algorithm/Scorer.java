@@ -14,4 +14,12 @@ public interface Scorer<T extends GraphNode> {
 
     double getPrice(T current);
 
+    boolean isCompulsory(T current);
+
+    boolean isEvent(T current);
+
+    boolean isRightTime(Time currentTime, Time eventStartTime);
+
+    Time getEventTime(T current);
+
 }

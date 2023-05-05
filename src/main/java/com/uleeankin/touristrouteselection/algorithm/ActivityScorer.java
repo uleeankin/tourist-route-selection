@@ -1,12 +1,16 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.utils.ToTimeConverter;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
 
     private static final double R = 6371.0;
+
+    private static final double V = 4.0;
 
     @Override
     public double computeCost(PreliminaryRouteActivity from
@@ -26,18 +30,24 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
                 ));
     }
 
-    //todo override methods
-
     @Override
     public Time computeTime(PreliminaryRouteActivity from,
                             PreliminaryRouteActivity to) {
-        return null;
+
+        LocalTime toTime = to.getActivity().getDuration().toLocalTime();
+        LocalTime transitionTime = ToTimeConverter.convert(
+                computeCost(from, to) / V).toLocalTime();
+
+        transitionTime = transitionTime.plusHours(toTime.getHour());
+        transitionTime = transitionTime.plusMinutes(toTime.getMinute());
+
+        return ToTimeConverter.convert(transitionTime.toString());
     }
 
     @Override
     public double computePrice(PreliminaryRouteActivity from,
                                PreliminaryRouteActivity to) {
-        return 0;
+        return to.getActivity().getPrice();
     }
 
     @Override
@@ -48,5 +58,25 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     @Override
     public double getPrice(PreliminaryRouteActivity current) {
         return current.getActivity().getPrice();
+    }
+
+    @Override
+    public boolean isCompulsory(PreliminaryRouteActivity current) {
+        return current.isCompulsory();
+    }
+
+    @Override
+    public boolean isEvent(PreliminaryRouteActivity current) {
+        return current.isEvent();
+    }
+
+    @Override
+    public boolean isRightTime(Time currentTime, Time eventStartTime) {
+        return currentTime.before(eventStartTime);
+    }
+
+    @Override
+    public Time getEventTime(PreliminaryRouteActivity current) {
+        return current.getEventTime();
     }
 }

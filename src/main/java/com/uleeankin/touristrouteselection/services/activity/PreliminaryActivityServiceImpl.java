@@ -2,7 +2,7 @@ package com.uleeankin.touristrouteselection.services.activity;
 
 import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.repositories.activity.PreliminaryActivityRepository;
-import com.uleeankin.touristrouteselection.utils.StringToTimeConverter;
+import com.uleeankin.touristrouteselection.utils.ToTimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class PreliminaryActivityServiceImpl
     @Override
     public void updateTime(String id, Long activityId, String time) {
         this.repository.updateTime(id, activityId,
-                StringToTimeConverter.convert(time));
+                ToTimeConverter.convert(time));
     }
 
     @Override
