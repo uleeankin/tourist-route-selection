@@ -1,8 +1,8 @@
 package com.uleeankin.touristrouteselection.controllers;
 
-import com.uleeankin.touristrouteselection.models.City;
-import com.uleeankin.touristrouteselection.services.city.CityService;
-import com.uleeankin.touristrouteselection.services.user.UserService;
+import com.uleeankin.touristrouteselection.city.model.City;
+import com.uleeankin.touristrouteselection.city.service.CityService;
+import com.uleeankin.touristrouteselection.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

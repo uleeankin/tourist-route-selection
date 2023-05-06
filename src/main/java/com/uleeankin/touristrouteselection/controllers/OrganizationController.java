@@ -1,12 +1,12 @@
 package com.uleeankin.touristrouteselection.controllers;
 
-import com.uleeankin.touristrouteselection.models.activity.Activity;
-import com.uleeankin.touristrouteselection.models.activity.Event;
-import com.uleeankin.touristrouteselection.models.activity.EventSession;
-import com.uleeankin.touristrouteselection.models.user.User;
-import com.uleeankin.touristrouteselection.services.activity.ActivityService;
-import com.uleeankin.touristrouteselection.services.event.EventService;
-import com.uleeankin.touristrouteselection.services.user.UserService;
+import com.uleeankin.touristrouteselection.activity.model.Activity;
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event;
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventSession;
+import com.uleeankin.touristrouteselection.user.model.User;
+import com.uleeankin.touristrouteselection.activity.service.ActivityService;
+import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
+import com.uleeankin.touristrouteselection.user.service.UserService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

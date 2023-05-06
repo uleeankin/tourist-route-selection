@@ -1,10 +1,9 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
-import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.utils.TimeService;
 
 import java.sql.Time;
-import java.time.LocalTime;
 
 public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
 

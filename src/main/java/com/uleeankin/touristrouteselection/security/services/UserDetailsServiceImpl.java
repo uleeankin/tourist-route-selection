@@ -1,7 +1,7 @@
 package com.uleeankin.touristrouteselection.security.services;
 
-import com.uleeankin.touristrouteselection.models.user.User;
-import com.uleeankin.touristrouteselection.repositories.user.UserRepository;
+import com.uleeankin.touristrouteselection.user.model.User;
+import com.uleeankin.touristrouteselection.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

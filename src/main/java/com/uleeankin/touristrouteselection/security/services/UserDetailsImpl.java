@@ -1,6 +1,6 @@
 package com.uleeankin.touristrouteselection.security.services;
 
-import com.uleeankin.touristrouteselection.models.user.User;
+import com.uleeankin.touristrouteselection.user.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
