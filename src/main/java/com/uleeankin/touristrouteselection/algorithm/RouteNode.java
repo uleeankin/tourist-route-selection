@@ -7,7 +7,7 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
     private final T current;
     private T previous;
 
-    private double routeScore;
+    private double distanceScore;
 
     private Time timeScore;
 
@@ -24,11 +24,11 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
     }
 
     public RouteNode(T current, T previous,
-                     double routeScore, Time timeScore,
+                     double distanceScore, Time timeScore,
                      double priceScore, double estimatedScore) {
         this.current = current;
         this.previous = previous;
-        this.routeScore = routeScore;
+        this.distanceScore = distanceScore;
         this.timeScore = timeScore;
         this.priceScore = priceScore;
         this.estimatedScore = estimatedScore;
@@ -57,12 +57,28 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
         this.previous = previous;
     }
 
-    public double getRouteScore() {
-        return routeScore;
+    public double getDistanceScore() {
+        return distanceScore;
     }
 
-    public void setRouteScore(double routeScore) {
-        this.routeScore = routeScore;
+    public void setDistanceScore(double routeScore) {
+        this.distanceScore = routeScore;
+    }
+
+    public void setTimeScore(Time timeScore) {
+        this.timeScore = timeScore;
+    }
+
+    public void setPriceScore(double priceScore) {
+        this.priceScore = priceScore;
+    }
+
+    public Time getTimeScore() {
+        return timeScore;
+    }
+
+    public double getPriceScore() {
+        return priceScore;
     }
 
     public double getEstimatedScore() {
@@ -72,4 +88,5 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
     public void setEstimatedScore(double estimatedScore) {
         this.estimatedScore = estimatedScore;
     }
+
 }

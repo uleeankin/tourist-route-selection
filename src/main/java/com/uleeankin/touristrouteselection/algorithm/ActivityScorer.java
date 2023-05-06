@@ -1,7 +1,7 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.models.activity.PreliminaryRouteActivity;
-import com.uleeankin.touristrouteselection.utils.ToTimeConverter;
+import com.uleeankin.touristrouteselection.utils.TimeService;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -34,14 +34,9 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     public Time computeTime(PreliminaryRouteActivity from,
                             PreliminaryRouteActivity to) {
 
-        LocalTime toTime = to.getActivity().getDuration().toLocalTime();
-        LocalTime transitionTime = ToTimeConverter.convert(
-                computeCost(from, to) / V).toLocalTime();
-
-        transitionTime = transitionTime.plusHours(toTime.getHour());
-        transitionTime = transitionTime.plusMinutes(toTime.getMinute());
-
-        return ToTimeConverter.convert(transitionTime.toString());
+        return TimeService.sumTime(TimeService.convert(
+                computeCost(from, to) / V),
+                to.getActivity().getDuration());
     }
 
     @Override
@@ -71,8 +66,8 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     }
 
     @Override
-    public boolean isRightTime(Time currentTime, Time eventStartTime) {
-        return currentTime.before(eventStartTime);
+    public boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime) {
+        return TimeService.sumTime(routeStartTime, currentTime).before(eventStartTime);
     }
 
     @Override

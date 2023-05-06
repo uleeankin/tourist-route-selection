@@ -1,5 +1,7 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import com.uleeankin.touristrouteselection.utils.TimeService;
+
 import java.sql.Time;
 import java.util.*;
 
@@ -48,17 +50,26 @@ public class RouteFinder<T extends GraphNode> {
                             .getOrDefault(connection, new RouteNode<>(connection));
                     allNodes.put(connection, nextNode);
 
-                    double newDistanceScore = currentNode.getRouteScore()
+                    double newDistanceScore = currentNode.getDistanceScore()
                             + scorer.computeCost(currentNode.getCurrent(), connection);
+
+                    double newPriceScore = currentNode.getPriceScore()
+                            + scorer.computePrice(currentNode.getCurrent(), connection);
+
+                    Time newTimeScore = TimeService.sumTime(currentNode.getTimeScore(),
+                            scorer.computeTime(currentNode.getCurrent(), connection));
 
 
                     if (this.scorer.isCompulsory(nextNode.getCurrent())) {
 
-                        this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode, newDistanceScore);
+                        this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode,
+                                newDistanceScore, newTimeScore, newPriceScore);
 
                     } else {
-                        if (this.compareScore(newDistanceScore, nextNode)) {
-                            this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode, newDistanceScore);
+                        if (this.compareScore(newDistanceScore, newTimeScore,
+                                newPriceScore, nextNode)) {
+                            this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode,
+                                    newDistanceScore, newTimeScore, newPriceScore);
                         }
                     }
 
@@ -72,22 +83,63 @@ public class RouteFinder<T extends GraphNode> {
 
     private void checkTypeAndAdd(T to, Queue<RouteNode<T>> openSet,
                                  RouteNode<T> currentNode, T connection,
-                                 RouteNode<T> nextNode, double newScore) {
+                                 RouteNode<T> nextNode, double distance,
+                                 Time time, double price) {
         if (this.scorer.isEvent(nextNode.getCurrent())) {
 
             if (this.scorer.isRightTime(
                     this.scorer.computeTime(
                             currentNode.getCurrent(),
                             nextNode.getCurrent()),
-                    this.scorer.getEventTime(nextNode.getCurrent()))) {
+                    this.scorer.getEventTime(nextNode.getCurrent()),
+                    this.startTime)) {
 
-                this.addNode(newScore, currentNode, connection, nextNode, to, openSet);
+                this.addNode(distance, time, price, currentNode,
+                        connection, nextNode, to, openSet);
 
             }
 
         } else {
-            this.addNode(newScore, currentNode, connection, nextNode, to, openSet);
+            this.addNode(distance, time, price, currentNode,
+                    connection, nextNode, to, openSet);
         }
+    }
+
+    private void addNode(double distance, Time time, double price,
+                         RouteNode<T> currentNode, T connection,
+                         RouteNode<T> nextNode, T to,
+                         Queue<RouteNode<T>> openSet) {
+
+        nextNode.setPrevious(currentNode.getCurrent());
+        nextNode.setDistanceScore(distance);
+        nextNode.setTimeScore(time);
+        nextNode.setPriceScore(price);
+        nextNode.setEstimatedScore(distance
+                + scorer.computeCost(connection, to));
+        openSet.add(nextNode);
+    }
+
+    private boolean compareScore(double distanceScore, Time timeScore,
+                                 double priceScore, RouteNode<T> nextNode) {
+
+        boolean scoreComparison = true;
+
+        if (hasTimeConstraint()) {
+            scoreComparison = scoreComparison
+                    && (timeScore.before(nextNode.getTimeScore()));
+        }
+
+        if (hasPriceConstraint()) {
+            scoreComparison = scoreComparison
+                    && (priceScore < nextNode.getPriceScore());
+        }
+
+        if (!hasTimeConstraint() && ! hasPriceConstraint()) {
+            scoreComparison = scoreComparison
+                    && (distanceScore < nextNode.getDistanceScore());
+        }
+
+        return scoreComparison;
     }
 
     private List<T> buildPath(RouteNode<T> currentNode, Map<T, RouteNode<T>> allNodes) {
@@ -97,22 +149,6 @@ public class RouteFinder<T extends GraphNode> {
             currentNode = allNodes.get(currentNode.getPrevious());
         } while (currentNode != null);
         return route;
-    }
-
-    private void addNode(double newScore, RouteNode<T> currentNode, T connection,
-                         RouteNode<T> nextNode, T to,
-                         Queue<RouteNode<T>> openSet) {
-
-        nextNode.setPrevious(currentNode.getCurrent());
-        nextNode.setRouteScore(newScore);
-        nextNode.setEstimatedScore(newScore
-                + scorer.computeCost(connection, to));
-        openSet.add(nextNode);
-    }
-
-    private boolean compareScore(double newScore, RouteNode<T> nextNode) {
-
-        return newScore < nextNode.getRouteScore();
     }
 
     public void addTimeConstraint(Time maxTime) {

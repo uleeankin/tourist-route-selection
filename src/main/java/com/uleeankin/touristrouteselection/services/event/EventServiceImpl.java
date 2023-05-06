@@ -6,7 +6,7 @@ import com.uleeankin.touristrouteselection.models.activity.EventSession;
 import com.uleeankin.touristrouteselection.repositories.activity.ActivityRepository;
 import com.uleeankin.touristrouteselection.repositories.coordinate.CoordinateRepository;
 import com.uleeankin.touristrouteselection.repositories.event.EventRepository;
-import com.uleeankin.touristrouteselection.utils.ToTimeConverter;
+import com.uleeankin.touristrouteselection.utils.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService {
 
         this.eventRepository.save(id, Date.valueOf(startDate), Date.valueOf(endDate), owner);
 
-        List<Time> sessions = ToTimeConverter.getSessions(
+        List<Time> sessions = TimeService.getSessions(
                 startTime, endTime, breakTime, duration);
 
         for (Time session : sessions) {
@@ -72,7 +72,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void update(Long id, String name, String description, String time,
                        Double price, String startDate, String endDate) {
-        this.activityRepository.update(id, name, description, ToTimeConverter.convert(time), price);
+        this.activityRepository.update(id, name, description, TimeService.convert(time), price);
         this.eventRepository.update(id, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
@@ -83,13 +83,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteSession(Long id, String time) {
-        this.eventRepository.deleteSession(id, ToTimeConverter.convert(time));
+        this.eventRepository.deleteSession(id, TimeService.convert(time));
     }
 
     @Override
     public void addSession(Long id, String time) {
         this.eventRepository.addSession(id,
-                ToTimeConverter.convert(time));
+                TimeService.convert(time));
     }
 
     @Override

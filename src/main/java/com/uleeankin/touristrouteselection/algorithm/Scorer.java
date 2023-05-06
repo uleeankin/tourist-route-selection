@@ -18,7 +18,7 @@ public interface Scorer<T extends GraphNode> {
 
     boolean isEvent(T current);
 
-    boolean isRightTime(Time currentTime, Time eventStartTime);
+    boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime);
 
     Time getEventTime(T current);
 
