@@ -57,7 +57,8 @@ coordinate:
 
 preliminary:
   save: insert into preliminary_activity (preliminary_route_id, activity_id, is_event) values (?, ?, ?);
-  updateCompalsoryStatus: update preliminary_activity set is_compulsory = ? where preliminary_route_id = ? and activity_id = ?;
+  updateCompulsoryStatus: update preliminary_activity set is_compulsory = ? where preliminary_route_id = ? and activity_id = ?;
+  compulsoryStatus: select is_compulsory from preliminary_activity where preliminary_route_id = ? and activity_id = ?;
   updateEventStatus: update preliminary_activity set is_event = ? where preliminary_route_id = ? and activity_id = ?;
   deleteAll: delete from preliminary_activity where preliminary_route_id = ?;
   deleteById: delete from preliminary_activity where preliminary_route_id = ? and activity_id = ?;

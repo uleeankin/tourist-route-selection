@@ -36,7 +36,24 @@
         <div class="cities">
             <form th:method="post" th:action="@{/route}">
                 <div class="activity-adding-panel">
-
+                    <span th:if="${hasEvents}">
+                        <div style="display: flex; width: 150vh; margin-top: 20px;">
+                            <div class="m-b-16" style="margin-left: 30px;">
+                                <label class="input100 time-label custom-input"
+                                       style="padding-top: 18px; background-color: white;">Время начала прохождения маршрута</label>
+                            </div>
+                            <div class="wrap-input20 m-b-16">
+                                <input th:id="startTime" class="input100 time-label custom-input" type="time" name="startTime">
+                                <span class="focus-input100 time-label"></span>
+                            </div>
+                            <div class="block">
+                                <div class="hover hover-style">
+                                    <img th:src="@{/images/notif.png}" src="/static/images/notif.png" style="width: 30%; height: 30%">
+                                </div>
+                                <span class="hidden">Вы добавили мероприятия в маршрут. Укажите время начала маршрута для более точного построения.</span>
+                            </div>
+                        </div>
+                    </span>
                     <div style="display: flex;">
                         <div class="m-b-16" style="margin-left: 30px;">
                             <label class="input100 time-label custom-input"

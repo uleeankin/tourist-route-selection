@@ -11,6 +11,7 @@ public class PreliminaryActivityConfig {
 
     private String save;
     private String updateCompulsoryStatus;
+    private String compulsoryStatus;
     private String updateEventStatus;
     private String deleteAll;
     private String deleteById;

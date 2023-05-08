@@ -195,9 +195,17 @@ public class RouteController {
     }
 
     @GetMapping("/compulsory")
-    public String getCompulsoryPlaceAddingPage(Model model) {
+    public String getCompulsoryPlaceAddingPage(Model model, HttpSession session) {
         this.sessionContext.addUserNameToPage(model);
+        model.addAttribute("preliminaries",
+                this.preliminaryActivityService.getAll(session.getId()));
         return "route/compulsoryActivitiesPage";
+    }
+
+    @PostMapping("/compulsory/{id}")
+    public String changeCompulsoryStatus(@PathVariable("id") Long id, HttpSession session) {
+        this.preliminaryActivityService.updateCompulsoryStatus(session.getId(), id);
+        return "redirect:/route/compulsory";
     }
 
     @GetMapping("/constraints")

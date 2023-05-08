@@ -5,8 +5,11 @@ import com.uleeankin.touristrouteselection.activity.attributes.preliminary.confi
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.mapper.PreliminaryActivityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.List;
 
@@ -33,6 +36,17 @@ public class PreliminaryActivityRepositoryImpl implements PreliminaryActivityRep
     public void updateCompulsoryStatus(String id, Long activityId, boolean newStatus) {
         this.jdbcTemplate.update(
                 this.config.getUpdateCompulsoryStatus(), newStatus, id, activityId);
+    }
+
+    @Override
+    public boolean findCompulsoryStatus(String id, Long activityId) {
+        return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(this.config.getCompulsoryStatus(),
+                new RowMapper<Boolean>() {
+                    @Override
+                    public Boolean mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getBoolean("is_compulsory");
+                    }
+                }, id, activityId));
     }
 
     @Override

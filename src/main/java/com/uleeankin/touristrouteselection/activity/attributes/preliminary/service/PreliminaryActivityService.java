@@ -8,7 +8,7 @@ public interface PreliminaryActivityService {
 
     void save(String id, Long activityId, boolean eventStatus);
 
-    void updateCompulsoryStatus(String id, Long activityId, boolean newStatus);
+    void updateCompulsoryStatus(String id, Long activityId);
 
     void updateEventStatus(String id, Long activityId, boolean newStatus);
 
