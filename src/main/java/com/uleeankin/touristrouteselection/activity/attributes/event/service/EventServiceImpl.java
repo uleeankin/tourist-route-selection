@@ -96,4 +96,11 @@ public class EventServiceImpl implements EventService {
     public List<Event> getFavourites(String userId) {
         return this.eventRepository.findFavourites(userId);
     }
+
+    @Override
+    public List<Event> getFavouritesByCriteria(
+            String userId, String city, String category, String date) {
+        return this.eventRepository.findFavouritesByCriteria(
+                userId, city, category, Date.valueOf(date));
+    }
 }

@@ -20,4 +20,5 @@ public class EventConfig {
     private String deleteEventSession;
     private String addSession;
     private String favourites;
+    private String favouritesInRoute;
 }

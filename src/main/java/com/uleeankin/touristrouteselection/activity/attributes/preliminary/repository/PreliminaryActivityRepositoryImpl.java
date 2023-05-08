@@ -24,14 +24,21 @@ public class PreliminaryActivityRepositoryImpl implements PreliminaryActivityRep
     }
 
     @Override
-    public void save(String id, Long activityId) {
-        this.jdbcTemplate.update(this.config.getSave(), id, activityId);
+    public void save(String id, Long activityId, boolean eventStatus) {
+
+        this.jdbcTemplate.update(this.config.getSave(), id, activityId, eventStatus);
     }
 
     @Override
-    public void updateStatus(String id, Long activityId, boolean newStatus) {
+    public void updateCompulsoryStatus(String id, Long activityId, boolean newStatus) {
         this.jdbcTemplate.update(
-                this.config.getUpdateStatus(), newStatus, id, activityId);
+                this.config.getUpdateCompulsoryStatus(), newStatus, id, activityId);
+    }
+
+    @Override
+    public void updateEventStatus(String id, Long activityId, boolean newStatus) {
+        this.jdbcTemplate.update(
+                this.config.getUpdateEventStatus(), newStatus, id, activityId);
     }
 
     @Override

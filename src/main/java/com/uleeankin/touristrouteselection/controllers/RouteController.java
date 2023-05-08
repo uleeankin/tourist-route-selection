@@ -1,5 +1,8 @@
 package com.uleeankin.touristrouteselection.controllers;
 
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event;
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventStatus;
+import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
 import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
@@ -35,6 +38,8 @@ public class RouteController {
 
     private final ActivityService activityService;
 
+    private final EventService eventService;
+
     private final RouteService routeService;
 
     private final RouteFeedbackService routeFeedbackService;
@@ -47,6 +52,7 @@ public class RouteController {
     public RouteController(CityService cityService,
                            CategoryService categoryService,
                            ActivityService activityService,
+                           EventService eventService,
                            RouteService routeService,
                            RouteFeedbackService routeFeedbackService,
                            PreliminaryActivityService preliminaryActivityService,
@@ -54,6 +60,7 @@ public class RouteController {
         this.cityService = cityService;
         this.categoryService = categoryService;
         this.activityService = activityService;
+        this.eventService = eventService;
         this.routeService = routeService;
         this.routeFeedbackService = routeFeedbackService;
         this.preliminaryActivityService = preliminaryActivityService;
@@ -73,11 +80,13 @@ public class RouteController {
     public String addRouteCharacteristics(@RequestParam("name") String name,
                                           @RequestParam("description") String description,
                                           @RequestParam("cityname") String city,
+                                          @RequestParam("date") String date,
                                           HttpServletRequest request) {
 
         sessionContext.setRouteNameValueToSession(request, name);
         sessionContext.setRouteDescriptionValueToSession(request, description);
         sessionContext.setCityValueToSession(request, city);
+        sessionContext.setSessionDateAttribute(request, date);
 
         return "redirect:/route/characteristics";
     }
@@ -115,6 +124,16 @@ public class RouteController {
                     this.sessionContext.getCurrentCategory(session));
         model.addAttribute("activities",
                 getActivities(activities, session));
+
+        List<Event> events = this.eventService
+                .getFavouritesByCriteria(
+                        this.sessionContext.getUserLogin(),
+                        this.sessionContext.getCurrentCity(session),
+                        this.sessionContext.getCurrentCategory(session),
+                        this.sessionContext.getSessionDateAttribute(session));
+
+        model.addAttribute("events",
+                getEvents(events, session));
         return "route/placesForRoutePage";
     }
 
@@ -136,10 +155,35 @@ public class RouteController {
         return activityStatuses;
     }
 
+    private List<EventStatus> getEvents(List<Event> events,
+                                            HttpSession session) {
+
+        List<EventStatus> eventStatuses = new ArrayList<>();
+        List<PreliminaryRouteActivity> addedEvents =
+                this.preliminaryActivityService.getAll(session.getId());
+
+        for (Event event : events) {
+            eventStatuses.add(new EventStatus(event,
+                    !addedEvents.stream()
+                            .map(addedEvent -> addedEvent.getActivity().getId())
+                            .toList()
+                            .contains(event.getActivity().getId())));
+        }
+
+        return eventStatuses;
+    }
+
     @PostMapping("/places/add/{id}")
     public String addPlaceToRoute(@PathVariable("id") Long id,
                                   HttpSession session) {
-        this.preliminaryActivityService.save(session.getId(), id);
+        this.preliminaryActivityService.save(session.getId(), id, false);
+        return "redirect:/route/places";
+    }
+
+    @PostMapping("/events/add/{id}")
+    public String addEventToRoute(@PathVariable("id") Long id,
+                                  HttpSession session) {
+        this.preliminaryActivityService.save(session.getId(), id, true);
         return "redirect:/route/places";
     }
 
@@ -148,6 +192,18 @@ public class RouteController {
                                        HttpSession session) {
         this.preliminaryActivityService.deleteById(session.getId(), id);
         return "redirect:/route/places";
+    }
+
+    @GetMapping("/compulsory")
+    public String getCompulsoryPlaceAddingPage(Model model) {
+        this.sessionContext.addUserNameToPage(model);
+        return "route/compulsoryActivitiesPage";
+    }
+
+    @GetMapping("/constraints")
+    public String getConstraintsAddingPage(Model model) {
+        this.sessionContext.addUserNameToPage(model);
+        return "route/routeConstraintsPage";
     }
 
     @PostMapping("/create")

@@ -21,13 +21,18 @@ public class PreliminaryActivityServiceImpl
     }
 
     @Override
-    public void save(String id, Long activityId) {
-        this.repository.save(id, activityId);
+    public void save(String id, Long activityId, boolean eventStatus) {
+        this.repository.save(id, activityId, eventStatus);
     }
 
     @Override
-    public void updateStatus(String id, Long activityId, boolean newStatus) {
-        this.repository.updateStatus(id, activityId, newStatus);
+    public void updateCompulsoryStatus(String id, Long activityId, boolean newStatus) {
+        this.repository.updateCompulsoryStatus(id, activityId, newStatus);
+    }
+
+    @Override
+    public void updateEventStatus(String id, Long activityId, boolean newStatus) {
+        this.repository.updateEventStatus(id, activityId, newStatus);
     }
 
     @Override

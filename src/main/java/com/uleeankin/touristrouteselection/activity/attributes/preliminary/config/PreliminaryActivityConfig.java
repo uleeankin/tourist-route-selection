@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 public class PreliminaryActivityConfig {
 
     private String save;
-    private String updateStatus;
+    private String updateCompulsoryStatus;
+    private String updateEventStatus;
     private String deleteAll;
-
     private String deleteById;
     private String updateTime;
     private String all;

@@ -96,4 +96,13 @@ public class EventRepositoryImpl implements EventRepository {
                 this.eventConfig.getFavourites(),
                 new EventRowMapper(), userId);
     }
+
+    @Override
+    public List<Event> findFavouritesByCriteria(
+            String userId, String city, String category, Date visitingDate) {
+        return this.jdbcTemplate.query(
+                this.eventConfig.getFavouritesInRoute(),
+                new EventRowMapper(),
+                userId, city, category, visitingDate, visitingDate);
+    }
 }

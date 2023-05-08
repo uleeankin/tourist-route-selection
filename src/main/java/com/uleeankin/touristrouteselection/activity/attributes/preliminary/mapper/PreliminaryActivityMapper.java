@@ -14,8 +14,8 @@ public class PreliminaryActivityMapper
         return new PreliminaryRouteActivity(
                 rs.getString("preliminary_route_id"),
                 new ActivityMapper().mapRow(rs, rowNum),
-                rs.getBoolean("isCompalsory"),
-                rs.getBoolean("isEvent"),
+                rs.getBoolean("is_compulsory"),
+                rs.getBoolean("is_event"),
                 rs.getTime("event_time"));
     }
 }

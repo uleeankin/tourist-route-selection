@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface PreliminaryActivityRepository {
 
-    void save(String id, Long activityId);
+    void save(String id, Long activityId, boolean eventStatus);
 
-    void updateStatus(String id, Long activityId, boolean newStatus);
+    void updateCompulsoryStatus(String id, Long activityId, boolean newStatus);
+
+    void updateEventStatus(String id, Long activityId, boolean newStatus);
 
     void deleteAll(String id);
 

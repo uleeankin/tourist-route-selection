@@ -1,4 +1,4 @@
-package com.uleeankin.touristrouteselection.activity.model;
+package com.uleeankin.touristrouteselection.activity.attributes.event.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ActivityStatus {
+public class EventStatus {
 
-    private Activity activity;
-
+    private Event event;
     private boolean status;
 }

@@ -93,7 +93,7 @@
                     <div style="display: flex;">
                         <label class="info-label" th:text="${eventSet.event.activity.duration}"></label>
                         <label class="info-label" th:text="${eventSet.event.activity.price} + ' руб.'"></label>
-                        <span th:if="${eventSet.event.status}">
+                        <span th:if="${eventSet.status}">
                             <form th:method="post"
                                   th:action="@{/route/events/add/{id}(id=${eventSet.event.activity.id})}">
                                 <button class="login100-form-btn"
@@ -102,9 +102,9 @@
                                 </button>
                             </form>
                         </span>
-                        <span th:unless="${eventSet.event.status}">
+                        <span th:unless="${eventSet.status}">
                             <form th:method="post"
-                                  th:action="@{/route/events/delete/{id}(id=${eventSet.event.activity.id})}">
+                                  th:action="@{/route/places/delete/{id}(id=${eventSet.event.activity.id})}">
                                 <button class="login100-form-btn"
                                         style="width: fit-content;
                                         height: fit-content;
@@ -122,9 +122,9 @@
 
             <div class="container-login100-form-btn"
                  style="width: 160vh; margin-top: 20px; text-align: center;">
-                <form th:method="post" th:action="@{/route/create}">
+                <form th:method="get" th:action="@{/route/compulsory}">
                     <button class="login100-form-btn" style="width: fit-content;">
-                        Создать маршрут
+                        Далее
                     </button>
                 </form>
             </div>

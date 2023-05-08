@@ -37,10 +37,10 @@ role:
 
 activity:
   activityAdding: insert into activity (activity_name, description, coordinates, category, photo, price, duration) values (?, ?, ?, ?, ?, ?, ?);
-  all: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id;
-  byCity: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ?;
-  byId: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id = ?;
-  byCityAndCategory: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and category_name = ?;
+  all: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id not in (select event_id from actual_event);
+  byCity: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and activity_id not in (select event_id from actual_event);
+  byId: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id = ? and activity_id not in (select event_id from actual_event);
+  byCityAndCategory: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where city_name = ? and category_name = ? and activity_id not in (select event_id from actual_event);
   toFavourite: insert into favourite_activity (user_id, activity_id) values (?, ?);
   deleteFromFavouriteQuery: delete from favourite_activity where user_id = ? and activity_id = ?;
   allFavourites: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration from ((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where activity_id in (select activity_id from favourite_activity where user_id = ?) and activity_id not in (select event_id from actual_event);
@@ -56,13 +56,14 @@ coordinate:
   delete: delete from coordinate where coordinates_id = ?;
 
 preliminary:
-  save: insert into chosen_activities (preliminary_route_id, activity_id) values (?, ?);
-  updateStatus: update chosen_activities set status = ? where preliminary_route_id = ? and activity_id = ?;
-  deleteAll: delete from chosen_activities where preliminary_route_id = ?;
-  deleteById: delete from chosen_activities where preliminary_route_id = ? and activity_id = ?;
-  updateTime: update chosen_activities set event_time = ? where preliminary_route_id = ? and activity_id = ?;
-  all: select preliminary_route_id, activity_id, status, event_time from chosen_activities where preliminary_route_id = ?;
-  allPreliminary: select preliminary_route_id, activity_id, status, event_time from chosen_activities where preliminary_route_id = ? and status = ?;
+  save: insert into preliminary_activity (preliminary_route_id, activity_id, is_event) values (?, ?, ?);
+  updateCompalsoryStatus: update preliminary_activity set is_compulsory = ? where preliminary_route_id = ? and activity_id = ?;
+  updateEventStatus: update preliminary_activity set is_event = ? where preliminary_route_id = ? and activity_id = ?;
+  deleteAll: delete from preliminary_activity where preliminary_route_id = ?;
+  deleteById: delete from preliminary_activity where preliminary_route_id = ? and activity_id = ?;
+  updateTime: update preliminary_activity set event_time = ? where preliminary_route_id = ? and activity_id = ?;
+  all: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_compulsory, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ?;
+  allPreliminary: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_compulsory, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ? and is_compulsory = ?;
 
 event:
   update: update actual_event set start_date = ?, end_date = ? where event_id = ?;
@@ -77,3 +78,4 @@ event:
   deleteEventSession: delete from event_session where event_id = ? and session_time = ?;
   addSession: insert into event_session (event_id, session_time) values (?, ?);
   favourites: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, start_date, end_date, event_owner from (((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id) join actual_event on activity.activity_id = actual_event.event_id where activity_id in (select activity_id from favourite_activity where user_id = ?);
+  favouritesInRoute: select activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, start_date, end_date, event_owner from (((activity join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id) join actual_event on activity.activity_id = actual_event.event_id where activity_id in (select activity_id from favourite_activity where user_id = ?) and city_name = ? and category_name = ? and start_date <= ? and end_date >= ?;

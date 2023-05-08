@@ -32,4 +32,7 @@ public interface EventRepository {
     void addSession(Long id, Time time);
 
     List<Event> findFavourites(String userId);
+
+    List<Event> findFavouritesByCriteria(
+            String userId, String city, String category, Date visitingDate);
 }

@@ -29,4 +29,7 @@ public interface EventService {
 
     List<Event> getFavourites(String userId);
 
+    List<Event> getFavouritesByCriteria(
+            String userId, String city, String category, String date);
+
 }
