@@ -18,6 +18,8 @@ public interface PreliminaryActivityService {
 
     void updateTime(String id, Long activityId, String time);
 
+    boolean hasEvents(String id);
+
     List<PreliminaryRouteActivity> getAll(String id);
 
     List<PreliminaryRouteActivity> getAllPreliminary(String id);

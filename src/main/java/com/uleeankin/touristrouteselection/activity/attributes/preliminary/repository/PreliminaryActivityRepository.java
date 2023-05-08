@@ -21,6 +21,8 @@ public interface PreliminaryActivityRepository {
 
     void updateTime(String id, Long activityId, Time time);
 
+    boolean hasEvents(String id, boolean isEvent);
+
     List<PreliminaryRouteActivity> findAll(String id);
 
     List<PreliminaryRouteActivity> findAllPreliminary(String id);

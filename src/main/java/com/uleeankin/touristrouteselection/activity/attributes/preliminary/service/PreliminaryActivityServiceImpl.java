@@ -53,6 +53,11 @@ public class PreliminaryActivityServiceImpl
     }
 
     @Override
+    public boolean hasEvents(String id) {
+        return this.repository.hasEvents(id, true);
+    }
+
+    @Override
     public List<PreliminaryRouteActivity> getAll(String id) {
         return this.repository.findAll(id);
     }

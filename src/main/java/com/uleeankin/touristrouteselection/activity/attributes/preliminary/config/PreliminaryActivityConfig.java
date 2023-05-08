@@ -16,6 +16,7 @@ public class PreliminaryActivityConfig {
     private String deleteAll;
     private String deleteById;
     private String updateTime;
+    private String hasEvents;
     private String all;
     private String allPreliminary;
 

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -209,21 +210,41 @@ public class RouteController {
     }
 
     @GetMapping("/constraints")
-    public String getConstraintsAddingPage(Model model) {
+    public String getConstraintsAddingPage(Model model, HttpSession session) {
         this.sessionContext.addUserNameToPage(model);
+        model.addAttribute("hasEvents",
+                this.preliminaryActivityService.hasEvents(session.getId()));
         return "route/routeConstraintsPage";
     }
 
     @PostMapping("/create")
-    public String createRoute(HttpSession session) {
+    public String createRouteWithEvents(@RequestParam("maxTime") String time,
+                                        @RequestParam("maxPrice") Double price,
+                                        @RequestParam("startTime") String startTime,
+                                        HttpSession session) {
+
+        this.createRoute(session, time, price, startTime);
+        return "redirect:/route/create";
+    }
+
+    @PostMapping("/create")
+    public String createRouteWithoutEvents(@RequestParam("maxTime") String time,
+                              @RequestParam("maxPrice") Double price,
+                              HttpSession session) {
+
+        this.createRoute(session, time, price, "");
+        return "redirect:/route/create";
+    }
+
+    private void createRoute(HttpSession session, String timeConstraint,
+                             Double priceConstraint, String routeStartTime) {
+
         //List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
         /*this.routeService.save(
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),
                 this.sessionContext.getUserLogin(),
                 this.sessionContext.getCurrentCity(session), route);*/
-
-        return "redirect:/route/create";
     }
 
     @GetMapping("/create")

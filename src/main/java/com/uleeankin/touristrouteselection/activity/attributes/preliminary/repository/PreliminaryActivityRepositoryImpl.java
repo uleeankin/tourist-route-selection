@@ -71,6 +71,17 @@ public class PreliminaryActivityRepositoryImpl implements PreliminaryActivityRep
     }
 
     @Override
+    public boolean hasEvents(String id, boolean isEvent) {
+        return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(
+                this.config.getHasEvents(), new RowMapper<Boolean>() {
+            @Override
+            public Boolean mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getBoolean("event_existing");
+            }
+        }, id, isEvent));
+    }
+
+    @Override
     public List<PreliminaryRouteActivity> findAll(String id) {
         return this.jdbcTemplate.query(this.config.getAll(),
                 new PreliminaryActivityMapper(), id);
