@@ -126,12 +126,14 @@ public class RouteFinder<T extends GraphNode> {
 
         if (hasTimeConstraint()) {
             scoreComparison = scoreComparison
-                    && (timeScore.before(nextNode.getTimeScore()));
+                    && (timeScore.before(nextNode.getTimeScore()))
+                    && (timeScore.before(this.maxTime));
         }
 
         if (hasPriceConstraint()) {
             scoreComparison = scoreComparison
-                    && (priceScore < nextNode.getPriceScore());
+                    && (priceScore < nextNode.getPriceScore())
+                    && (priceScore <= this.maxPrice);
         }
 
         if (!hasTimeConstraint() && ! hasPriceConstraint()) {
