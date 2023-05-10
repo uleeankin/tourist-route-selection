@@ -28,7 +28,7 @@ public class RouteCreator {
             finder.addTimeConstraint(TimeService.convert(maxTime));
         }
 
-        if (startTime != null) {
+        if (!startTime.equals("")) {
             finder.setStartTime(TimeService.convert(startTime));
         }
 

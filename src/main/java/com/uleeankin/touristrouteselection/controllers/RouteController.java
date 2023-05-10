@@ -126,15 +126,18 @@ public class RouteController {
         model.addAttribute("activities",
                 getActivities(activities, session));
 
-        List<Event> events = this.eventService
-                .getFavouritesByCriteria(
-                        this.sessionContext.getUserLogin(),
-                        this.sessionContext.getCurrentCity(session),
-                        this.sessionContext.getCurrentCategory(session),
-                        this.sessionContext.getSessionDateAttribute(session));
+        if (!this.sessionContext.getSessionDateAttribute(session).isEmpty()) {
+            List<Event> events = this.eventService
+                    .getFavouritesByCriteria(
+                            this.sessionContext.getUserLogin(),
+                            this.sessionContext.getCurrentCity(session),
+                            this.sessionContext.getCurrentCategory(session),
+                            this.sessionContext.getSessionDateAttribute(session));
 
-        model.addAttribute("events",
-                getEvents(events, session));
+            model.addAttribute("events",
+                    getEvents(events, session));
+        }
+
         return "route/placesForRoutePage";
     }
 
@@ -212,18 +215,28 @@ public class RouteController {
     @GetMapping("/constraints")
     public String getConstraintsAddingPage(Model model, HttpSession session) {
         this.sessionContext.addUserNameToPage(model);
-        model.addAttribute("hasEvents",
-                this.preliminaryActivityService.hasEvents(session.getId()));
+        if (this.preliminaryActivityService.hasEvents(session.getId())) {
+            return "route/routeConstraintsPageWithStartDate";
+        }
         return "route/routeConstraintsPage";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create/events")
     public String createRouteWithEvents(@RequestParam("maxTime") String time,
                                         @RequestParam("maxPrice") Double price,
                                         @RequestParam("startTime") String startTime,
                                         HttpSession session) {
 
         this.createRoute(session, time, price, startTime);
+        return "redirect:/route/create";
+    }
+
+    @PostMapping("/create")
+    public String createRoute(@RequestParam("maxTime") String time,
+                              @RequestParam("maxPrice") Double price,
+                              HttpSession session) {
+
+        this.createRoute(session, time, price, "");
         return "redirect:/route/create";
     }
 

@@ -21,4 +21,8 @@ public class PreliminaryRouteActivity implements GraphNode {
     private boolean isEvent;
     private Time eventTime;
 
+    @Override
+    public Long getNodeId() {
+        return this.activity.getId();
+    }
 }

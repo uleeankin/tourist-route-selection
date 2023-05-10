@@ -15,13 +15,13 @@ public class Graph<T extends GraphNode> {
 
     public T getNode(Long id) {
         return nodes.stream()
-                .filter(node -> node.getId().equals(id))
+                .filter(node -> node.getNodeId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No node found with ID"));
     }
 
     public Set<T> getConnections(T node) {
-        return connections.get(node.getId()).stream()
+        return connections.get(node.getNodeId()).stream()
                 .map(this::getNode)
                 .collect(Collectors.toSet());
     }

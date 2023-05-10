@@ -1,5 +1,6 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.utils.TimeService;
 
 import java.sql.Time;
@@ -25,7 +26,7 @@ public class RouteFinder<T extends GraphNode> {
 
         Queue<RouteNode<T>> openSet = new PriorityQueue<>();
         Map<T, RouteNode<T>> allNodes = new HashMap<>();
-        Set<T> shortestPathFound = new HashSet<>();
+        Set<PreliminaryRouteActivity> shortestPathFound = new HashSet<>();
 
         RouteNode<T> start = new RouteNode<>(
                 from, null, 0d,
@@ -36,14 +37,16 @@ public class RouteFinder<T extends GraphNode> {
 
         while(!openSet.isEmpty()) {
             RouteNode<T> currentNode = openSet.poll();
-            shortestPathFound.add(currentNode.getCurrent());
+            shortestPathFound.add((PreliminaryRouteActivity) currentNode.getCurrent());
 
             if (currentNode.getCurrent().equals(to)) {
+                shortestPathFound.forEach(x -> System.out.println(x.getActivity().getId()));
                 return this.buildPath(currentNode, allNodes);
             }
 
             this.graph.getConnections(currentNode.getCurrent()).forEach(connection -> {
 
+                System.out.println(this.scorer.getTime(connection));
                 if (!shortestPathFound.contains(connection)) {
 
                     RouteNode<T> nextNode = allNodes
