@@ -3,6 +3,7 @@ package com.uleeankin.touristrouteselection.controllers;
 import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event;
 import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventStatus;
 import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
+import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
@@ -227,19 +228,15 @@ public class RouteController {
         return "redirect:/route/create";
     }
 
-    @PostMapping("/create")
-    public String createRouteWithoutEvents(@RequestParam("maxTime") String time,
-                              @RequestParam("maxPrice") Double price,
-                              HttpSession session) {
-
-        this.createRoute(session, time, price, "");
-        return "redirect:/route/create";
-    }
-
     private void createRoute(HttpSession session, String timeConstraint,
                              Double priceConstraint, String routeStartTime) {
 
-        //List<Activity> route = new RouteCreator().createNewRoute(this.addedActivities);
+        List<PreliminaryRouteActivity> route =
+                new RouteCreator().createNewRoute(
+                        this.preliminaryActivityService.getAll(session.getId()),
+                        priceConstraint, timeConstraint, routeStartTime);
+
+        route.forEach(x -> System.out.println(x.getActivity().getName()));
         /*this.routeService.save(
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),
