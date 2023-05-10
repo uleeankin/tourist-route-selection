@@ -26,7 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -237,6 +236,8 @@ public class RouteController {
                         priceConstraint, timeConstraint, routeStartTime);
 
         route.forEach(x -> System.out.println(x.getActivity().getName()));
+
+        this.preliminaryActivityService.deleteAll(session.getId());
         /*this.routeService.save(
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),

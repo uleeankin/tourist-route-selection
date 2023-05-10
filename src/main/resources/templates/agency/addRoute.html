@@ -7,6 +7,8 @@
     <title>Tourist Guide</title>
     <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
     <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
 <div class="main">
@@ -16,17 +18,15 @@
         </div>
         <div class="navigation-block menu admin">
             <a th:href="@{/agency/all}" class="navigation-text submenu">Все маршруты</a> <br/>
-            <a th:href="@{/agency/add}" class="navigation-text submenu">Создать маршрут</a> <br/>
+            <label class="navigation-text submenu current-submenu">Создать маршрут</label> <br/>
         </div>
     </div>
 
     <div class="main-page-content">
         <div class="heading-panel">
-
             <div>
-                <h1 class="heading welcome">Добро пожаловать в Tourist Guide!</h1>
+                <h1 class="heading">Новый маршрут</h1>
             </div>
-
         </div>
     </div>
 </div>
