@@ -1,6 +1,6 @@
 package com.uleeankin.touristrouteselection.activity.attributes.preliminary.repository;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 
 import java.sql.Time;
 import java.util.List;
@@ -23,7 +23,7 @@ public interface PreliminaryActivityRepository {
 
     boolean hasEvents(String id, boolean isEvent);
 
-    List<PreliminaryRouteActivity> findAll(String id);
+    List<PreliminaryActivity> findAll(String id);
 
-    List<PreliminaryRouteActivity> findAllPreliminary(String id);
+    List<PreliminaryActivity> findAllPreliminary(String id);
 }

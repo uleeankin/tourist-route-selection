@@ -1,19 +1,19 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.utils.TimeService;
 
 import java.sql.Time;
 
-public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
+public class ActivityScorer implements Scorer{
 
     private static final double R = 6371.0;
 
     private static final double V = 4.0;
 
     @Override
-    public double computeCost(PreliminaryRouteActivity from
-            , PreliminaryRouteActivity to) {
+    public double computeCost(PreliminaryActivity from
+            , PreliminaryActivity to) {
         double firstNodeLatitude = Math.toRadians(from.getActivity().getCoordinate().getLatitude());
         double firstNodeLongitude = Math.toRadians(from.getActivity().getCoordinate().getLongitude());
         double secondNodeLatitude = Math.toRadians(to.getActivity().getCoordinate().getLatitude());
@@ -30,8 +30,8 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     }
 
     @Override
-    public Time computeTime(PreliminaryRouteActivity from,
-                            PreliminaryRouteActivity to) {
+    public Time computeTime(PreliminaryActivity from,
+                            PreliminaryActivity to) {
 
         return TimeService.sumTime(TimeService.convert(
                 computeCost(from, to) / V),
@@ -39,28 +39,28 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     }
 
     @Override
-    public double computePrice(PreliminaryRouteActivity from,
-                               PreliminaryRouteActivity to) {
+    public double computePrice(PreliminaryActivity from,
+                               PreliminaryActivity to) {
         return to.getActivity().getPrice();
     }
 
     @Override
-    public Time getTime(PreliminaryRouteActivity current) {
+    public Time getTime(PreliminaryActivity current) {
         return current.getActivity().getDuration();
     }
 
     @Override
-    public double getPrice(PreliminaryRouteActivity current) {
+    public double getPrice(PreliminaryActivity current) {
         return current.getActivity().getPrice();
     }
 
     @Override
-    public boolean isCompulsory(PreliminaryRouteActivity current) {
+    public boolean isCompulsory(PreliminaryActivity current) {
         return current.isCompulsory();
     }
 
     @Override
-    public boolean isEvent(PreliminaryRouteActivity current) {
+    public boolean isEvent(PreliminaryActivity current) {
         return current.isEvent();
     }
 
@@ -70,7 +70,7 @@ public class ActivityScorer implements Scorer<PreliminaryRouteActivity> {
     }
 
     @Override
-    public Time getEventTime(PreliminaryRouteActivity current) {
+    public Time getEventTime(PreliminaryActivity current) {
         return current.getEventTime();
     }
 }

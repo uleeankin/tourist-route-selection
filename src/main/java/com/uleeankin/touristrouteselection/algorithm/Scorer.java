@@ -1,25 +1,29 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+
 import java.sql.Time;
 
-public interface Scorer<T extends GraphNode> {
+public interface Scorer {
 
-    double computeCost(T from, T to);
+    double computeCost(PreliminaryActivity from,
+                       PreliminaryActivity to);
 
-    Time computeTime(T from, T to);
+    Time computeTime(PreliminaryActivity from,
+                     PreliminaryActivity to);
 
-    double computePrice(T from, T to);
+    double computePrice(PreliminaryActivity from, PreliminaryActivity to);
 
-    Time getTime(T current);
+    Time getTime(PreliminaryActivity current);
 
-    double getPrice(T current);
+    double getPrice(PreliminaryActivity current);
 
-    boolean isCompulsory(T current);
+    boolean isCompulsory(PreliminaryActivity current);
 
-    boolean isEvent(T current);
+    boolean isEvent(PreliminaryActivity current);
 
     boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime);
 
-    Time getEventTime(T current);
+    Time getEventTime(PreliminaryActivity current);
 
 }

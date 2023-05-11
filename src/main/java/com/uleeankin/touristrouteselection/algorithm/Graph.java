@@ -1,26 +1,28 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Graph<T extends GraphNode> {
-    private final Set<T> nodes;
+public class Graph {
+    private final Set<PreliminaryActivity> nodes;
     private final Map<Long, Set<Long>> connections;
 
-    public Graph(Set<T> nodes, Map<Long, Set<Long>> connections) {
+    public Graph(Set<PreliminaryActivity> nodes, Map<Long, Set<Long>> connections) {
         this.nodes = nodes;
         this.connections = connections;
     }
 
-    public T getNode(Long id) {
+    public PreliminaryActivity getNode(Long id) {
         return nodes.stream()
                 .filter(node -> node.getNodeId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No node found with ID"));
     }
 
-    public Set<T> getConnections(T node) {
+    public Set<PreliminaryActivity> getConnections(PreliminaryActivity node) {
         return connections.get(node.getNodeId()).stream()
                 .map(this::getNode)
                 .collect(Collectors.toSet());

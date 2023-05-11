@@ -5,7 +5,7 @@ import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event
 import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.city.model.City;
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
@@ -145,7 +145,7 @@ public class RouteController {
                                                HttpSession session) {
 
         List<ActivityStatus> activityStatuses = new ArrayList<>();
-        List<PreliminaryRouteActivity> addedActivities =
+        List<PreliminaryActivity> addedActivities =
                 this.preliminaryActivityService.getAll(session.getId());
 
         for (Activity activity : activities) {
@@ -163,7 +163,7 @@ public class RouteController {
                                             HttpSession session) {
 
         List<EventStatus> eventStatuses = new ArrayList<>();
-        List<PreliminaryRouteActivity> addedEvents =
+        List<PreliminaryActivity> addedEvents =
                 this.preliminaryActivityService.getAll(session.getId());
 
         for (Event event : events) {
@@ -243,7 +243,7 @@ public class RouteController {
     private void createRoute(HttpSession session, String timeConstraint,
                              Double priceConstraint, String routeStartTime) {
 
-        List<PreliminaryRouteActivity> route =
+        List<PreliminaryActivity> route =
                 new RouteCreator().createNewRoute(
                         this.preliminaryActivityService.getAll(session.getId()),
                         priceConstraint, timeConstraint, routeStartTime);

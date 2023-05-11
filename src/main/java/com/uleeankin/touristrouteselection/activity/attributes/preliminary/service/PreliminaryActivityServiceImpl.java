@@ -1,6 +1,6 @@
 package com.uleeankin.touristrouteselection.activity.attributes.preliminary.service;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.repository.PreliminaryActivityRepository;
 import com.uleeankin.touristrouteselection.utils.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +58,12 @@ public class PreliminaryActivityServiceImpl
     }
 
     @Override
-    public List<PreliminaryRouteActivity> getAll(String id) {
+    public List<PreliminaryActivity> getAll(String id) {
         return this.repository.findAll(id);
     }
 
     @Override
-    public List<PreliminaryRouteActivity> getAllPreliminary(String id) {
+    public List<PreliminaryActivity> getAllPreliminary(String id) {
         return this.repository.findAllPreliminary(id);
     }
 }

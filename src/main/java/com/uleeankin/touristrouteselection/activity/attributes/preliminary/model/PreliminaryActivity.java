@@ -13,7 +13,7 @@ import java.sql.Time;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PreliminaryRouteActivity implements GraphNode {
+public class PreliminaryActivity implements GraphNode {
 
     private String id;
     private Activity activity;

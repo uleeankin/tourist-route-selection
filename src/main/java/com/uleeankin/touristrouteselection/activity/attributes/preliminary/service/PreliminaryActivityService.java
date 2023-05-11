@@ -1,6 +1,6 @@
 package com.uleeankin.touristrouteselection.activity.attributes.preliminary.service;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface PreliminaryActivityService {
 
     boolean hasEvents(String id);
 
-    List<PreliminaryRouteActivity> getAll(String id);
+    List<PreliminaryActivity> getAll(String id);
 
-    List<PreliminaryRouteActivity> getAllPreliminary(String id);
+    List<PreliminaryActivity> getAllPreliminary(String id);
 }

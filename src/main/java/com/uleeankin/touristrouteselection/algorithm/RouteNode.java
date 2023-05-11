@@ -1,11 +1,13 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+
 import java.sql.Time;
 
-public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
+public class RouteNode implements Comparable<RouteNode> {
 
-    private final T current;
-    private T previous;
+    private final PreliminaryActivity current;
+    private PreliminaryActivity previous;
 
     private double distanceScore;
 
@@ -15,7 +17,7 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
 
     private double estimatedScore;
 
-    public RouteNode(T current) {
+    public RouteNode(PreliminaryActivity current) {
         this(current, null,
                 Double.POSITIVE_INFINITY,
                 new Time(Long.MAX_VALUE),
@@ -23,7 +25,7 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
                 Double.POSITIVE_INFINITY);
     }
 
-    public RouteNode(T current, T previous,
+    public RouteNode(PreliminaryActivity current, PreliminaryActivity previous,
                      double distanceScore, Time timeScore,
                      double priceScore, double estimatedScore) {
         this.current = current;
@@ -45,15 +47,15 @@ public class RouteNode<T extends GraphNode> implements Comparable<RouteNode> {
         }
     }
 
-    public T getCurrent() {
+    public PreliminaryActivity getCurrent() {
         return current;
     }
 
-    public T getPrevious() {
+    public PreliminaryActivity getPrevious() {
         return previous;
     }
 
-    public void setPrevious(T previous) {
+    public void setPrevious(PreliminaryActivity previous) {
         this.previous = previous;
     }
 

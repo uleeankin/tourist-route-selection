@@ -3,7 +3,7 @@ package com.uleeankin.touristrouteselection;
 
 import com.uleeankin.touristrouteselection.activity.attributes.category.model.Category;
 import com.uleeankin.touristrouteselection.activity.attributes.coordinates.model.Coordinate;
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.city.model.City;
@@ -18,69 +18,69 @@ public class AlgorithmTests {
 
     @Test
     public void createWithoutEvents() {
-        List<PreliminaryRouteActivity> activities = new ArrayList<>();
+        List<PreliminaryActivity> activities = new ArrayList<>();
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(10L, "", "", new Coordinate(1L, 54.6295, 39.7419,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 0.0, TimeService.convert("00:45")),
                 true, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(11L, "", "", new Coordinate(1L, 54.6330, 39.7362,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 350.0, TimeService.convert("01:20")),
                 true, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(12L, "", "", new Coordinate(1L, 54.6272, 39.7517,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 300.0, TimeService.convert("01:45")),
                 true, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(13L, "", "", new Coordinate(1L, 54.6317, 39.7271,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 400.0, TimeService.convert("01:30")),
                 false, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(14L, "", "", new Coordinate(1L, 54.0846, 61.5366,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 0.0, TimeService.convert("01:50")),
                 false, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(15L, "", "", new Coordinate(1L, 54.6338, 39.7609,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 600.0, TimeService.convert("01:00")),
                 false, false, null));
 
-        activities.add(new PreliminaryRouteActivity("1",
+        activities.add(new PreliminaryActivity("1",
                 new Activity(16L, "", "", new Coordinate(1L, 54.6104, 39.7117,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 0.0, TimeService.convert("00:30")),
                 false, false, null));
 
-        List<PreliminaryRouteActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
+        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
 
         //creator.forEach(x -> System.out.println(x.getActivity().getId()));
 
         //this.sort(activities).forEach(x -> System.out.println(x.getActivity().getId()));
     }
 
-    private List<PreliminaryRouteActivity> sort(List<PreliminaryRouteActivity> routeActivities) {
+    private List<PreliminaryActivity> sort(List<PreliminaryActivity> routeActivities) {
 
-        routeActivities.sort(new Comparator<PreliminaryRouteActivity>() {
+        routeActivities.sort(new Comparator<PreliminaryActivity>() {
             @Override
-            public int compare(PreliminaryRouteActivity o1, PreliminaryRouteActivity o2) {
+            public int compare(PreliminaryActivity o1, PreliminaryActivity o2) {
                 int latitudeCompare = Double.compare(
                         o1.getActivity().getCoordinate().getLatitude(),
                         o2.getActivity().getCoordinate().getLatitude());

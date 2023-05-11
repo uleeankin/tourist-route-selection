@@ -1,6 +1,6 @@
 package com.uleeankin.touristrouteselection.activity.attributes.preliminary.repository;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.config.PreliminaryActivityConfig;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.mapper.PreliminaryActivityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,13 +82,13 @@ public class PreliminaryActivityRepositoryImpl implements PreliminaryActivityRep
     }
 
     @Override
-    public List<PreliminaryRouteActivity> findAll(String id) {
+    public List<PreliminaryActivity> findAll(String id) {
         return this.jdbcTemplate.query(this.config.getAll(),
                 new PreliminaryActivityMapper(), id);
     }
 
     @Override
-    public List<PreliminaryRouteActivity> findAllPreliminary(String id) {
+    public List<PreliminaryActivity> findAllPreliminary(String id) {
         return this.jdbcTemplate.query(this.config.getAllPreliminary(),
                 new PreliminaryActivityMapper(), id, true);
     }

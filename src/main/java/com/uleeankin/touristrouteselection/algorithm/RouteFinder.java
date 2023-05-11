@@ -1,15 +1,16 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
-import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryRouteActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.utils.TimeService;
+import org.springframework.security.core.parameters.P;
 
 import java.sql.Time;
 import java.util.*;
 
-public class RouteFinder<T extends GraphNode> {
+public class RouteFinder {
 
-    private final Graph<T> graph;
-    private final Scorer<T> scorer;
+    private final Graph graph;
+    private final Scorer scorer;
 
     private Time maxTime;
 
@@ -17,18 +18,20 @@ public class RouteFinder<T extends GraphNode> {
 
     private Time startTime;
 
-    public RouteFinder(Graph<T> graph, Scorer<T> scorer) {
+    public RouteFinder(Graph graph, Scorer scorer) {
         this.graph = graph;
         this.scorer = scorer;
     }
 
-    public List<T> findRoute(T from, T to) throws IllegalStateException {
+    public List<PreliminaryActivity> findRoute(
+            PreliminaryActivity from, PreliminaryActivity to)
+            throws IllegalStateException {
 
-        Queue<RouteNode<T>> openSet = new PriorityQueue<>();
-        Map<T, RouteNode<T>> allNodes = new HashMap<>();
-        Set<PreliminaryRouteActivity> shortestPathFound = new HashSet<>();
+        Queue<RouteNode> openSet = new PriorityQueue<>();
+        Map<PreliminaryActivity, RouteNode> allNodes = new HashMap<>();
+        Set<PreliminaryActivity> shortestPathFound = new HashSet<>();
 
-        RouteNode<T> start = new RouteNode<>(
+        RouteNode start = new RouteNode(
                 from, null, 0d,
                 this.scorer.getTime(from), this.scorer.getPrice(from),
                 this.scorer.computeCost(from, to));
@@ -36,21 +39,19 @@ public class RouteFinder<T extends GraphNode> {
         allNodes.put(from, start);
 
         while(!openSet.isEmpty()) {
-            RouteNode<T> currentNode = openSet.poll();
-            shortestPathFound.add((PreliminaryRouteActivity) currentNode.getCurrent());
+            RouteNode currentNode = openSet.poll();
+            shortestPathFound.add((PreliminaryActivity) currentNode.getCurrent());
 
             if (currentNode.getCurrent().equals(to)) {
-                shortestPathFound.forEach(x -> System.out.println(x.getActivity().getId()));
                 return this.buildPath(currentNode, allNodes);
             }
 
             this.graph.getConnections(currentNode.getCurrent()).forEach(connection -> {
 
-                System.out.println(this.scorer.getTime(connection));
                 if (!shortestPathFound.contains(connection)) {
 
-                    RouteNode<T> nextNode = allNodes
-                            .getOrDefault(connection, new RouteNode<>(connection));
+                    RouteNode nextNode = allNodes
+                            .getOrDefault(connection, new RouteNode(connection));
                     allNodes.put(connection, nextNode);
 
                     double newDistanceScore = currentNode.getDistanceScore()
@@ -84,9 +85,9 @@ public class RouteFinder<T extends GraphNode> {
         throw new IllegalStateException("No route found");
     }
 
-    private void checkTypeAndAdd(T to, Queue<RouteNode<T>> openSet,
-                                 RouteNode<T> currentNode, T connection,
-                                 RouteNode<T> nextNode, double distance,
+    private void checkTypeAndAdd(PreliminaryActivity to, Queue<RouteNode> openSet,
+                                 RouteNode currentNode, PreliminaryActivity connection,
+                                 RouteNode nextNode, double distance,
                                  Time time, double price) {
         if (this.scorer.isEvent(nextNode.getCurrent())) {
 
@@ -109,9 +110,9 @@ public class RouteFinder<T extends GraphNode> {
     }
 
     private void addNode(double distance, Time time, double price,
-                         RouteNode<T> currentNode, T connection,
-                         RouteNode<T> nextNode, T to,
-                         Queue<RouteNode<T>> openSet) {
+                         RouteNode currentNode, PreliminaryActivity connection,
+                         RouteNode nextNode, PreliminaryActivity to,
+                         Queue<RouteNode> openSet) {
 
         nextNode.setPrevious(currentNode.getCurrent());
         nextNode.setDistanceScore(distance);
@@ -123,7 +124,7 @@ public class RouteFinder<T extends GraphNode> {
     }
 
     private boolean compareScore(double distanceScore, Time timeScore,
-                                 double priceScore, RouteNode<T> nextNode) {
+                                 double priceScore, RouteNode nextNode) {
 
         boolean scoreComparison = true;
 
@@ -147,8 +148,9 @@ public class RouteFinder<T extends GraphNode> {
         return scoreComparison;
     }
 
-    private List<T> buildPath(RouteNode<T> currentNode, Map<T, RouteNode<T>> allNodes) {
-        List<T> route = new ArrayList<>();
+    private List<PreliminaryActivity> buildPath(RouteNode currentNode,
+                                                Map<PreliminaryActivity, RouteNode> allNodes) {
+        List<PreliminaryActivity> route = new ArrayList<>();
         do {
             route.add(0, currentNode.getCurrent());
             currentNode = allNodes.get(currentNode.getPrevious());
