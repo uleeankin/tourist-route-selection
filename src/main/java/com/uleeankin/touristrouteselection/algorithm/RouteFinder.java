@@ -20,12 +20,15 @@ public class RouteFinder {
 
     private Time startTime;
 
+    private boolean isPriceBound = false;
+    private boolean isTimeBound = false;
+
     public RouteFinder(Graph graph, Scorer scorer) {
         this.graph = graph;
         this.scorer = scorer;
     }
 
-    public List<PreliminaryActivity> findRoute(PreliminaryActivity from, int size)
+    public List<PreliminaryActivity> findRoute(PreliminaryActivity from)
             throws IllegalStateException {
 
         Queue<NodeWrapper> queue = new PriorityQueue<>();
@@ -35,7 +38,8 @@ public class RouteFinder {
         NodeWrapper start = new NodeWrapper(
                 from, null, 0d,
                 from.getActivity().getDuration(),
-                from.getActivity().getPrice());
+                from.getActivity().getPrice(),
+                hasPriceConstraint(), hasTimeConstraint());
         start.setPriority(BASE_PRIORITY);
         queue.add(start);
         allNodes.put(from, start);
@@ -46,16 +50,13 @@ public class RouteFinder {
             queue.clear();
             shortestPathFound.add(currentNode.getCurrent());
 
-            if (shortestPathFound.size() == size) {
-                return this.buildPath(currentNode, allNodes);
-            }
-
             this.graph.getConnections(currentNode.getCurrent()).forEach(connection -> {
 
                 if (!shortestPathFound.contains(connection)) {
 
                     NodeWrapper neighborWrapper = allNodes
-                            .getOrDefault(connection, new NodeWrapper(connection));
+                            .getOrDefault(connection, new NodeWrapper(connection,
+                                    hasPriceConstraint(), hasTimeConstraint()));
                     allNodes.put(connection, neighborWrapper);
 
                     neighborWrapper.setPriority(BASE_PRIORITY);
@@ -80,15 +81,17 @@ public class RouteFinder {
                                     newDistanceScore, newTimeScore, newPriceScore);
                         }
                     }
-
                 }
 
             });
+
+            if (queue.size() == 0
+                || this.isPriceBound
+                || this.isTimeBound) {
+                return this.buildPath(currentNode, allNodes);
+            }
         }
 
-        /*List<PreliminaryActivity> route = new ArrayList<>(shortestPathFound);
-        shortestPathFound.forEach(x -> System.out.println(x.getActivity().getId()));
-        return this.buildPath(allNodes.get(route.get(route.size() - 1)), allNodes);*/
         throw new IllegalStateException("No route found");
     }
 
@@ -134,11 +137,15 @@ public class RouteFinder {
         if (hasTimeConstraint()) {
             scoreComparison = scoreComparison
                     && (timeScore.before(this.maxTime));
+
+            this.isTimeBound = this.isTimeBound && (timeScore.after(this.maxTime));
         }
 
         if (hasPriceConstraint()) {
             scoreComparison = scoreComparison
                     && (priceScore <= this.maxPrice);
+
+            this.isPriceBound = this.isPriceBound && (priceScore > this.maxPrice);
         }
 
         return scoreComparison;
@@ -154,17 +161,6 @@ public class RouteFinder {
         Collections.reverse(route);
         return route;
     }
-
-    /*private List<PreliminaryActivity> buildPath(Set<PreliminaryActivity> shortRoute,
-                                                Map<PreliminaryActivity, NodeWrapper> allNodes) {
-        List<PreliminaryActivity> route = new ArrayList<>();
-        do {
-            route.add(currentNode.getCurrent());
-            currentNode = allNodes.get(currentNode.getPrevious());
-        } while (currentNode != null);
-        Collections.reverse(route);
-        return route;
-    }*/
 
     private void upPriority(NodeWrapper node, int priorityUp) {
         node.setPriority(node.getPriority() + priorityUp);

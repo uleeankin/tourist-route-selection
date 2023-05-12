@@ -62,7 +62,7 @@ public class AlgorithmTests {
                         new byte[]{0}, 0.0, TimeService.convert("00:30")),
                 false, false, null));
 
-        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
+        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, "04:00:00", "");
 
         creator.forEach(x -> System.out.println(x.getActivity().getId()));
     }

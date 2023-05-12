@@ -19,7 +19,9 @@ public class TimeService {
     }
 
     public static Time convert(double time) {
-        return new Time((long) time * 24 * 60 * 60 * 1000);
+        int hours = (int) time;
+        int minutes = (int) (60 * (time - hours));
+        return TimeService.convert(String.format("%d:%d", hours, minutes));
     }
 
     public static List<Time> getSessions(String startTime, String endTime,

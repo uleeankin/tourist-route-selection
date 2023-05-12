@@ -21,11 +21,11 @@ public class ActivityScorer implements Scorer{
         return 2 * R * Math.asin(
                 Math.sqrt(
                         Math.pow(Math.sin(
-                                secondNodeLatitude - firstNodeLatitude), 2)
+                                (secondNodeLatitude - firstNodeLatitude) / 2.0), 2)
                                 + Math.cos(firstNodeLatitude)
                                 * Math.cos(secondNodeLatitude)
                                 * (Math.pow(Math.sin(
-                                secondNodeLongitude - firstNodeLongitude), 2))
+                                (secondNodeLongitude - firstNodeLongitude) / 2.0), 2))
                 ));
     }
 
