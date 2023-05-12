@@ -25,34 +25,27 @@ public class AlgorithmTests {
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 0.0, TimeService.convert("00:45")),
-                true, false, null));
+                false, false, null));
 
         activities.add(new PreliminaryActivity("1",
                 new Activity(11L, "", "", new Coordinate(1L, 54.6330, 39.7362,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 350.0, TimeService.convert("01:20")),
-                true, false, null));
+                false, false, null));
 
         activities.add(new PreliminaryActivity("1",
                 new Activity(12L, "", "", new Coordinate(1L, 54.6272, 39.7517,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 300.0, TimeService.convert("01:45")),
-                true, false, null));
+                false, false, null));
 
         activities.add(new PreliminaryActivity("1",
                 new Activity(13L, "", "", new Coordinate(1L, 54.6317, 39.7271,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 400.0, TimeService.convert("01:30")),
-                false, false, null));
-
-        activities.add(new PreliminaryActivity("1",
-                new Activity(14L, "", "", new Coordinate(1L, 54.0846, 61.5366,
-                        new City(1L, "")),
-                        new Category(1L, ""),
-                        new byte[]{0}, 0.0, TimeService.convert("01:50")),
                 false, false, null));
 
         activities.add(new PreliminaryActivity("1",
@@ -71,9 +64,7 @@ public class AlgorithmTests {
 
         List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
 
-        //creator.forEach(x -> System.out.println(x.getActivity().getId()));
-
-        //this.sort(activities).forEach(x -> System.out.println(x.getActivity().getId()));
+        creator.forEach(x -> System.out.println(x.getActivity().getId()));
     }
 
     private List<PreliminaryActivity> sort(List<PreliminaryActivity> routeActivities) {

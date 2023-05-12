@@ -32,8 +32,7 @@ public class RouteCreator {
             finder.setStartTime(TimeService.convert(startTime));
         }
 
-        return finder.findRoute(sortedList.get(0),
-                sortedList.get(sortedList.size() - 1));
+        return finder.findRoute(sortedList.get(0), activities.size());
     }
 
     private Map<Long, Set<Long>> getConnections(List<PreliminaryActivity> routeActivities) {

@@ -17,13 +17,13 @@ public class Graph {
 
     public PreliminaryActivity getNode(Long id) {
         return nodes.stream()
-                .filter(node -> node.getNodeId().equals(id))
+                .filter(node -> node.getActivity().getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No node found with ID"));
     }
 
     public Set<PreliminaryActivity> getConnections(PreliminaryActivity node) {
-        return connections.get(node.getNodeId()).stream()
+        return connections.get(node.getActivity().getId()).stream()
                 .map(this::getNode)
                 .collect(Collectors.toSet());
     }

@@ -12,8 +12,8 @@ public class ActivityScorer implements Scorer{
     private static final double V = 4.0;
 
     @Override
-    public double computeCost(PreliminaryActivity from
-            , PreliminaryActivity to) {
+    public double computeCost(
+            PreliminaryActivity from, PreliminaryActivity to) {
         double firstNodeLatitude = Math.toRadians(from.getActivity().getCoordinate().getLatitude());
         double firstNodeLongitude = Math.toRadians(from.getActivity().getCoordinate().getLongitude());
         double secondNodeLatitude = Math.toRadians(to.getActivity().getCoordinate().getLatitude());
@@ -44,33 +44,10 @@ public class ActivityScorer implements Scorer{
         return to.getActivity().getPrice();
     }
 
-    @Override
-    public Time getTime(PreliminaryActivity current) {
-        return current.getActivity().getDuration();
-    }
-
-    @Override
-    public double getPrice(PreliminaryActivity current) {
-        return current.getActivity().getPrice();
-    }
-
-    @Override
-    public boolean isCompulsory(PreliminaryActivity current) {
-        return current.isCompulsory();
-    }
-
-    @Override
-    public boolean isEvent(PreliminaryActivity current) {
-        return current.isEvent();
-    }
 
     @Override
     public boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime) {
         return TimeService.sumTime(routeStartTime, currentTime).before(eventStartTime);
     }
 
-    @Override
-    public Time getEventTime(PreliminaryActivity current) {
-        return current.getEventTime();
-    }
 }

@@ -2,12 +2,14 @@ package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.utils.TimeService;
-import org.springframework.security.core.parameters.P;
-
 import java.sql.Time;
 import java.util.*;
 
 public class RouteFinder {
+
+    private static final int BASE_PRIORITY = 1;
+    private static final int PRIORITY_UP = 1;
+    private static final int COMPULSORY_PRIORITY_UP = 1;
 
     private final Graph graph;
     private final Scorer scorer;
@@ -23,26 +25,28 @@ public class RouteFinder {
         this.scorer = scorer;
     }
 
-    public List<PreliminaryActivity> findRoute(
-            PreliminaryActivity from, PreliminaryActivity to)
+    public List<PreliminaryActivity> findRoute(PreliminaryActivity from, int size)
             throws IllegalStateException {
 
-        Queue<RouteNode> openSet = new PriorityQueue<>();
-        Map<PreliminaryActivity, RouteNode> allNodes = new HashMap<>();
+        Queue<NodeWrapper> queue = new PriorityQueue<>();
+        Map<PreliminaryActivity, NodeWrapper> allNodes = new HashMap<>();
         Set<PreliminaryActivity> shortestPathFound = new HashSet<>();
 
-        RouteNode start = new RouteNode(
+        NodeWrapper start = new NodeWrapper(
                 from, null, 0d,
-                this.scorer.getTime(from), this.scorer.getPrice(from),
-                this.scorer.computeCost(from, to));
-        openSet.add(start);
+                from.getActivity().getDuration(),
+                from.getActivity().getPrice());
+        start.setPriority(BASE_PRIORITY);
+        queue.add(start);
         allNodes.put(from, start);
 
-        while(!openSet.isEmpty()) {
-            RouteNode currentNode = openSet.poll();
-            shortestPathFound.add((PreliminaryActivity) currentNode.getCurrent());
+        while(!queue.isEmpty()) {
 
-            if (currentNode.getCurrent().equals(to)) {
+            NodeWrapper currentNode = queue.poll();
+            queue.clear();
+            shortestPathFound.add(currentNode.getCurrent());
+
+            if (shortestPathFound.size() == size) {
                 return this.buildPath(currentNode, allNodes);
             }
 
@@ -50,9 +54,11 @@ public class RouteFinder {
 
                 if (!shortestPathFound.contains(connection)) {
 
-                    RouteNode nextNode = allNodes
-                            .getOrDefault(connection, new RouteNode(connection));
-                    allNodes.put(connection, nextNode);
+                    NodeWrapper neighborWrapper = allNodes
+                            .getOrDefault(connection, new NodeWrapper(connection));
+                    allNodes.put(connection, neighborWrapper);
+
+                    neighborWrapper.setPriority(BASE_PRIORITY);
 
                     double newDistanceScore = currentNode.getDistanceScore()
                             + scorer.computeCost(currentNode.getCurrent(), connection);
@@ -63,16 +69,14 @@ public class RouteFinder {
                     Time newTimeScore = TimeService.sumTime(currentNode.getTimeScore(),
                             scorer.computeTime(currentNode.getCurrent(), connection));
 
-
-                    if (this.scorer.isCompulsory(nextNode.getCurrent())) {
-
-                        this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode,
+                    if (neighborWrapper.getCurrent().isCompulsory()) {
+                        this.upPriority(neighborWrapper, COMPULSORY_PRIORITY_UP);
+                        this.checkTypeAndAdd(queue, currentNode, neighborWrapper,
                                 newDistanceScore, newTimeScore, newPriceScore);
 
                     } else {
-                        if (this.compareScore(newDistanceScore, newTimeScore,
-                                newPriceScore, nextNode)) {
-                            this.checkTypeAndAdd(to, openSet, currentNode, connection, nextNode,
+                        if (this.compareScore(newTimeScore, newPriceScore)) {
+                            this.checkTypeAndAdd(queue, currentNode, neighborWrapper,
                                     newDistanceScore, newTimeScore, newPriceScore);
                         }
                     }
@@ -82,80 +86,88 @@ public class RouteFinder {
             });
         }
 
+        /*List<PreliminaryActivity> route = new ArrayList<>(shortestPathFound);
+        shortestPathFound.forEach(x -> System.out.println(x.getActivity().getId()));
+        return this.buildPath(allNodes.get(route.get(route.size() - 1)), allNodes);*/
         throw new IllegalStateException("No route found");
     }
 
-    private void checkTypeAndAdd(PreliminaryActivity to, Queue<RouteNode> openSet,
-                                 RouteNode currentNode, PreliminaryActivity connection,
-                                 RouteNode nextNode, double distance,
+    private void checkTypeAndAdd(Queue<NodeWrapper> openSet, NodeWrapper currentNode,
+                                 NodeWrapper neighborWrapper, double distance,
                                  Time time, double price) {
-        if (this.scorer.isEvent(nextNode.getCurrent())) {
-
+        if (neighborWrapper.getCurrent().isEvent()) {
             if (this.scorer.isRightTime(
                     this.scorer.computeTime(
                             currentNode.getCurrent(),
-                            nextNode.getCurrent()),
-                    this.scorer.getEventTime(nextNode.getCurrent()),
+                            neighborWrapper.getCurrent()),
+                    neighborWrapper.getCurrent().getEventTime(),
                     this.startTime)) {
 
-                this.addNode(distance, time, price, currentNode,
-                        connection, nextNode, to, openSet);
+                this.upPriority(neighborWrapper, PRIORITY_UP);
+                this.addNode(distance, time, price,
+                        currentNode, neighborWrapper, openSet);
 
             }
 
         } else {
-            this.addNode(distance, time, price, currentNode,
-                    connection, nextNode, to, openSet);
+            this.addNode(distance, time, price,
+                    currentNode, neighborWrapper, openSet);
         }
     }
 
     private void addNode(double distance, Time time, double price,
-                         RouteNode currentNode, PreliminaryActivity connection,
-                         RouteNode nextNode, PreliminaryActivity to,
-                         Queue<RouteNode> openSet) {
+                         NodeWrapper currentNode, NodeWrapper neighborWrapper,
+                         Queue<NodeWrapper> openSet) {
 
-        nextNode.setPrevious(currentNode.getCurrent());
-        nextNode.setDistanceScore(distance);
-        nextNode.setTimeScore(time);
-        nextNode.setPriceScore(price);
-        nextNode.setEstimatedScore(distance
-                + scorer.computeCost(connection, to));
-        openSet.add(nextNode);
+        neighborWrapper.setPrevious(currentNode.getCurrent());
+        neighborWrapper.setDistanceScore(distance);
+        neighborWrapper.setTimeScore(time);
+        neighborWrapper.setPriceScore(price);
+        openSet.remove(neighborWrapper);
+        openSet.add(neighborWrapper);
     }
 
-    private boolean compareScore(double distanceScore, Time timeScore,
-                                 double priceScore, RouteNode nextNode) {
+    private boolean compareScore(Time timeScore, double priceScore) {
 
         boolean scoreComparison = true;
 
         if (hasTimeConstraint()) {
             scoreComparison = scoreComparison
-                    && (timeScore.before(nextNode.getTimeScore()))
                     && (timeScore.before(this.maxTime));
         }
 
         if (hasPriceConstraint()) {
             scoreComparison = scoreComparison
-                    && (priceScore < nextNode.getPriceScore())
                     && (priceScore <= this.maxPrice);
-        }
-
-        if (!hasTimeConstraint() && ! hasPriceConstraint()) {
-            scoreComparison = scoreComparison
-                    && (distanceScore < nextNode.getDistanceScore());
         }
 
         return scoreComparison;
     }
 
-    private List<PreliminaryActivity> buildPath(RouteNode currentNode,
-                                                Map<PreliminaryActivity, RouteNode> allNodes) {
+    private List<PreliminaryActivity> buildPath(NodeWrapper currentNode,
+                                                Map<PreliminaryActivity, NodeWrapper> allNodes) {
         List<PreliminaryActivity> route = new ArrayList<>();
         do {
-            route.add(0, currentNode.getCurrent());
+            route.add(currentNode.getCurrent());
             currentNode = allNodes.get(currentNode.getPrevious());
         } while (currentNode != null);
+        Collections.reverse(route);
         return route;
+    }
+
+    /*private List<PreliminaryActivity> buildPath(Set<PreliminaryActivity> shortRoute,
+                                                Map<PreliminaryActivity, NodeWrapper> allNodes) {
+        List<PreliminaryActivity> route = new ArrayList<>();
+        do {
+            route.add(currentNode.getCurrent());
+            currentNode = allNodes.get(currentNode.getPrevious());
+        } while (currentNode != null);
+        Collections.reverse(route);
+        return route;
+    }*/
+
+    private void upPriority(NodeWrapper node, int priorityUp) {
+        node.setPriority(node.getPriority() + priorityUp);
     }
 
     public void addTimeConstraint(Time maxTime) {

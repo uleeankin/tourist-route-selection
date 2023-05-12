@@ -14,16 +14,7 @@ public interface Scorer {
 
     double computePrice(PreliminaryActivity from, PreliminaryActivity to);
 
-    Time getTime(PreliminaryActivity current);
-
-    double getPrice(PreliminaryActivity current);
-
-    boolean isCompulsory(PreliminaryActivity current);
-
-    boolean isEvent(PreliminaryActivity current);
 
     boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime);
-
-    Time getEventTime(PreliminaryActivity current);
 
 }
