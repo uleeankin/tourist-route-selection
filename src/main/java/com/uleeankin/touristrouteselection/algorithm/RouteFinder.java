@@ -7,9 +7,8 @@ import java.util.*;
 
 public class RouteFinder {
 
-    private static final int BASE_PRIORITY = 1;
+    private static final int BASE_PRIORITY = 0;
     private static final int PRIORITY_UP = 1;
-    private static final int COMPULSORY_PRIORITY_UP = 1;
 
     private final Graph graph;
     private final Scorer scorer;
@@ -70,16 +69,9 @@ public class RouteFinder {
                     Time newTimeScore = TimeService.sumTime(currentNode.getTimeScore(),
                             scorer.computeTime(currentNode.getCurrent(), connection));
 
-                    if (neighborWrapper.getCurrent().isCompulsory()) {
-                        this.upPriority(neighborWrapper, COMPULSORY_PRIORITY_UP);
+                    if (this.compareScore(newTimeScore, newPriceScore)) {
                         this.checkTypeAndAdd(queue, currentNode, neighborWrapper,
                                 newDistanceScore, newTimeScore, newPriceScore);
-
-                    } else {
-                        if (this.compareScore(newTimeScore, newPriceScore)) {
-                            this.checkTypeAndAdd(queue, currentNode, neighborWrapper,
-                                    newDistanceScore, newTimeScore, newPriceScore);
-                        }
                     }
                 }
 

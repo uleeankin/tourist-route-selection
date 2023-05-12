@@ -20,6 +20,7 @@ public class AlgorithmTests {
     public void createWithoutEvents() {
         List<PreliminaryActivity> activities = new ArrayList<>();
 
+        //почтовая 49
         activities.add(new PreliminaryActivity("1",
                 new Activity(10L, "", "", new Coordinate(1L, 54.6295, 39.7419,
                         new City(1L, "")),
@@ -27,6 +28,7 @@ public class AlgorithmTests {
                         new byte[]{0}, 0.0, TimeService.convert("00:45")),
                 false, false, null));
 
+        //семинарская 20
         activities.add(new PreliminaryActivity("1",
                 new Activity(11L, "", "", new Coordinate(1L, 54.6330, 39.7362,
                         new City(1L, "")),
@@ -34,6 +36,7 @@ public class AlgorithmTests {
                         new byte[]{0}, 350.0, TimeService.convert("01:20")),
                 false, false, null));
 
+        //пожалостина
         activities.add(new PreliminaryActivity("1",
                 new Activity(12L, "", "", new Coordinate(1L, 54.6272, 39.7517,
                         new City(1L, "")),
@@ -41,6 +44,7 @@ public class AlgorithmTests {
                         new byte[]{0}, 300.0, TimeService.convert("01:45")),
                 false, false, null));
 
+        //павлова 25
         activities.add(new PreliminaryActivity("1",
                 new Activity(13L, "", "", new Coordinate(1L, 54.6317, 39.7271,
                         new City(1L, "")),
@@ -55,14 +59,7 @@ public class AlgorithmTests {
                         new byte[]{0}, 600.0, TimeService.convert("01:00")),
                 false, false, null));
 
-        activities.add(new PreliminaryActivity("1",
-                new Activity(16L, "", "", new Coordinate(1L, 54.6104, 39.7117,
-                        new City(1L, "")),
-                        new Category(1L, ""),
-                        new byte[]{0}, 0.0, TimeService.convert("00:30")),
-                false, false, null));
-
-        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, "04:00:00", "");
+        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
 
         creator.forEach(x -> System.out.println(x.getActivity().getId()));
     }
