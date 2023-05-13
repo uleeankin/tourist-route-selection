@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TimeService {
@@ -54,6 +55,16 @@ public class TimeService {
 
         firstTime = firstTime.plusHours(secondTime.getHour());
         firstTime = firstTime.plusMinutes(secondTime.getMinute());
+
+        return TimeService.convert(firstTime.toString());
+    }
+
+    public static Date subTime(Time first, Time second) {
+        LocalTime firstTime = first.toLocalTime();
+        LocalTime secondTime = second.toLocalTime();
+
+        firstTime = firstTime.minusHours(secondTime.getHour());
+        firstTime = firstTime.minusMinutes(secondTime.getMinute());
 
         return TimeService.convert(firstTime.toString());
     }
