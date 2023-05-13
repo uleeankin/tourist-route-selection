@@ -1,8 +1,11 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.utils.TimeService;
+import org.springframework.data.util.Pair;
 
+import java.sql.Time;
 import java.util.*;
 
 public class RouteCreator {
@@ -10,8 +13,9 @@ public class RouteCreator {
     public RouteCreator() {
     }
 
-    public List<PreliminaryActivity> createNewRoute(List<PreliminaryActivity> routeActivities,
-                                                    Double maxPrice, String maxTime, String startTime) {
+    public CreatedRoute createNewRoute(
+            List<PreliminaryActivity> routeActivities,
+            Double maxPrice, String maxTime, String startTime) {
         List<PreliminaryActivity> sortedList = this.sort(routeActivities);
         Set<PreliminaryActivity> activities = new HashSet<>(sortedList);
         Map<Long, Set<Long>> connections = getConnections(sortedList);
@@ -24,7 +28,7 @@ public class RouteCreator {
             finder.addPriceConstraint(maxPrice);
         }
 
-        if (maxTime != null) {
+        if (!maxTime.equals("")) {
             finder.addTimeConstraint(TimeService.convert(maxTime));
         }
 
@@ -32,7 +36,9 @@ public class RouteCreator {
             finder.setStartTime(TimeService.convert(startTime));
         }
 
-        return finder.findRoute(sortedList.get(sortedList.size() - 1));
+        return new CreatedRoute(
+                finder.findRoute(sortedList.get(sortedList.size() - 1)),
+                finder.getPathTime(), finder.getPathPrice(), finder.getPathDuration());
     }
 
     private Map<Long, Set<Long>> getConnections(List<PreliminaryActivity> routeActivities) {

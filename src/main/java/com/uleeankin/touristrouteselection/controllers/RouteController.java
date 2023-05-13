@@ -7,6 +7,7 @@ import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
+import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.activity.attributes.category.model.Category;
@@ -201,50 +202,86 @@ public class RouteController {
     @GetMapping("/constraints")
     public String getConstraintsAddingPage(Model model, HttpSession session) {
         this.sessionContext.addUserNameToPage(model);
+
+        model.addAttribute("hasEvents",
+                this.preliminaryActivityService.hasEvents(session.getId()));
+
+        model.addAttribute("setTimeConstraint",
+                session.getAttribute("timeConstraint"));
+
+        model.addAttribute("setPriceConstraint",
+                session.getAttribute("priceConstraint"));
+
+        model.addAttribute("setStartTime",
+                session.getAttribute("startTime"));
+
         return "route/routeConstraintsPage";
     }
 
-    @PostMapping("/create/events")
-    public String createRouteWithEvents(@RequestParam("maxTime") String time,
-                                        @RequestParam("maxPrice") Double price,
-                                        @RequestParam("startTime") String startTime,
-                                        HttpSession session) {
+    @PostMapping("/constraint/add/time")
+    public String addTimeConstraint(
+            @RequestParam("maxTime") String timeConstraint,
+            HttpSession session) {
 
-        this.createRoute(session, time, price, startTime);
-        return "redirect:/route/create";
+        session.setAttribute("timeConstraint", timeConstraint);
+        return "redirect:/route/constraints";
+    }
+
+    @PostMapping("/constraint/add/price")
+    public String addPriceConstraint(
+            @RequestParam("maxPrice") Double priceConstraint,
+            HttpSession session) {
+        session.setAttribute("priceConstraint", priceConstraint);
+        return "redirect:/route/constraints";
+    }
+
+    @PostMapping("/constraint/add/start")
+    public String addRouteStartTime(
+            @RequestParam("startTime") String startTime,
+            HttpSession session) {
+
+        session.setAttribute("startTime", startTime);
+        return "redirect:/route/constraints";
     }
 
     @PostMapping("/create")
-    public String createRoute(@RequestParam("maxTime") String time,
-                              @RequestParam("maxPrice") Double price,
-                              HttpSession session) {
+    public String createRoute(HttpSession session) {
+        String timeConstraint = session.getAttribute("timeConstraint") != null ?
+                (String) session.getAttribute("timeConstraint") : "";
 
-        this.createRoute(session, time, price, "");
+        Double priceConstraint = session.getAttribute("priceConstraint") != null ?
+                (Double) session.getAttribute("priceConstraint") : null;
+
+        String startTime = session.getAttribute("startTime") != null ?
+                (String) session.getAttribute("startTime") : "";
+
+        this.createRoute(session, timeConstraint,
+                priceConstraint, startTime);
         return "redirect:/route/create";
     }
 
     private void createRoute(HttpSession session, String timeConstraint,
                              Double priceConstraint, String routeStartTime) {
 
-        List<PreliminaryActivity> route =
-                new RouteCreator().createNewRoute(
+        CreatedRoute route = new RouteCreator().createNewRoute(
                         this.preliminaryActivityService.getAll(session.getId()),
                         priceConstraint, timeConstraint, routeStartTime);
 
-        route.forEach(x -> System.out.println(x.getActivity().getName()));
-
-        this.preliminaryActivityService.deleteAll(session.getId());
-        /*this.routeService.save(
+        this.routeService.save(
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),
                 this.sessionContext.getUserLogin(),
-                this.sessionContext.getCurrentCity(session), route);*/
+                this.sessionContext.getCurrentCity(session), route);
+
+        this.preliminaryActivityService.deleteAll(session.getId());
+        session.removeAttribute("timeConstraint");
+        session.removeAttribute("priceConstraint");
+        session.removeAttribute("startTime");
     }
 
     @GetMapping("/create")
     public String showCreatedRoute(Model model, HttpSession session) {
         sessionContext.addUserNameToPage(model);
-
         Route route = this.routeService.getByOwnerAndName(
                 this.sessionContext.getUserLogin(),
                 this.sessionContext.getRouteNameAttribute(session));
@@ -253,7 +290,6 @@ public class RouteController {
 
         List<Activity> activities = this.routeService.getRouteActivities(route.getId());
         model.addAttribute("activities", activities);
-
         return "route/detailedRoutePage";
     }
 

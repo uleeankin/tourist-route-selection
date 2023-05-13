@@ -1,25 +1,20 @@
 package com.uleeankin.touristrouteselection.route.service;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
+import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.city.repository.CityRepository;
 import com.uleeankin.touristrouteselection.route.repository.RouteRepository;
-import com.uleeankin.touristrouteselection.route.utils.RouteDurationCalculator;
-import com.uleeankin.touristrouteselection.route.utils.RouteTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 @Service
 public class RouteServiceImpl implements RouteService {
-
-    private final RouteDurationCalculator durationCalculator;
-
-    private final RouteTimeCalculator routeTimeCalculator;
 
     private final RouteRepository routeRepository;
 
@@ -28,29 +23,25 @@ public class RouteServiceImpl implements RouteService {
     @Autowired
     public RouteServiceImpl(RouteRepository routeRepository,
                             CityRepository cityRepository) {
-        this.durationCalculator = new RouteDurationCalculator();
-        this.routeTimeCalculator = new RouteTimeCalculator();
         this.routeRepository = routeRepository;
         this.cityRepository = cityRepository;
     }
 
     @Override
     public void save(String name, String description,
-                     String owner, String city, List<Activity> activities) {
+                     String owner, String city, CreatedRoute createdRoute) {
 
-        double price = activities.stream().mapToDouble(Activity::getPrice).sum();
-        double duration = this.durationCalculator.getDuration(activities);
-        Time time = this.routeTimeCalculator.getTime(activities);
         Date creationDate = new Date(new java.util.Date().getTime());
         Long cityId = this.cityRepository.findByName(city).get().getId();
 
-        this.routeRepository.save(name, description, owner, time,
-                price, duration, creationDate, cityId);
+        this.routeRepository.save(name, description, owner, createdRoute.getRouteTime(),
+                createdRoute.getRoutePrice(), createdRoute.getRouteDuration(), creationDate, cityId);
 
         Route route = this.routeRepository.findByNameAndOwner(name, owner);
 
-        for (Activity activity : activities) {
-            this.routeRepository.saveActivityToRoute(route.getId(), activity.getId());
+        for (PreliminaryActivity activity : createdRoute.getActivities()) {
+            this.routeRepository.saveActivityToRoute(
+                    route.getId(), activity.getActivity().getId());
         }
     }
 

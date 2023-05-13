@@ -1,6 +1,7 @@
 package com.uleeankin.touristrouteselection.route.service;
 
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
+import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface RouteService {
 
     void save(String name, String description,
-              String owner, String city, List<Activity> activities);
+              String owner, String city, CreatedRoute route);
 
     void changeStatus(Long routeId);
 

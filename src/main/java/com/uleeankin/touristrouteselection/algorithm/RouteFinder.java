@@ -22,6 +22,12 @@ public class RouteFinder {
     private boolean isPriceBound = false;
     private boolean isTimeBound = false;
 
+    private Time pathTime;
+
+    private double pathPrice;
+
+    private double pathDuration;
+
     public RouteFinder(Graph graph, Scorer scorer) {
         this.graph = graph;
         this.scorer = scorer;
@@ -145,6 +151,11 @@ public class RouteFinder {
 
     private List<PreliminaryActivity> buildPath(NodeWrapper currentNode,
                                                 Map<PreliminaryActivity, NodeWrapper> allNodes) {
+
+        this.pathTime = currentNode.getTimeScore();
+        this.pathDuration = currentNode.getDistanceScore();
+        this.pathPrice = currentNode.getPriceScore();
+
         List<PreliminaryActivity> route = new ArrayList<>();
         do {
             route.add(currentNode.getCurrent());
@@ -176,5 +187,17 @@ public class RouteFinder {
 
     private boolean hasPriceConstraint() {
         return this.maxPrice != null;
+    }
+
+    public Time getPathTime() {
+        return pathTime;
+    }
+
+    public Double getPathPrice() {
+        return pathPrice;
+    }
+
+    public double getPathDuration() {
+        return pathDuration;
     }
 }
