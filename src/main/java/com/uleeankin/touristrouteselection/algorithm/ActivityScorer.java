@@ -7,7 +7,7 @@ import java.sql.Time;
 
 public class ActivityScorer implements Scorer{
 
-    private static final Time timeDelta = TimeService.convert("00:30");
+    private static final Time TIME_DELTA = TimeService.convert("01:00");
 
     private static final double R = 6371.0;
 
@@ -52,7 +52,7 @@ public class ActivityScorer implements Scorer{
         return TimeService.sumTime(routeStartTime, currentTime)
                 .before(eventStartTime)
                 && TimeService.sumTime(routeStartTime, currentTime)
-                .after(TimeService.subTime(eventStartTime, timeDelta));
+                .after(TimeService.subTime(eventStartTime, TIME_DELTA));
     }
 
 }

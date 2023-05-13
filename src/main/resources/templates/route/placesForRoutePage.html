@@ -86,30 +86,38 @@
                 <div class="place-label" style="height: 27vh;" th:each="eventSet : ${events}">
                     <label class="place-name"
                            style="padding-left: 25px; padding-top: 0;"
-                           th:text="${eventSet.event.activity.name}">
+                           th:text="${eventSet.info.event.activity.name}">
                     </label><br/>
-                    <textarea readonly class="description-textarea"
-                              th:text="${eventSet.event.activity.description}"/>
+                    <textarea readonly class="description-textarea" style="height: 40%;"
+                              th:text="${eventSet.info.event.activity.description}"/>
                     <div style="display: flex;">
-                        <label class="info-label" th:text="${eventSet.event.activity.duration}"></label>
-                        <label class="info-label" th:text="${eventSet.event.activity.price} + ' руб.'"></label>
+                        <label class="info-label" th:text="${eventSet.info.event.activity.duration}"></label>
+                        <label class="info-label" th:text="${eventSet.info.event.activity.price} + ' руб.'"></label>
+                    </div>
+                    <div style="display: flex; margin-top: 5px;">
                         <span th:if="${eventSet.status}">
                             <form th:method="post"
-                                  th:action="@{/route/events/add/{id}(id=${eventSet.event.activity.id})}">
-                                <button class="login100-form-btn"
-                                        style="width: fit-content; height: fit-content; margin-left: 3px;">
-                                    Добавить
-                                </button>
+                                  th:action="@{/route/events/add/{id}(id=${eventSet.info.event.activity.id})}">
+                                <div style="display: flex;">
+                                    <select th:id="eventTime" class="input100" name="eventTime"
+                                            style="width: fit-content; height: fit-content; margin-left: 20px;">
+                                        <option th:each="time : ${eventSet.info.sessions}" th:text="${time}" th:value="${time}"></option>
+                                    </select>
+                                    <button class="login100-form-btn"
+                                            style="width: fit-content; height: fit-content; margin-left: 7px;">
+                                        Добавить
+                                    </button>
+                                </div>
                             </form>
                         </span>
                         <span th:unless="${eventSet.status}">
                             <form th:method="post"
-                                  th:action="@{/route/places/delete/{id}(id=${eventSet.event.activity.id})}">
+                                  th:action="@{/route/places/delete/{id}(id=${eventSet.info.event.activity.id})}">
                                 <button class="login100-form-btn"
                                         style="width: fit-content;
                                         height: fit-content;
                                         background-color: #7DC4F7;
-                                        margin-left: 3px;
+                                        margin-left: 25px;
                                         color: black;">
                                     Добавлено
                                 </button>

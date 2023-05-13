@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class EventStatus {
 
-    private Event event;
+    private EventInfo info;
     private boolean status;
 }

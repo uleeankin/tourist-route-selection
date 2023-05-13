@@ -1,6 +1,8 @@
 package com.uleeankin.touristrouteselection.controllers;
 
 import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event;
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventInfo;
+import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventSession;
 import com.uleeankin.touristrouteselection.activity.attributes.event.model.EventStatus;
 import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
@@ -128,12 +130,21 @@ public class RouteController {
                 getActivities(activities, session));
 
         if (!this.sessionContext.getSessionDateAttribute(session).isEmpty()) {
-            List<Event> events = this.eventService
+            List<Event> favouriteEvents = this.eventService
                     .getFavouritesByCriteria(
                             this.sessionContext.getUserLogin(),
                             this.sessionContext.getCurrentCity(session),
                             this.sessionContext.getCurrentCategory(session),
                             this.sessionContext.getSessionDateAttribute(session));
+
+            List<EventInfo> events = new ArrayList<>();
+
+            for (Event favouriteEvent : favouriteEvents) {
+                events.add(new EventInfo(favouriteEvent,
+                        this.eventService.getSchedule(
+                                favouriteEvent.getActivity().getId())
+                                .stream().map(EventSession::getSessionTime).toList()));
+            }
 
             model.addAttribute("events",
                     getEvents(events, session));
@@ -160,19 +171,19 @@ public class RouteController {
         return activityStatuses;
     }
 
-    private List<EventStatus> getEvents(List<Event> events,
+    private List<EventStatus> getEvents(List<EventInfo> events,
                                             HttpSession session) {
 
         List<EventStatus> eventStatuses = new ArrayList<>();
         List<PreliminaryActivity> addedEvents =
                 this.preliminaryActivityService.getAll(session.getId());
 
-        for (Event event : events) {
+        for (EventInfo event : events) {
             eventStatuses.add(new EventStatus(event,
                     !addedEvents.stream()
                             .map(addedEvent -> addedEvent.getActivity().getId())
                             .toList()
-                            .contains(event.getActivity().getId())));
+                            .contains(event.getEvent().getActivity().getId())));
         }
 
         return eventStatuses;
@@ -187,8 +198,10 @@ public class RouteController {
 
     @PostMapping("/events/add/{id}")
     public String addEventToRoute(@PathVariable("id") Long id,
+                                  @RequestParam("eventTime") String eventTime,
                                   HttpSession session) {
         this.preliminaryActivityService.save(session.getId(), id, true);
+        this.preliminaryActivityService.updateTime(session.getId(), id, eventTime);
         return "redirect:/route/places";
     }
 
