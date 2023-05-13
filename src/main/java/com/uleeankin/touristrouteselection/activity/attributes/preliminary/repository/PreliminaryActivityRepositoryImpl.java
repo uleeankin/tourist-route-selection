@@ -33,23 +33,6 @@ public class PreliminaryActivityRepositoryImpl implements PreliminaryActivityRep
     }
 
     @Override
-    public void updateCompulsoryStatus(String id, Long activityId, boolean newStatus) {
-        this.jdbcTemplate.update(
-                this.config.getUpdateCompulsoryStatus(), newStatus, id, activityId);
-    }
-
-    @Override
-    public boolean findCompulsoryStatus(String id, Long activityId) {
-        return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(this.config.getCompulsoryStatus(),
-                new RowMapper<Boolean>() {
-                    @Override
-                    public Boolean mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getBoolean("is_compulsory");
-                    }
-                }, id, activityId));
-    }
-
-    @Override
     public void updateEventStatus(String id, Long activityId, boolean newStatus) {
         this.jdbcTemplate.update(
                 this.config.getUpdateEventStatus(), newStatus, id, activityId);

@@ -57,15 +57,13 @@ coordinate:
 
 preliminary:
   save: insert into preliminary_activity (preliminary_route_id, activity_id, is_event) values (?, ?, ?);
-  updateCompulsoryStatus: update preliminary_activity set is_compulsory = ? where preliminary_route_id = ? and activity_id = ?;
-  compulsoryStatus: select is_compulsory from preliminary_activity where preliminary_route_id = ? and activity_id = ?;
   updateEventStatus: update preliminary_activity set is_event = ? where preliminary_route_id = ? and activity_id = ?;
   deleteAll: delete from preliminary_activity where preliminary_route_id = ?;
   deleteById: delete from preliminary_activity where preliminary_route_id = ? and activity_id = ?;
   updateTime: update preliminary_activity set event_time = ? where preliminary_route_id = ? and activity_id = ?;
   hasEvents: select exists(select * from preliminary_activity where preliminary_route_id = ? and is_event = ?) as event_existing;
-  all: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_compulsory, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ?;
-  allPreliminary: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_compulsory, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ? and is_compulsory = ?;
+  all: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ?;
+  allPreliminary: select preliminary_route_id, activity.activity_id, activity_name, description, coordinates_id, latitude, longitude, city_id, city_name, category_id, category_name, photo, price, duration, is_event, event_time from (((preliminary_activity join activity on preliminary_activity.activity_id = activity.activity_id) join coordinate on activity.coordinates = coordinate.coordinates_id) join category on activity.category = category.category_id) join city on coordinate.city = city.city_id where preliminary_route_id = ? and is_compulsory = ?;
 
 event:
   update: update actual_event set start_date = ?, end_date = ? where event_id = ?;

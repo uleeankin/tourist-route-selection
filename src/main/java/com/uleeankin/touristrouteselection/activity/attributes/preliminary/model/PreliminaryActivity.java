@@ -16,7 +16,6 @@ public class PreliminaryActivity {
 
     private String id;
     private Activity activity;
-    private boolean isCompulsory;
     private boolean isEvent;
     private Time eventTime;
 

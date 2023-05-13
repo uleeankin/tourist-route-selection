@@ -9,10 +9,6 @@ public interface PreliminaryActivityRepository {
 
     void save(String id, Long activityId, boolean eventStatus);
 
-    void updateCompulsoryStatus(String id, Long activityId, boolean newStatus);
-
-    boolean findCompulsoryStatus(String id, Long activityId);
-
     void updateEventStatus(String id, Long activityId, boolean newStatus);
 
     void deleteAll(String id);

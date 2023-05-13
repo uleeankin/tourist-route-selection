@@ -26,17 +26,6 @@ public class PreliminaryActivityServiceImpl
     }
 
     @Override
-    public void updateCompulsoryStatus(String id, Long activityId) {
-        this.repository.updateCompulsoryStatus(id, activityId,
-                !this.repository.findCompulsoryStatus(id, activityId));
-    }
-
-    @Override
-    public void updateEventStatus(String id, Long activityId, boolean newStatus) {
-        this.repository.updateEventStatus(id, activityId, newStatus);
-    }
-
-    @Override
     public void deleteAll(String id) {
         this.repository.deleteAll(id);
     }

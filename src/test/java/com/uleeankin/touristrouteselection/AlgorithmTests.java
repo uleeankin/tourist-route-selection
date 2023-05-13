@@ -26,7 +26,7 @@ public class AlgorithmTests {
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 0.0, TimeService.convert("00:45")),
-                false, false, null));
+                false, null));
 
         //семинарская 20
         activities.add(new PreliminaryActivity("1",
@@ -34,7 +34,7 @@ public class AlgorithmTests {
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 350.0, TimeService.convert("01:20")),
-                false, false, null));
+                true, TimeService.convert("13:00")));
 
         //пожалостина
         activities.add(new PreliminaryActivity("1",
@@ -42,7 +42,7 @@ public class AlgorithmTests {
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 300.0, TimeService.convert("01:45")),
-                false, false, null));
+                false, null));
 
         //павлова 25
         activities.add(new PreliminaryActivity("1",
@@ -50,16 +50,16 @@ public class AlgorithmTests {
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 400.0, TimeService.convert("01:30")),
-                false, false, null));
+                false, null));
 
         activities.add(new PreliminaryActivity("1",
                 new Activity(15L, "", "", new Coordinate(1L, 54.6338, 39.7609,
                         new City(1L, "")),
                         new Category(1L, ""),
                         new byte[]{0}, 600.0, TimeService.convert("01:00")),
-                false, false, null));
+                false, null));
 
-        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "");
+        List<PreliminaryActivity> creator = new RouteCreator().createNewRoute(activities, null, null, "9:00");
 
         creator.forEach(x -> System.out.println(x.getActivity().getId()));
     }
