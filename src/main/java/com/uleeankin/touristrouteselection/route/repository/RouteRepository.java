@@ -11,7 +11,7 @@ import java.util.List;
 public interface RouteRepository {
 
     void save(String name, String description, String owner, Time duration,
-              double price, double length, Date creationDate, Long city);
+              double price, double length, Date creationDate, byte[] photo, Long city);
 
     void saveActivityToRoute(Long routeId, Long activityId);
 

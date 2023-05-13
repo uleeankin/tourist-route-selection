@@ -10,7 +10,7 @@ import java.util.List;
 public interface RouteService {
 
     void save(String name, String description,
-              String owner, String city, CreatedRoute route);
+              String owner, String city, byte[] photo, CreatedRoute route);
 
     void changeStatus(Long routeId);
 
