@@ -49,8 +49,9 @@
                            style="padding-left: 25px; padding-top: 0;"
                            th:text="${activitySet.activity.name}">
                     </label><br/>
-                    <textarea readonly class="description-textarea"
-                              th:text="${activitySet.activity.description}"/>
+                    <div class="image-area image-wrapper">
+                        <img alt="" th:src="@{${'/image/display/' + activitySet.activity.id}}"/>
+                    </div>
                     <div style="display: flex;">
                         <label class="info-label" th:text="${activitySet.activity.duration}"></label>
                         <label class="info-label" th:text="${activitySet.activity.price} + ' руб.'"></label>
@@ -90,6 +91,9 @@
                     </label><br/>
                     <textarea readonly class="description-textarea" style="height: 40%;"
                               th:text="${eventSet.info.event.activity.description}"/>
+                    <div class="image-area image-wrapper" style="height: 40%;">
+                        <img alt="" th:src="@{${'/image/display/' + eventSet.info.event.activity.id}}"/>
+                    </div>
                     <div style="display: flex;">
                         <label class="info-label" th:text="${eventSet.info.event.activity.duration}"></label>
                         <label class="info-label" th:text="${eventSet.info.event.activity.price} + ' руб.'"></label>

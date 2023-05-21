@@ -65,7 +65,9 @@
               </button>
             </form>
           </div>
-          <textarea readonly class="description-textarea" th:text="${event.activity.photo}"/>
+          <div class="image-area image-wrapper">
+            <img alt="" th:src="@{${'/image/display/' + event.activity.id}}"/>
+          </div>
           <label class="info-label" th:text="${event.activity.duration}"></label>
           <label class="info-label" th:text="${event.activity.price} + ' руб.'"></label>
         </div>

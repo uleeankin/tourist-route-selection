@@ -28,8 +28,4 @@ public class FileService {
         return file.getBytes();
 
     }
-
-    public static BufferedImage convertBytesToImage(byte[] bytes) throws IOException {
-        return ImageIO.read(new ByteArrayInputStream(bytes));
-    }
 }

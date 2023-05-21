@@ -19,7 +19,7 @@ public interface EventService {
     void delete(Long id);
 
     void update(Long id, String name, String description, String time, Double price,
-                String startDate, String endDate);
+                String startDate, String endDate, byte[] bytes);
 
     List<EventSession> getSchedule(Long id);
 

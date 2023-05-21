@@ -31,13 +31,18 @@
       </div>
 
       <div class="cities">
-        <form th:method="post" th:action="@{/organization/event/update/{id}(id = ${eventId})}">
+        <form th:method="post" th:action="@{/organization/event/update/{id}(id = ${eventId})}" enctype="multipart/form-data">
           <div class="activity-adding-panel">
 
-            <div class="wrap-input100 m-b-16 m-l-60" style="width: fit-content;">
-              <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
-                     placeholder="Название" th:value="${name}" style="width: fit-content;">
-              <span class="focus-input100 name-label"></span>
+            <div style="display: flex;">
+              <div class="wrap-input100 m-b-16 m-l-60" style="width: fit-content;">
+                <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
+                       placeholder="Название" th:value="${name}" style="width: fit-content;">
+                <span class="focus-input100 name-label"></span>
+              </div>
+              <div class="m-b-16 m-l-60 m-t-16">
+                <input id="photo" type="file" name="photo" placeholder="Фото" accept="image/*" required="required">
+              </div>
             </div>
 
             <div class="wrap-input60 m-b-16 m-l-60">

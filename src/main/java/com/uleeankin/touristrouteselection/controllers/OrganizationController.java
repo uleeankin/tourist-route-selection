@@ -8,11 +8,15 @@ import com.uleeankin.touristrouteselection.activity.service.ActivityService;
 import com.uleeankin.touristrouteselection.activity.attributes.event.service.EventService;
 import com.uleeankin.touristrouteselection.user.service.UserService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import com.uleeankin.touristrouteselection.utils.file.FileService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,9 +103,12 @@ public class OrganizationController {
                               @RequestParam("time") String time,
                               @RequestParam("price") Double price,
                               @RequestParam("startDate") String startDate,
-                              @RequestParam("endDate") String endDate) {
+                              @RequestParam("endDate") String endDate,
+                              final @RequestParam("photo") MultipartFile photo,
+                              HttpServletRequest request) throws IOException {
 
-        this.eventService.update(eventId, name, description, time, price, startDate, endDate);
+        this.eventService.update(eventId, name, description, time, price, startDate, endDate,
+                FileService.convertImageToBytes(photo, request));
         return "redirect:/organization/manage";
     }
 

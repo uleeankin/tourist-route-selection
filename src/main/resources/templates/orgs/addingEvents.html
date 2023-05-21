@@ -33,13 +33,18 @@
       </div>
 
       <div class="cities">
-        <form th:method="post" th:action="@{/organization/add}">
+        <form th:method="post" th:action="@{/organization/add}" enctype="multipart/form-data">
           <div class="activity-adding-panel">
 
-            <div class="wrap-input20 m-b-16 m-l-60">
-              <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
-                     placeholder="Название">
-              <span class="focus-input100 name-label"></span>
+            <div style="display: flex;">
+              <div class="wrap-input20 m-b-16 m-l-60">
+                <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
+                       placeholder="Название">
+                <span class="focus-input100 name-label"></span>
+              </div>
+              <div class="m-b-16 m-l-60 m-t-16">
+                <input id="photo" type="file" name="photo" placeholder="Фото" accept="image/*" required="required">
+              </div>
             </div>
 
             <div style="display: flex">
