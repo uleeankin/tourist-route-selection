@@ -32,7 +32,7 @@ public interface ActivityRepository {
 
     boolean isExists(String userId, Long activityId);
 
-    void update(Long id, String name, String description, Time time, Double price);
+    void update(Long id, String name, String description, Time time, Double price, byte[] photo);
 
     void deleteById(Long id);
 

@@ -29,7 +29,7 @@ public interface ActivityService {
 
     boolean isExists(String userId, Long activityId);
 
-    void update(Long id, String name, String description, String time, Double price);
+    void update(Long id, String name, String description, String time, Double price, byte[] bytes);
 
     void delete(Long id);
 }

@@ -72,7 +72,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void update(Long id, String name, String description, String time,
                        Double price, String startDate, String endDate) {
-        this.activityRepository.update(id, name, description, TimeService.convert(time), price);
+        this.activityRepository.update(id, name, description, TimeService.convert(time), price, new byte[] {0});
         this.eventRepository.update(id, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 

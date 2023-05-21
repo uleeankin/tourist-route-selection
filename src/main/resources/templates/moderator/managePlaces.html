@@ -39,7 +39,7 @@
       </div>
 
       <div class="cities">
-        <form th:method="post" th:action="@{/moderator/places/add}">
+        <form th:method="post" th:action="@{/moderator/places/add}" enctype="multipart/form-data">
           <div class="activity-adding-panel">
 
             <div class="wrap-input20 m-b-16 m-l-60">
@@ -94,6 +94,10 @@
               <input th:id="price" class="input100 price-label custom-input" type="number"
                      step="0.1" name="price" placeholder="Цена">
               <span class="focus-input100 price-label"></span>
+            </div>
+
+            <div class="m-b-16 m-l-60">
+              <input id="photo" type="file" name="photo" placeholder="Фото" accept="image/*" required="required">
             </div>
 
             <div class="container-login100-form-btn m-b-16 m-l-60">

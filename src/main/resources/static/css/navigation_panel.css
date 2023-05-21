@@ -369,6 +369,27 @@ th, td {
     resize: none;
 }
 
+.image-area {
+    width: 90%;
+    margin-left: 16px;
+    margin-top: 5px;
+    height: 55%;
+    border-radius: 16px;
+    padding: 0 10px 0 10px;
+}
+
+.image-wrapper {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+}
+
 .info-label {
     padding-left: 25px;
     font-family: Roboto, sans-serif;

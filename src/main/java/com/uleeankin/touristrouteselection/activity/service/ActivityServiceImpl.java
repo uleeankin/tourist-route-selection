@@ -108,9 +108,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void update(Long id, String name, String description, String time, Double price) {
+    public void update(Long id, String name, String description, String time, Double price, byte[] bytes) {
         this.activityRepository.update(
-                id, name, description, TimeService.convert(time), price);
+                id, name, description, TimeService.convert(time), price, bytes);
     }
 
     @Override

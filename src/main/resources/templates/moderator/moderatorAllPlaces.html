@@ -49,7 +49,10 @@
                     <label class="place-name" th:text="${activity.name}"></label></br>
                     <label class="info-label"
                            th:text="'Категория: ' + ${activity.category.name}"></label></br>
-                    <textarea readonly class="description-textarea" th:text="${activity.description}"></textarea>
+                    <div class="image-area image-wrapper">
+                        <img alt="" th:src="@{${'/image/display/' + activity.id}}"/>
+                    </div>
+                    <!--<textarea readonly class="description-textarea" th:text="${activity.description}"></textarea>-->
                     <label class="info-label" th:text="${activity.duration}"></label>
                     <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>

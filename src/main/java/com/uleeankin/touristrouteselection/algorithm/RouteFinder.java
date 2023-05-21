@@ -161,7 +161,7 @@ public class RouteFinder {
             route.add(currentNode.getCurrent());
             currentNode = allNodes.get(currentNode.getPrevious());
         } while (currentNode != null);
-        Collections.reverse(route);
+        //Collections.reverse(route);
         return route;
     }
 

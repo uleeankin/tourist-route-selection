@@ -7,11 +7,16 @@ import com.uleeankin.touristrouteselection.activity.service.ActivityService;
 import com.uleeankin.touristrouteselection.activity.attributes.category.service.CategoryService;
 import com.uleeankin.touristrouteselection.user.service.UserService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import com.uleeankin.touristrouteselection.utils.file.FileService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,12 +82,21 @@ public class ModeratorController {
                                  @RequestParam("longitude") Double longitude,
                                  @RequestParam("categoryList") String category,
                                  @RequestParam("time") String time,
-                                 @RequestParam("price") Double price) {
+                                 @RequestParam("price") Double price,
+                                 final @RequestParam("photo") MultipartFile photo,
+                                 HttpServletRequest request) {
 
 
         Optional<User> user = this.userService.getByLogin(sessionContext.getUserLogin());
-        user.ifPresent(value -> this.activityService.addActivity(name, description, value.getCity().getName(),
-                category, latitude, longitude, time, price, new byte[]{0}));
+        user.ifPresent(value -> {
+            try {
+                this.activityService.addActivity(name, description, value.getCity().getName(),
+                        category, latitude, longitude, time, price,
+                        FileService.convertImageToBytes(photo, request));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         return "redirect:/moderator/places";
     }
@@ -113,9 +127,13 @@ public class ModeratorController {
                               @RequestParam("name") String name,
                               @RequestParam("description") String description,
                               @RequestParam("time") String time,
-                              @RequestParam("price") Double price) {
+                              @RequestParam("price") Double price,
+                              final @RequestParam("photo") MultipartFile photo,
+                              HttpServletRequest request) throws IOException {
 
-        this.activityService.update(placeID, name, description, time, price);
+        this.activityService.update(placeID, name, description, time, price,
+                FileService.convertImageToBytes(photo, request));
+
         return "redirect:/moderator/places/change";
     }
 

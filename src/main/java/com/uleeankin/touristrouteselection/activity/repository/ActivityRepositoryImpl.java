@@ -90,9 +90,9 @@ public class ActivityRepositoryImpl implements ActivityRepository {
     }
 
     @Override
-    public void update(Long id, String name, String description, Time time, Double price) {
+    public void update(Long id, String name, String description, Time time, Double price, byte[] photo) {
         this.jdbcTemplate.update(this.activityConfig.getUpdate(),
-                name, description, time, price, id);
+                name, description, time, price, photo, id);
     }
 
     @Override
