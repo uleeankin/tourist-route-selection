@@ -28,6 +28,60 @@
                 <h1 class="heading">Новый маршрут</h1>
             </div>
         </div>
+        <div class="cities">
+            <form th:method="post" th:action="@{/agency/route/characteristics}">
+                <div class="activity-adding-panel">
+
+                    <div class="wrap-input20 m-b-16 m-l-60">
+                        <input th:id="name" class="input100 name-label custom-input" type="text" name="name"
+                               placeholder="Название">
+                        <span class="focus-input100 name-label"></span>
+                    </div>
+
+                    <div class="wrap-input60 m-b-16 m-l-60">
+                        <textarea th:id="description" class="input100 description-label" name="description"
+                        placeholder="Описание" style="resize: none; height: 100px"></textarea>
+                        <span class="focus-input100 description-label"></span>
+                    </div>
+
+                    <div class="wrap-input20 m-b-16 m-l-60">
+                        <input th:id="price" class="input100 price-label custom-input" type="text" name="price"
+                               placeholder="Цена">
+                        <span class="focus-input100 price-label"></span>
+                    </div>
+
+                    <div class="wrap-input20 m-b-16 m-l-60">
+                        <input th:id="maxTouristsNumber" class="input100 coordinate-label custom-input"
+                               type="number" name="maxTouristsNumber" placeholder="Вместимость">
+                        <span class="focus-input100 coordinate-label"></span>
+                    </div>
+
+                    <div style="display: flex;">
+                        <div class="m-b-16" style="margin-left: 30px;">
+                            <label class="input100 time-label custom-input"
+                                   style="padding-top: 18px; background-color: white;">Дата начала проведения</label>
+                        </div>
+                        <div class="wrap-input20 m-b-16">
+                            <input th:id="startDate" class="input100 date-label custom-input" type="date" name="startDate">
+                            <span class="focus-input100 date-label"></span>
+                        </div>
+                        <div class="m-b-16" style="margin-left: 30px;">
+                            <label class="input100 time-label custom-input"
+                                   style="padding-top: 18px; background-color: white;">Дата окончания проведения</label>
+                        </div>
+                        <div class="wrap-input20 m-b-16">
+                            <input th:id="endDate" class="input100 date-label custom-input" type="date" name="endDate">
+                            <span class="focus-input100 date-label"></span>
+                        </div>
+                    </div>
+
+                    <div class="container-login100-form-btn m-b-16 m-l-60">
+                        <input type="submit" value="Далее" class="login100-form-btn adding-button">
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>
 </body>
