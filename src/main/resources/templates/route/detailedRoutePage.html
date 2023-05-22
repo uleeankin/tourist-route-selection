@@ -45,10 +45,10 @@
                 <label class="custom-label-text" th:text="'Стоимость: ' + ${price}"></label>
             </div>
             <div class="custom-label time m-t-16 m-l-20">
-                <label class="custom-label-text" th:text="'Время:' + ${time}"></label>
+                <label class="custom-label-text" th:text="'Время: ' + ${time}"></label>
             </div>
             <div class="custom-label length m-t-16 m-l-20">
-                <label class="custom-label-text" th:text="${length} + 'км'"></label>
+                <label class="custom-label-text" th:text="${length} + ' км'"></label>
             </div>
         </div>
 
@@ -62,8 +62,8 @@
             <h1 class="heading">Состав маршрута</h1>
         </div>
 
-        <div class="place-labels" style="height: 55vh; width: 90%;">
-            <!--<div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+        <div class="place-labels" style="height: 55vh; width: 95%;">
+            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
                 <label class="place-name"
                        style="padding-left: 25px; padding-top: 0;"
                        th:text="${activity.name}">
@@ -75,7 +75,7 @@
                     <label class="info-label" th:text="${activity.duration}"></label>
                     <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>
-            </div>-->
+            </div>
         </div>
 
         <div class="heading-panel" style="margin-top: 20px;">
@@ -84,14 +84,14 @@
 
         <script th:inline="javascript">
             const locations = [[${locationJSON}]];
-            const centerLongitude = [[${centerLongitude}]];
-            const centerLatitude = [[${centerLatitude}]];
+            const centerLng = [[${centerLongitude}]];
+            const centerLat = [[${centerLatitude}]];
             console.log(locations);
-            console.log(centerLongitude);
-            console.log(centerLatitude);
+            console.log(centerLng);
+            console.log(centerLat);
         </script>
 
-        <div id="map" onload="addRoute(locations, centerLongitude, centerLatitude)">
+        <div id="map">
             <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
         </div>
 

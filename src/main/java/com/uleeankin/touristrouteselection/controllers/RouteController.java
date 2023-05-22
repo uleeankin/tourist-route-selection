@@ -22,6 +22,7 @@ import com.uleeankin.touristrouteselection.city.service.CityService;
 import com.uleeankin.touristrouteselection.route.feedback.service.RouteFeedbackService;
 import com.uleeankin.touristrouteselection.route.service.RouteService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import com.uleeankin.touristrouteselection.utils.json.JSONConverter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -305,7 +306,14 @@ public class RouteController {
         List<Activity> activities = this.routeService.getRouteActivities(route.getId());
         model.addAttribute("activities", activities);
 
-        //todo add json and center position
+        model.addAttribute("locationJSON",
+                new JSONConverter().getCoordinatesJSON(activities));
+
+        model.addAttribute("centerLongitude",
+                activities.get(0).getCoordinate().getLongitude());
+
+        model.addAttribute("centerLatitude",
+                activities.get(0).getCoordinate().getLatitude());
 
         return "route/detailedRoutePage";
     }
