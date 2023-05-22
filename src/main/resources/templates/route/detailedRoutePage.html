@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
 </head>
 <body>
 <div class="main">
@@ -16,7 +19,7 @@
         <div class="navigation-block nickname">
             <label class="nickname-text" th:text="${username}"/>
         </div>
-        <div class="navigation-block menu admin">
+        <div class="navigation-block menu admin" style="height: 200%;">
             <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
             <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
             <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
@@ -59,31 +62,39 @@
             <h1 class="heading">Состав маршрута</h1>
         </div>
 
-            <div class="place-labels" style="height: 35vh; width: 99%;">
-                <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
-                    <label class="place-name"
-                           style="padding-left: 25px; padding-top: 0;"
-                           th:text="${activity.name}">
-                    </label>
-                    <label class="info-label" th:text="${activity.category.name}"></label><br/>
-                    <textarea readonly class="description-textarea"
-                              th:text="${activity.description}"/>
-                    <div style="display: flex;">
-                        <label class="info-label" th:text="${activity.duration}"></label>
-                        <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
-                    </div>
-
+        <!--<div class="place-labels" style="height: 35vh; width: 99%;">
+            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+                <label class="place-name"
+                       style="padding-left: 25px; padding-top: 0;"
+                       th:text="${activity.name}">
+                </label>
+                <label class="info-label" th:text="${activity.category.name}"></label><br/>
+                <textarea readonly class="description-textarea"
+                          th:text="${activity.description}"/>
+                <div style="display: flex;">
+                    <label class="info-label" th:text="${activity.duration}"></label>
+                    <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>
-            </div>
 
-            <div class="container-login100-form-btn"
-                 style="width: 160vh; margin-top: 40px; text-align: center;">
-                <form th:method="get" th:action="@{/tourist}">
-                    <button class="login100-form-btn" style="width: fit-content;">
-                        На главную
-                    </button>
-                </form>
             </div>
+        </div>-->
+
+        <div class="heading-panel" style="margin-top: 20px;">
+            <h1 class="heading">Карта маршрута</h1>
+        </div>
+
+        <div id="map">
+            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+        </div>
+
+        <div class="container-login100-form-btn"
+             style="width: 160vh; margin-top: 40px; text-align: center;">
+            <form th:method="get" th:action="@{/tourist}">
+                <button class="login100-form-btn" style="width: fit-content;">
+                    Сохранить маршрут
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 </body>
