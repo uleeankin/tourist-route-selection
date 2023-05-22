@@ -1,4 +1,4 @@
-package com.uleeankin.touristrouteselection.utils;
+package com.uleeankin.touristrouteselection.utils.json;
 
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 
