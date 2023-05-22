@@ -7,15 +7,15 @@ let map = L.mapquest.map('map', {
 });
 
 
-function runDirection(locationsJSON) {
+function runDirection(locationsJSON, centerLongitude, centerLatitude) {
 
     map = L.map('map', {
-        layers: MQ.mapLayer(),
-        center: [54.6082, 39.7141],
-        zoom: 13
+        center: [centerLatitude, centerLongitude],
+        layers: L.mapquest.tileLayer('map'),
+        zoom: 14
     });
 
-    var dir = MQ.routing.directions();
+    const dir = L.route.directions();
 
     dir.route({
         locations: [
@@ -24,7 +24,7 @@ function runDirection(locationsJSON) {
     });
 
 
-    CustomRouteLayer = MQ.Routing.RouteLayer.extend({
+    let CustomRouteLayer = L.route.layer.extend({
         createStartMarker: (location) => {
             var custom_icon;
             var marker;
@@ -49,14 +49,8 @@ function runDirection(locationsJSON) {
 }
 
 
-function submitForm() {
-
+function addRoute(locationsJSON, centerLongitude, centerLatitude) {
     map.remove();
-
-    start = document.getElementById("start").value;
-    end = document.getElementById("destination").value;
-
-    runDirection(start, end);
-
-    document.getElementById("form").reset();
+    runDirection(locationsJSON, centerLongitude, centerLatitude);
 }
+

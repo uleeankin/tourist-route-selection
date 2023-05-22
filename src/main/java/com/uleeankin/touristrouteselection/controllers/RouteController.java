@@ -304,6 +304,9 @@ public class RouteController {
 
         List<Activity> activities = this.routeService.getRouteActivities(route.getId());
         model.addAttribute("activities", activities);
+
+        //todo add json and center position
+
         return "route/detailedRoutePage";
     }
 

@@ -19,7 +19,7 @@
         <div class="navigation-block nickname">
             <label class="nickname-text" th:text="${username}"/>
         </div>
-        <div class="navigation-block menu admin" style="height: 200%;">
+        <div class="navigation-block menu admin" style="height: 155%;">
             <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
             <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
             <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
@@ -62,8 +62,8 @@
             <h1 class="heading">Состав маршрута</h1>
         </div>
 
-        <!--<div class="place-labels" style="height: 35vh; width: 99%;">
-            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+        <div class="place-labels" style="height: 55vh; width: 90%;">
+            <!--<div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
                 <label class="place-name"
                        style="padding-left: 25px; padding-top: 0;"
                        th:text="${activity.name}">
@@ -75,15 +75,23 @@
                     <label class="info-label" th:text="${activity.duration}"></label>
                     <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>
-
-            </div>
-        </div>-->
+            </div>-->
+        </div>
 
         <div class="heading-panel" style="margin-top: 20px;">
             <h1 class="heading">Карта маршрута</h1>
         </div>
 
-        <div id="map">
+        <script th:inline="javascript">
+            const locations = [[${locationJSON}]];
+            const centerLongitude = [[${centerLongitude}]];
+            const centerLatitude = [[${centerLatitude}]];
+            console.log(locations);
+            console.log(centerLongitude);
+            console.log(centerLatitude);
+        </script>
+
+        <div id="map" onload="addRoute(locations, centerLongitude, centerLatitude)">
             <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
         </div>
 
