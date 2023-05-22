@@ -146,4 +146,11 @@ public class RouteRepositoryImpl implements RouteRepository {
             }
         }, routeId);
     }
+
+    @Override
+    public void saveAgencyRoute(Long id, Date startDate,
+                                Date endDate, Integer maxTouristsNumber) {
+        this.jdbcTemplate.update(this.routeConfig.getSaveAgency(),
+                id, startDate, endDate, maxTouristsNumber);
+    }
 }

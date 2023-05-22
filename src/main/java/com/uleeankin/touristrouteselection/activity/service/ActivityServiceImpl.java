@@ -1,5 +1,8 @@
 package com.uleeankin.touristrouteselection.activity.service;
 
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.service.PreliminaryActivityService;
+import com.uleeankin.touristrouteselection.activity.model.ActivityStatus;
 import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.activity.attributes.category.model.Category;
@@ -9,10 +12,12 @@ import com.uleeankin.touristrouteselection.activity.attributes.category.reposito
 import com.uleeankin.touristrouteselection.city.repository.CityRepository;
 import com.uleeankin.touristrouteselection.activity.attributes.coordinates.repository.CoordinateRepository;
 import com.uleeankin.touristrouteselection.utils.TimeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,5 +123,25 @@ public class ActivityServiceImpl implements ActivityService {
         Optional<Activity> activity = this.activityRepository.findById(id);
         this.activityRepository.deleteById(id);
         this.coordinateRepository.deleteById(activity.get().getCoordinate().getId());
+    }
+
+    @Override
+    public List<ActivityStatus> getActivityStatuses(
+            List<Activity> activities, HttpSession session,
+            PreliminaryActivityService preliminaryActivityService) {
+
+        List<ActivityStatus> activityStatuses = new ArrayList<>();
+        List<PreliminaryActivity> addedActivities =
+                preliminaryActivityService.getAll(session.getId());
+
+        for (Activity activity : activities) {
+            activityStatuses.add(new ActivityStatus(activity,
+                    !addedActivities.stream()
+                            .map(addedActivity -> addedActivity.getActivity().getId())
+                            .toList()
+                            .contains(activity.getId())));
+        }
+
+        return activityStatuses;
     }
 }

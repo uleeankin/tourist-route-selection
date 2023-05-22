@@ -1,5 +1,8 @@
 package com.uleeankin.touristrouteselection.activity.service;
+import com.uleeankin.touristrouteselection.activity.attributes.preliminary.service.PreliminaryActivityService;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
+import com.uleeankin.touristrouteselection.activity.model.ActivityStatus;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -32,4 +35,7 @@ public interface ActivityService {
     void update(Long id, String name, String description, String time, Double price, byte[] bytes);
 
     void delete(Long id);
+
+    List<ActivityStatus> getActivityStatuses(List<Activity> activities, HttpSession session,
+                                             PreliminaryActivityService preliminaryActivityService);
 }

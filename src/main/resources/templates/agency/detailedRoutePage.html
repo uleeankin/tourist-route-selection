@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+</head>
+<body>
+<div class="main">
+    <div class="navigation">
+        <div class="navigation-block nickname">
+            <label class="nickname-text" th:text="${username}"/>
+        </div>
+        <div class="navigation-block menu admin" style="height: 155%;">
+            <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
+            <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
+            <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
+            <label class="navigation-text submenu">Пройденные маршруты</label> <br/>
+        </div>
+    </div>
+
+    <div class="main-page-content" style="width: 82%;">
+        <div class="heading-panel" style="background-color: #0080DA;
+            width: 100%; height: 100px; padding-left: 24%; padding-top: 1%;">
+
+            <h1 class="heading">Новый маршрут!</h1>
+
+        </div>
+        <div class="labels">
+            <div class="custom-label name m-t-16 m-l-60">
+                <label class="custom-label-text" th:text="${name}"></label>
+            </div>
+            <div class="custom-label city m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="${city}"></label>
+            </div>
+            <div class="custom-label price m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="'Стоимость: ' + ${price}"></label>
+            </div>
+            <div class="custom-label time m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="'Время: ' + ${time}"></label>
+            </div>
+            <div class="custom-label length m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="${length} + ' км'"></label>
+            </div>
+        </div>
+
+        <div class="wrap-input60 m-b-16 m-t-20" style="margin-left: 240px;">
+              <textarea readonly class="input100 description-label" name="description"
+                        style="resize: none; height: 100px; overflow-y: scroll;"
+                        th:text="${description}"></textarea>
+        </div>
+
+        <div class="heading-panel" style="margin-top: 20px;">
+            <h1 class="heading">Состав маршрута</h1>
+        </div>
+
+        <div class="place-labels" style="height: 55vh; width: 95%;">
+            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+                <label class="place-name"
+                       style="padding-left: 25px; padding-top: 0;"
+                       th:text="${activity.name}">
+                </label>
+                <label class="info-label" th:text="${activity.category.name}"></label><br/>
+                <textarea readonly class="description-textarea"
+                          th:text="${activity.description}"/>
+                <div style="display: flex;">
+                    <label class="info-label" th:text="${activity.duration}"></label>
+                    <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="heading-panel" style="margin-top: 20px;">
+            <h1 class="heading">Карта маршрута</h1>
+        </div>
+
+        <script th:inline="javascript">
+            const locations = [[${locationJSON}]];
+            const centerLng = [[${centerLongitude}]];
+            const centerLat = [[${centerLatitude}]];
+            console.log(locations);
+            console.log(centerLng);
+            console.log(centerLat);
+        </script>
+
+        <div id="map">
+            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+        </div>
+
+        <div class="container-login100-form-btn"
+             style="width: 160vh; margin-top: 40px; text-align: center;">
+            <form th:method="get" th:action="@{/agency/all}">
+                <button class="login100-form-btn" style="width: fit-content;">
+                    Сохранить маршрут
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

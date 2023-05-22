@@ -42,4 +42,6 @@ public interface RouteRepository {
     List<CompletedRoute> findCompletedRoutes(String userLogin);
 
     Integer getRouteUsesNumber(Long routeId);
+
+    void saveAgencyRoute(Long id, Date startDate, Date endDate, Integer maxTouristsNumber);
 }

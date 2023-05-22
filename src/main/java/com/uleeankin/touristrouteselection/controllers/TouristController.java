@@ -97,7 +97,7 @@ public class TouristController {
                                             HttpServletRequest request,
                                             Tourist user) {
         if (this.sessionContext.getCurrentCity(session).isEmpty()) {
-            sessionContext.setCityValueToSession(request,
+            this.sessionContext.setCityValueToSession(request,
                     user.getUser().getCity().getName());
         }
     }
@@ -105,7 +105,7 @@ public class TouristController {
     private void setSessionInitialCategoryValue(HttpSession session,
                                                 HttpServletRequest request) {
         if (this.sessionContext.getCurrentCategory(session).isEmpty()) {
-            sessionContext.setCategoryValueToSession(request,
+            this.sessionContext.setCategoryValueToSession(request,
                     this.categoryService.getAll().stream()
                             .map(Category::getName)
                             .toList().get(0));

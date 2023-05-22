@@ -48,6 +48,16 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
+    public void saveAgencyRoute(String name, String description, String owner,
+                                String city, byte[] photo, CreatedRoute createdRoute,
+                                Integer maxTouristsNumber, String startDate, String endDate) {
+        this.save(name, description, owner, city, photo, createdRoute);
+        Route route = this.routeRepository.findByNameAndOwner(name, owner);
+        this.routeRepository.saveAgencyRoute(route.getId(), Date.valueOf(startDate),
+                Date.valueOf(endDate), maxTouristsNumber);
+    }
+
+    @Override
     public void changeStatus(Long routeId) {
         Route route = this.routeRepository.getById(routeId);
         this.routeRepository.changeStatus(routeId, !route.getStatus());

@@ -25,5 +25,6 @@ public class RouteConfig {
     private String isCompleted;
     private String complete;
     private String usesNumber;
+    private String saveAgency;
 
 }

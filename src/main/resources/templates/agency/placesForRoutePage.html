@@ -17,17 +17,15 @@
             <label class="nickname-text" th:text="${username}"/>
         </div>
         <div class="navigation-block menu admin">
-            <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
-            <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
-            <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
-            <label class="navigation-text submenu">Пройденные маршруты</label> <br/>
+            <a th:href="@{/agency/all}" class="navigation-text submenu">Все маршруты</a> <br/>
+            <label class="navigation-text submenu current-submenu">Создать маршрут</label> <br/>
         </div>
     </div>
 
     <div class="main-page-content">
         <div class="heading-panel">
             <div class="labels">
-                <form th:method="get" th:action="@{/agency/route/characteristics}">
+                <form th:method="get" th:action="@{/agency/characteristics}">
                     <button class="custom-label m-l-60" style="margin-top: 25%">
                         <img src="/static/images/search.png" th:src="@{/images/search.png}"
                              height="20" width="20">
@@ -40,7 +38,7 @@
             <div style="width: 160vh;">
                 <h1 class="heading" style="margin-left: 50px; padding-left: 0;">Места</h1>
             </div>
-            <div class="place-labels border" style="height: 30vh; margin-left: 5px;">
+            <div class="place-labels" style="height: 60vh; margin-left: 5px;">
                 <div class="place-label" style="height: 27vh;" th:each="activitySet : ${activities}">
                     <label class="place-name"
                            style="padding-left: 25px; padding-top: 0;"
@@ -54,7 +52,7 @@
                         <label class="info-label" th:text="${activitySet.activity.price} + ' руб.'"></label>
                         <span th:if="${activitySet.status}">
                             <form th:method="post"
-                                  th:action="@{/route/places/add/{id}(id=${activitySet.activity.id})}">
+                                  th:action="@{/agency/places/add/{id}(id=${activitySet.activity.id})}">
                                 <button class="login100-form-btn"
                                         style="width: fit-content; height: fit-content; margin-left: 3px;">
                                     Добавить
@@ -63,7 +61,7 @@
                         </span>
                         <span th:unless="${activitySet.status}">
                             <form th:method="post"
-                                  th:action="@{/route/places/delete/{id}(id=${activitySet.activity.id})}">
+                                  th:action="@{/agency/places/delete/{id}(id=${activitySet.activity.id})}">
                                 <button class="login100-form-btn"
                                         style="width: fit-content;
                                         height: fit-content;
@@ -82,7 +80,7 @@
                  style="width: 160vh; margin-top: 20px; text-align: center;">
                 <form th:method="get" th:action="@{/agency/route/create}">
                     <button class="login100-form-btn" style="width: fit-content;">
-                        Далее
+                        Создать маршрут
                     </button>
                 </form>
             </div>

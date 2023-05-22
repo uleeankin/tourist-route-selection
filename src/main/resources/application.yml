@@ -97,4 +97,6 @@ route:
   isCompleted: select exists (select * from completed_route where user_id = ? and route_id = ?);
   complete: insert into completed_route (user_id, route_id, completion_date) values (?, ?, ?);
   usesNumber: select getRouteUsesNumber(?) as uses_number;
+  saveAgency: insert into agency_route (route_id, start_date, end_date, max_tourist_number) values (?, ?, ?, ?);
+
 

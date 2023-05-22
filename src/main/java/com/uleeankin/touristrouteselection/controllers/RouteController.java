@@ -157,19 +157,8 @@ public class RouteController {
     private List<ActivityStatus> getActivities(List<Activity> activities,
                                                HttpSession session) {
 
-        List<ActivityStatus> activityStatuses = new ArrayList<>();
-        List<PreliminaryActivity> addedActivities =
-                this.preliminaryActivityService.getAll(session.getId());
-
-        for (Activity activity : activities) {
-            activityStatuses.add(new ActivityStatus(activity,
-                    !addedActivities.stream()
-                            .map(addedActivity -> addedActivity.getActivity().getId())
-                            .toList()
-                            .contains(activity.getId())));
-        }
-
-        return activityStatuses;
+        return this.activityService.getActivityStatuses(
+                activities, session, this.preliminaryActivityService);
     }
 
     private List<EventStatus> getEvents(List<EventInfo> events,
