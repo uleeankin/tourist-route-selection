@@ -36,7 +36,5 @@ public class Route {
 
     private Date creationDate;
 
-    private byte[] photo;
-
     private City city;
 }

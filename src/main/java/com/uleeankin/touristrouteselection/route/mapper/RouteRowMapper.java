@@ -20,7 +20,6 @@ public class RouteRowMapper implements RowMapper<Route> {
                 rs.getDouble("path_length"),
                 rs.getBoolean("public_status"),
                 rs.getDate("creation_date"),
-                rs.getBytes("photo"),
                 new City(rs.getLong("city_id"),
                         rs.getString("city_name")));
     }

@@ -29,15 +29,14 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public void save(String name, String description,
-                     String owner, String city,
-                     byte[] photo, CreatedRoute createdRoute) {
+                     String owner, String city, CreatedRoute createdRoute) {
 
         Date creationDate = new Date(new java.util.Date().getTime());
         Long cityId = this.cityRepository.findByName(city).get().getId();
 
         this.routeRepository.save(name, description, owner, createdRoute.getRouteTime(),
                 createdRoute.getRoutePrice(), createdRoute.getRouteDuration(),
-                creationDate, photo, cityId);
+                creationDate, cityId);
 
         Route route = this.routeRepository.findByNameAndOwner(name, owner);
 
@@ -49,9 +48,9 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public void saveAgencyRoute(String name, String description, String owner,
-                                String city, byte[] photo, CreatedRoute createdRoute,
+                                String city, CreatedRoute createdRoute,
                                 Integer maxTouristsNumber, String startDate, String endDate) {
-        this.save(name, description, owner, city, photo, createdRoute);
+        this.save(name, description, owner, city, createdRoute);
         Route route = this.routeRepository.findByNameAndOwner(name, owner);
         this.routeRepository.saveAgencyRoute(route.getId(), Date.valueOf(startDate),
                 Date.valueOf(endDate), maxTouristsNumber);

@@ -30,11 +30,11 @@ public class RouteRepositoryImpl implements RouteRepository {
 
     @Override
     public void save(String name, String description, String owner, Time duration,
-                     double price, double length, Date creationDate, byte[] photo, Long city) {
+                     double price, double length, Date creationDate, Long city) {
 
         this.jdbcTemplate.update(this.routeConfig.getSave(),
                 name, description, owner, duration,
-                price, length, creationDate, photo, city);
+                price, length, creationDate, city);
     }
 
     @Override

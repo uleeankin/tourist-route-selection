@@ -200,8 +200,7 @@ public class AgencyController {
                 (String) session.getAttribute(NAME_ATTRIBUTE),
                 (String) session.getAttribute(DESCRIPTION_ATTRIBUTE),
                 this.sessionContext.getUserLogin(),
-                this.sessionContext.getCurrentCity(session),
-                new byte[] {0}, route,
+                this.sessionContext.getCurrentCity(session), route,
                 (Integer) session.getAttribute(TOURISTS_ATTRIBUTE),
                 (String) session.getAttribute(START_DATE_ATTRIBUTE),
                 (String) session.getAttribute(END_DATE_ATTRIBUTE));

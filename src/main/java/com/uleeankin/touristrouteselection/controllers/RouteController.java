@@ -275,8 +275,7 @@ public class RouteController {
                 this.sessionContext.getRouteNameAttribute(session),
                 this.sessionContext.getRouteDescriptionAttribute(session),
                 this.sessionContext.getUserLogin(),
-                this.sessionContext.getCurrentCity(session),
-                new byte[] {0}, route);
+                this.sessionContext.getCurrentCity(session), route);
 
         this.preliminaryActivityService.deleteAll(session.getId());
         session.removeAttribute("timeConstraint");

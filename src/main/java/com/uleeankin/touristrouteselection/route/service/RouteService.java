@@ -10,10 +10,10 @@ import java.util.List;
 public interface RouteService {
 
     void save(String name, String description,
-              String owner, String city, byte[] photo, CreatedRoute route);
+              String owner, String city, CreatedRoute route);
 
     void saveAgencyRoute(String name, String description,
-                         String owner, String city, byte[] photo,
+                         String owner, String city,
                          CreatedRoute route, Integer maxTouristsNumber,
                          String startDate, String endDate);
 
