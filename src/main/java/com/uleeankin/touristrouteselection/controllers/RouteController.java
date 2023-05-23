@@ -299,12 +299,6 @@ public class RouteController {
         model.addAttribute("locationJSON",
                 new JSONConverter().getCoordinatesJSON(activities));
 
-        model.addAttribute("centerLongitude",
-                activities.get(0).getCoordinate().getLongitude());
-
-        model.addAttribute("centerLatitude",
-                activities.get(0).getCoordinate().getLatitude());
-
         return "route/detailedRoutePage";
     }
 

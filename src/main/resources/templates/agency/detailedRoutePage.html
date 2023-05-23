@@ -82,17 +82,13 @@
             <h1 class="heading">Карта маршрута</h1>
         </div>
 
-        <script th:inline="javascript">
-            const locations = [[${locationJSON}]];
-            const centerLng = [[${centerLongitude}]];
-            const centerLat = [[${centerLatitude}]];
-            console.log(locations);
-            console.log(centerLng);
-            console.log(centerLat);
-        </script>
-
         <div id="map">
-            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+
+            <script th:inline="javascript">
+                let locations = [[${locationJSON}]];
+                let loc = JSON.parse(locations.toString());
+                addRoute(loc);
+            </script>
         </div>
 
         <div class="container-login100-form-btn"

@@ -24,6 +24,7 @@
             <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
             <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
             <label class="navigation-text submenu">Пройденные маршруты</label> <br/>
+            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
         </div>
     </div>
 
@@ -63,7 +64,7 @@
         </div>
 
         <div class="place-labels" style="height: 55vh; width: 95%;">
-            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+            <!--<div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
                 <label class="place-name"
                        style="padding-left: 25px; padding-top: 0;"
                        th:text="${activity.name}">
@@ -75,22 +76,22 @@
                     <label class="info-label" th:text="${activity.duration}"></label>
                     <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div class="heading-panel" style="margin-top: 20px;">
             <h1 class="heading">Карта маршрута</h1>
         </div>
 
-        <script th:inline="javascript">
-            let locations = [[${locationJSON}]];
-            let centerLng = [[${centerLongitude}]];
-            let centerLat = [[${centerLatitude}]];
-            let loc = JSON.parse(locations.toString());
-        </script>
-
         <div id="map">
-            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+
+            <script th:inline="javascript">
+                let locations = [[${locationJSON}]];
+                let loc = JSON.parse(locations.toString());
+                //let locations = '{"locations":[{"latLng":{"lat":54.6104,"lng":39.7117}},{"latLng":{"lat":54.6317,"lng":39.7271}},{"latLng":{"lat":54.633,"lng":39.7362}},{"latLng":{"lat":54.6295,"lng":39.7419}},{"latLng":{"lat":54.6272,"lng":39.7517}},{"latLng":{"lat":54.6338,"lng":39.7609}}]}';
+                //let loc = JSON.parse(locations);
+                addRoute(loc);
+            </script>
         </div>
 
         <div class="container-login100-form-btn"
