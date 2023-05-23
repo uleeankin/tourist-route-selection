@@ -83,12 +83,10 @@
         </div>
 
         <script th:inline="javascript">
-            const locations = [[${locationJSON}]];
-            const centerLng = [[${centerLongitude}]];
-            const centerLat = [[${centerLatitude}]];
-            console.log(locations);
-            console.log(centerLng);
-            console.log(centerLat);
+            let locations = [[${locationJSON}]];
+            let centerLng = [[${centerLongitude}]];
+            let centerLat = [[${centerLatitude}]];
+            let loc = JSON.parse(locations.toString());
         </script>
 
         <div id="map">

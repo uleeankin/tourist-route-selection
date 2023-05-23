@@ -7,6 +7,7 @@ import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.utils.TimeService;
 import com.uleeankin.touristrouteselection.utils.json.JSONConverter;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;

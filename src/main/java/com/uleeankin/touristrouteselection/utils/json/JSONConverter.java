@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.utils.json.model.GeographicalCoordinate;
 import com.uleeankin.touristrouteselection.utils.json.model.Location;
+import com.uleeankin.touristrouteselection.utils.json.model.Locations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ public class JSONConverter {
     public String getCoordinatesJSON(List<Activity> activities) {
         List<Location> locations = this.getLocations(activities);
 
+        Locations locationsObject = new Locations(locations);
+
         ObjectMapper mapper = new ObjectMapper();
         String json;
 
         try {
-            json = mapper.writeValueAsString(locations);
+            json = mapper.writeValueAsString(locationsObject);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

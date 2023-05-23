@@ -16,12 +16,12 @@ function runDirection(locationsJSON, centerLongitude, centerLatitude) {
     });
 
     const dir = L.route.directions();
+    let jsonObject = JSON.parse(locationsJSON);
+    console.log(jsonObject);
+    let json = JSON.stringify(jsonObject);
+    console.log(json);
 
-    dir.route({
-        locations: [
-            locationsJSON
-        ]
-    });
+    dir.route(locationsJSON);
 
 
     let CustomRouteLayer = L.route.layer.extend({
