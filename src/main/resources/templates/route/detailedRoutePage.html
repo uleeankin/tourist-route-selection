@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
     <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
 </head>
 <body>
 <div class="main">
@@ -24,7 +25,6 @@
             <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
             <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
             <label class="navigation-text submenu">Пройденные маршруты</label> <br/>
-            <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         </div>
 
         <div class="place-labels" style="height: 55vh; width: 95%;">
-            <!--<div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
+            <div class="place-label" style="height: 28vh;" th:each="activity : ${activities}">
                 <label class="place-name"
                        style="padding-left: 25px; padding-top: 0;"
                        th:text="${activity.name}">
@@ -76,7 +76,7 @@
                     <label class="info-label" th:text="${activity.duration}"></label>
                     <label class="info-label" th:text="${activity.price} + ' руб.'"></label>
                 </div>
-            </div>-->
+            </div>
         </div>
 
         <div class="heading-panel" style="margin-top: 20px;">

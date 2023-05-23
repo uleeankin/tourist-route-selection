@@ -13,6 +13,7 @@ import com.uleeankin.touristrouteselection.route.service.RouteService;
 import com.uleeankin.touristrouteselection.user.model.User;
 import com.uleeankin.touristrouteselection.user.service.UserService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import com.uleeankin.touristrouteselection.utils.json.JSONConverter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,7 +221,11 @@ public class AgencyController {
         model.addAttribute("time", route.getTime());
         model.addAttribute("length", route.getLength());
         model.addAttribute("description", route.getDescription());
-        model.addAttribute("activities",
-                this.routeService.getRouteActivities(route.getId()));
+
+        List<Activity> activities = this.routeService.getRouteActivities(route.getId());
+        model.addAttribute("activities", activities);
+
+        model.addAttribute("locationJSON",
+                new JSONConverter().getCoordinatesJSON(activities));
     }
 }
