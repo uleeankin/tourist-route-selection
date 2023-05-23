@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tourist Guide</title>
+    <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+    <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+</head>
+<body>
+<div class="main">
+    <div class="navigation">
+        <div class="navigation-block nickname">
+            <label class="nickname-text" th:text="${username}"/>
+        </div>
+        <div class="navigation-block menu admin" style="height: 250%;">
+            <label class="navigation-text submenu current-submenu">Все маршруты</label> <br/>
+            <a th:href="@{/agency/add}" class="navigation-text submenu">Создать маршрут</a> <br/>
+        </div>
+    </div>
+
+    <div class="main-page-content">
+        <div class="heading-panel">
+            <div>
+                <h1 class="heading" th:text="${name}"></h1>
+            </div>
+        </div>
+
+        <div class="labels" style="width: 150vh;">
+            <div class="custom-label name m-t-16 m-l-60">
+                <label class="custom-label-text" th:text="'Создатель: @' + ${owner}"></label>
+            </div>
+            <div class="custom-label city m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="'Забронировали' + ${bookingNumber} + '/' + ${maxBookingNumber}"></label>
+            </div>
+            <div class="custom-label price m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="'Стоимость: ' + ${price}"></label>
+            </div>
+            <div class="custom-label time m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="'Время: ' + ${time}"></label>
+            </div>
+            <div class="custom-label length m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="${length} + ' км'"></label>
+            </div>
+        </div>
+
+        <div style="display: flex;">
+            <div class="m-t-20 m-l-60">
+                <div class="table-name moders" style="width: 60vh;">
+                    <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Состав маршрута</h1>
+                </div>
+                <div class="scroll-table moders" style="width: 60vh;">
+                    <div class="scroll-table-body"  style="height: 25vh;">
+                        <table class="table-body">
+                            <tbody>
+                            <tr th:each="point : ${points}">
+                                <td class="ex-td" th:text="${point.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="place-labels m-l-60" style="width: 80vh; height: 35vh;">
+
+            </div>
+        </div>
+        <div class="heading-panel" style="margin-top: 20px;">
+            <h1 class="heading">Карта маршрута</h1>
+        </div>
+
+        <div id="map">
+            <script th:inline="javascript">
+                let locations = [[${locationJSON}]];
+                let loc = JSON.parse(locations.toString());
+                addRoute(loc);
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

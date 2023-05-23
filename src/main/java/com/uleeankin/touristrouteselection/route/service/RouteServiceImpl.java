@@ -74,12 +74,12 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public List<Route> getByOwner(String owner) {
-        return this.roundLength(this.routeRepository.findAllByOwner(owner));
+        return this.routeRepository.findAllByOwner(owner);
     }
 
     @Override
     public List<Route> getAllWithoutOwn(String userLogin) {
-        return this.roundLength(this.routeRepository.findAllWithoutOwn(userLogin));
+        return this.routeRepository.findAllWithoutOwn(userLogin);
     }
 
     @Override
@@ -117,13 +117,12 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public List<Route> getFavourites(String userLogin) {
-        return this.roundLength(this.routeRepository.findFavourites(userLogin));
+        return this.routeRepository.findFavourites(userLogin);
     }
 
     @Override
     public List<CompletedRoute> getCompleted(String userLogin) {
-        return this.roundLengthForCompletedRoute(
-                this.routeRepository.findCompletedRoutes(userLogin));
+        return this.routeRepository.findCompletedRoutes(userLogin);
     }
 
     @Override
@@ -131,17 +130,4 @@ public class RouteServiceImpl implements RouteService {
         return this.routeRepository.getRouteUsesNumber(routeId);
     }
 
-    private List<Route> roundLength(List<Route> routes) {
-        for (Route route : routes) {
-            route.setLength(Math.ceil(route.getLength() * 10) / 10.0);
-        }
-        return routes;
-    }
-
-    private List<CompletedRoute> roundLengthForCompletedRoute(List<CompletedRoute> routes) {
-        for (CompletedRoute route : routes) {
-            route.getRoute().setLength(Math.ceil(route.getRoute().getLength() * 10) / 10.0);
-        }
-        return routes;
-    }
 }

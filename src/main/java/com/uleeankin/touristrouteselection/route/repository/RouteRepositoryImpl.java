@@ -34,7 +34,11 @@ public class RouteRepositoryImpl implements RouteRepository {
 
         this.jdbcTemplate.update(this.routeConfig.getSave(),
                 name, description, owner, duration,
-                price, length, creationDate, city);
+                price, this.roundLength(length), creationDate, city);
+    }
+
+    private double roundLength(double length) {
+        return Math.ceil(length * 10) / 10.0;
     }
 
     @Override

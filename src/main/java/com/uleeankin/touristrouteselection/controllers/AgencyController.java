@@ -228,4 +228,12 @@ public class AgencyController {
         model.addAttribute("locationJSON",
                 new JSONConverter().getCoordinatesJSON(activities));
     }
+
+    @GetMapping("/route/{id}")
+    public String getRouteInfo(@PathVariable("id") Long routeId, Model model) {
+        this.sessionContext.addUserNameToPage(model);
+        Route route = this.routeService.getById(routeId);
+        model.addAttribute("name", route.getName());
+        return "agency/routeInfo";
+    }
 }
