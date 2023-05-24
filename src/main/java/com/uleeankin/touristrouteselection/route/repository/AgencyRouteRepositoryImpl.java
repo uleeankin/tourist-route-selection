@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 @Repository
 public class AgencyRouteRepositoryImpl implements AgencyRouteRepository {
 
@@ -30,5 +32,16 @@ public class AgencyRouteRepositoryImpl implements AgencyRouteRepository {
     public boolean isBooked(Long id) {
         return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(
                 this.config.getIsBooked(), (rs, rowNum) -> rs.getBoolean(1), id));
+    }
+
+    @Override
+    public Integer countFreePlaces(Long id, Date date) {
+        return this.jdbcTemplate.queryForObject(this.config.getFreePlaces(),
+                (rs, rowNum) -> rs.getInt(1), id, date);
+    }
+
+    @Override
+    public void bookRoute(Long routeId, String userId, Date bookingDate, Integer touristNumber) {
+        this.jdbcTemplate.update(this.config.getBookRoute(), routeId, userId, bookingDate, touristNumber);
     }
 }

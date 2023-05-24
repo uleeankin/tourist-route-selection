@@ -10,4 +10,6 @@ import org.springframework.stereotype.Component;
 public class AgencyRouteConfig {
     private String byId;
     private String isBooked;
+    private String freePlaces;
+    private String bookRoute;
 }

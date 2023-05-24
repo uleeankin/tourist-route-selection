@@ -5,6 +5,8 @@ import com.uleeankin.touristrouteselection.route.repository.AgencyRouteRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+
 @Service
 public class AgencyRouteServiceImpl implements AgencyRouteService {
 
@@ -23,5 +25,15 @@ public class AgencyRouteServiceImpl implements AgencyRouteService {
     @Override
     public boolean isBookedRoute(Long id) {
         return this.agencyRouteRepository.isBooked(id);
+    }
+
+    @Override
+    public Integer getFreePlaceNumber(Long id, String date) {
+        return this.agencyRouteRepository.countFreePlaces(id, Date.valueOf(date));
+    }
+
+    @Override
+    public void bookRoute(Long routeId, String userId, String bookingDate, Integer touristNumber) {
+        this.agencyRouteRepository.bookRoute(routeId, userId, Date.valueOf(bookingDate), touristNumber);
     }
 }

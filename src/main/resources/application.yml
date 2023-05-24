@@ -103,4 +103,6 @@ route:
 agency:
   byId: select route.route_id, route_name, description, route_owner, time_duration, price, path_length, public_status, creation_date, city_id, city_name, start_date, end_date, max_tourist_number from (route join city on route.city = city.city_id) join agency_route on route.route_id = agency_route.route_id where route.route_id = ?;
   isBooked: select exists (select * from booked_route where route_id = ?);
+  freePlaces: select count(*) from booked_route where route_id = ? and booking_date = ?;
+  bookRoute: insert into booked_route (route_id, user_id, booking_date, tourist_number) values (?, ?, ?, ?);
 

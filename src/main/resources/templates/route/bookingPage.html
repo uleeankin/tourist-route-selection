@@ -21,7 +21,7 @@
                         </span>
 
                 <div class="wrap-input100 m-b-16">
-                    <select th:id="date" class="input100" name="date">
+                    <select th:id="bookingDate" class="input100" name="bookingDate">
                         <option th:each="date : ${dates}" th:text="${date}" th:value="${date}"></option>
                     </select>
                     <span class="focus-input100"></span>
@@ -35,7 +35,7 @@
 
                 <div class="container-login100-form-btn m-b-16">
                     <button class="login100-form-btn">
-                        Применить
+                        Забронировать
                     </button>
                 </div>
             </form>

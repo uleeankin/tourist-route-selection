@@ -459,7 +459,10 @@ public class RouteController {
 
     private List<Date> getDates(Date startDate, Date endDate) {
         List<Date> dates = new ArrayList<>();
-        LocalDate start = startDate.toLocalDate();
+        LocalDate start = startDate.before(
+                new Date(new java.util.Date().getTime())) ?
+                            startDate.toLocalDate()
+                : new Date(new java.util.Date().getTime()).toLocalDate();
         LocalDate end = endDate.toLocalDate();
         for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
         {
@@ -468,4 +471,17 @@ public class RouteController {
         return dates;
     }
 
+    @PostMapping("/book/{id}")
+    public String bookRoute(@PathVariable("id") Long id,
+                            @RequestParam("bookingDate") String bookingDate,
+                            @RequestParam("tourists") Integer touristNumber) {
+        AgencyRoute route = this.agencyRouteService.getById(id);
+        if (this.agencyRouteService.getFreePlaceNumber(id, bookingDate) + touristNumber
+                <= route.getMaxTouristNumber()) {
+            this.agencyRouteService.bookRoute(
+                    id, this.sessionContext.getUserLogin(),
+                    bookingDate, touristNumber);
+        }
+        return "redirect:/route/{id}";
+    }
 }
