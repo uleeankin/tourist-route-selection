@@ -1,13 +1,13 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
-import com.uleeankin.touristrouteselection.utils.TimeService;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 
 import java.sql.Time;
 
 public class ActivityScorer implements Scorer{
 
-    private static final Time TIME_DELTA = TimeService.convert("01:00");
+    private static final Time TIME_DELTA = DateTimeService.convert("01:00");
 
     private static final double R = 6371.0;
 
@@ -35,7 +35,7 @@ public class ActivityScorer implements Scorer{
     public Time computeTime(PreliminaryActivity from,
                             PreliminaryActivity to) {
 
-        return TimeService.sumTime(TimeService.convert(
+        return DateTimeService.sumTime(DateTimeService.convert(
                 computeCost(from, to) / V),
                 to.getActivity().getDuration());
     }
@@ -49,10 +49,10 @@ public class ActivityScorer implements Scorer{
 
     @Override
     public boolean isRightTime(Time currentTime, Time eventStartTime, Time routeStartTime) {
-        return TimeService.sumTime(routeStartTime, currentTime)
+        return DateTimeService.sumTime(routeStartTime, currentTime)
                 .before(eventStartTime)
-                && TimeService.sumTime(routeStartTime, currentTime)
-                .after(TimeService.subTime(eventStartTime, TIME_DELTA));
+                && DateTimeService.sumTime(routeStartTime, currentTime)
+                .after(DateTimeService.subTime(eventStartTime, TIME_DELTA));
     }
 
 }

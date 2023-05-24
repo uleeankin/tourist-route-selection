@@ -24,7 +24,7 @@ import com.uleeankin.touristrouteselection.route.feedback.service.RouteFeedbackS
 import com.uleeankin.touristrouteselection.route.service.AgencyRouteService;
 import com.uleeankin.touristrouteselection.route.service.RouteService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
-import com.uleeankin.touristrouteselection.utils.TimeService;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 import com.uleeankin.touristrouteselection.utils.json.JSONConverter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,8 +33,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -455,23 +453,11 @@ public class RouteController {
         model.addAttribute("routeId", id);
         AgencyRoute route = this.agencyRouteService.getById(id);
         model.addAttribute("dates",
-                this.getDates(route.getStartDate(), route.getEndDate()));
+                DateTimeService.getDates(route.getStartDate(), route.getEndDate()));
         return "route/bookingPage";
     }
 
-    private List<Date> getDates(Date startDate, Date endDate) {
-        List<Date> dates = new ArrayList<>();
-        LocalDate start = startDate.before(
-                new Date(new java.util.Date().getTime())) ?
-                            startDate.toLocalDate()
-                : new Date(new java.util.Date().getTime()).toLocalDate();
-        LocalDate end = endDate.toLocalDate();
-        for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
-        {
-            dates.add(Date.valueOf(date.toString()));
-        }
-        return dates;
-    }
+
 
     @PostMapping("/book/{id}")
     public String bookRoute(@PathVariable("id") Long id,

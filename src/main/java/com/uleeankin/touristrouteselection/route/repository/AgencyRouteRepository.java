@@ -1,6 +1,7 @@
 package com.uleeankin.touristrouteselection.route.repository;
 
 import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
+import com.uleeankin.touristrouteselection.route.model.BookingInfo;
 import com.uleeankin.touristrouteselection.route.model.Route;
 
 import java.sql.Date;
@@ -12,4 +13,5 @@ public interface AgencyRouteRepository {
     Integer countFreePlaces(Long id, Date date);
     void bookRoute(Long routeId, String userId, Date bookingDate, Integer touristNumber);
     List<Route> findAllBooked(String userId);
+    List<BookingInfo> findAllBookings(Date date, Long routeId);
 }

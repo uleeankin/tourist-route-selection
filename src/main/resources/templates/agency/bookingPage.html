@@ -43,8 +43,7 @@
             <tbody>
               <tr th:each="date : ${dates}">
                 <td class="t-td" th:text="${date.date}"></td>
-                <td class="t-td" th:text="${date.bookings} + '/' + ${maxBookings}"></td>
-                <td class="ex-td" th:text="${date.owners}"></td>
+                <td class="ex-td" th:text="${date.bookingInfo}"></td>
               </tr>
             </tbody>
           </table>

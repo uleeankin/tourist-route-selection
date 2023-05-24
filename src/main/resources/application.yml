@@ -106,4 +106,5 @@ agency:
   freePlaces: select count(*) from booked_route where route_id = ? and booking_date = ?;
   bookRoute: insert into booked_route (route_id, user_id, booking_date, tourist_number) values (?, ?, ?, ?);
   bookedRoutes: select route.route_id, route_name, description, route_owner, time_duration, price, path_length, public_status, creation_date, city_id, city_name from (route join city on route.city = city.city_id) join booked_route on route.route_id = booked_route.route_id where booked_route.user_id = ? and route.route_id not in (select route_id from completed_route) and public_status;
+  bookingInfo: select login, tourist_surname, tourist_name, tourist_lastname, tourist_number from booked_route join tourist on user_id = login where booking_date = ? and route_id = ?;
 

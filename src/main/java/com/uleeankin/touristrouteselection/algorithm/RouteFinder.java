@@ -1,7 +1,7 @@
 package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
-import com.uleeankin.touristrouteselection.utils.TimeService;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 import java.sql.Time;
 import java.util.*;
 
@@ -72,7 +72,7 @@ public class RouteFinder {
                     double newPriceScore = currentNode.getPriceScore()
                             + scorer.computePrice(currentNode.getCurrent(), connection);
 
-                    Time newTimeScore = TimeService.sumTime(currentNode.getTimeScore(),
+                    Time newTimeScore = DateTimeService.sumTime(currentNode.getTimeScore(),
                             scorer.computeTime(currentNode.getCurrent(), connection));
 
                     if (this.compareScore(newTimeScore, newPriceScore)) {

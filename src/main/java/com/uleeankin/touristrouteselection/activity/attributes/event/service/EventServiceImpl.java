@@ -6,7 +6,7 @@ import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.activity.attributes.event.model.Event;
 import com.uleeankin.touristrouteselection.activity.repository.ActivityRepository;
 import com.uleeankin.touristrouteselection.activity.attributes.coordinates.repository.CoordinateRepository;
-import com.uleeankin.touristrouteselection.utils.TimeService;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService {
 
         this.eventRepository.save(id, Date.valueOf(startDate), Date.valueOf(endDate), owner);
 
-        List<Time> sessions = TimeService.getSessions(
+        List<Time> sessions = DateTimeService.getSessions(
                 startTime, endTime, breakTime, duration);
 
         for (Time session : sessions) {
@@ -72,7 +72,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void update(Long id, String name, String description, String time,
                        Double price, String startDate, String endDate, byte[] bytes) {
-        this.activityRepository.update(id, name, description, TimeService.convert(time), price, bytes);
+        this.activityRepository.update(id, name, description, DateTimeService.convert(time), price, bytes);
         this.eventRepository.update(id, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
@@ -83,13 +83,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteSession(Long id, String time) {
-        this.eventRepository.deleteSession(id, TimeService.convert(time));
+        this.eventRepository.deleteSession(id, DateTimeService.convert(time));
     }
 
     @Override
     public void addSession(Long id, String time) {
         this.eventRepository.addSession(id,
-                TimeService.convert(time));
+                DateTimeService.convert(time));
     }
 
     @Override

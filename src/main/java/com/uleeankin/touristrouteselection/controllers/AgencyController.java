@@ -280,6 +280,7 @@ public class AgencyController {
     public String getRouteBooking(@PathVariable("id") Long routeId, Model model) {
         AgencyRoute route = this.agencyRouteService.getById(routeId);
         model.addAttribute("name", route.getRoute().getName());
+        model.addAttribute("dates", this.agencyRouteService.getBookingInfo(routeId));
         return "agency/bookingPage";
     }
 

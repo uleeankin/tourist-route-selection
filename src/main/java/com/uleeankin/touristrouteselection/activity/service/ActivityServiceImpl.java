@@ -11,7 +11,7 @@ import com.uleeankin.touristrouteselection.activity.repository.ActivityRepositor
 import com.uleeankin.touristrouteselection.activity.attributes.category.repository.CategoryRepository;
 import com.uleeankin.touristrouteselection.city.repository.CityRepository;
 import com.uleeankin.touristrouteselection.activity.attributes.coordinates.repository.CoordinateRepository;
-import com.uleeankin.touristrouteselection.utils.TimeService;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +57,7 @@ public class ActivityServiceImpl implements ActivityService {
             Optional<Coordinate> coordinate = this.coordinateRepository.getCoordinate(latitude, longitude);
 
             if (coordinate.isPresent()) {
-                Time sqlTime = TimeService.convert(time);
+                Time sqlTime = DateTimeService.convert(time);
                 //TODO: добавить фото
                 this.activityRepository.addActivity(name, description,
                         coordinate.get().getId(), category.get().getId(), photo, sqlTime, price);
@@ -115,7 +115,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public void update(Long id, String name, String description, String time, Double price, byte[] bytes) {
         this.activityRepository.update(
-                id, name, description, TimeService.convert(time), price, bytes);
+                id, name, description, DateTimeService.convert(time), price, bytes);
     }
 
     @Override

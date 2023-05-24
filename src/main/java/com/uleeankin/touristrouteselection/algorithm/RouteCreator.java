@@ -2,10 +2,8 @@ package com.uleeankin.touristrouteselection.algorithm;
 
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
 import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
-import com.uleeankin.touristrouteselection.utils.TimeService;
-import org.springframework.data.util.Pair;
+import com.uleeankin.touristrouteselection.utils.DateTimeService;
 
-import java.sql.Time;
 import java.util.*;
 
 public class RouteCreator {
@@ -29,11 +27,11 @@ public class RouteCreator {
         }
 
         if (!maxTime.equals("")) {
-            finder.addTimeConstraint(TimeService.convert(maxTime));
+            finder.addTimeConstraint(DateTimeService.convert(maxTime));
         }
 
         if (!startTime.equals("")) {
-            finder.setStartTime(TimeService.convert(startTime));
+            finder.setStartTime(DateTimeService.convert(startTime));
         }
 
         return new CreatedRoute(
