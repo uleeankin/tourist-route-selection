@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
     <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
     <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
@@ -19,34 +20,31 @@
         <div class="navigation-block nickname">
             <label class="nickname-text" th:text="${username}"/>
         </div>
-        <div class="navigation-block menu admin" style="height: 250%;">
-            <label class="navigation-text submenu current-submenu">Все маршруты</label> <br/>
+        <div class="navigation-block menu admin">
+            <a th:href="@{/agency/all}" class="navigation-text submenu">Все маршруты</a> <br/>
             <a th:href="@{/agency/add}" class="navigation-text submenu">Создать маршрут</a> <br/>
         </div>
     </div>
 
     <div class="main-page-content">
         <div class="heading-panel">
-            <div>
+            <div style="display: flex;">
                 <h1 class="heading" th:text="${name}"></h1>
             </div>
         </div>
 
         <div class="labels" style="width: 150vh;">
-            <div class="custom-label name m-t-16 m-l-60">
-                <label class="custom-label-text" th:text="'Создатель: @' + ${owner}"></label>
-            </div>
-            <div class="custom-label city m-t-16 m-l-20">
-                <label class="custom-label-text" th:text="'Забронировали' + ${bookingNumber} + '/' + ${maxBookingNumber}"></label>
-            </div>
-            <div class="custom-label price m-t-16 m-l-20">
-                <label class="custom-label-text" th:text="'Стоимость: ' + ${price}"></label>
+            <div class="custom-label price m-t-16 m-l-60">
+                <label class="custom-label-text" th:text="'Стоимость: ' + ${price} + ' руб.'"></label>
             </div>
             <div class="custom-label time m-t-16 m-l-20">
                 <label class="custom-label-text" th:text="'Время: ' + ${time}"></label>
             </div>
             <div class="custom-label length m-t-16 m-l-20">
                 <label class="custom-label-text" th:text="${length} + ' км'"></label>
+            </div>
+            <div class="custom-label date-label m-t-16 m-l-20">
+                <label class="custom-label-text" th:text="${startDate} + ' - ' + ${endDate}"></label>
             </div>
         </div>
 
@@ -67,8 +65,22 @@
                     </div>
                 </div>
             </div>
-            <div class="place-labels m-l-60" style="width: 80vh; height: 35vh;">
+            <div style="margin-top: 16px;">
+                <label class="nickname-user-panel"
+                       th:text="'Отзывы ' + ${averageAssessment}"/><br/>
+                <label class="m-t-16 user-panel-info" style="margin-left: 125px; color: #7B7D7D;"
+                       th:text="'Количество отзывов: ' + ${commentNumber}"/>
 
+                <div class="m-t-16 comments-block"
+                     style="width: 100vh;  text-align: center; height: 30vh;">
+                    <div class="detailed-textarea m-b-16" style="height: 100px;" th:each="feedback : ${feedbacks}">
+                        <label class="feedback-user"
+                               th:text="'@' + ${feedback.userLogin} + '  ' + ${feedback.assessment} + '/5'"/>
+                        <label class="feedback-date" th:text="${feedback.date}"/><br/>
+                        <textarea class="feedback-textarea" th:text="${feedback.feedback}"
+                                  readonly></textarea>
+                    </div><br/>
+                </div>
             </div>
         </div>
         <div class="heading-panel" style="margin-top: 20px;">

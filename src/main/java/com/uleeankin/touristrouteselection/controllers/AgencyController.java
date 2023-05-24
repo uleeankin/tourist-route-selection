@@ -7,8 +7,12 @@ import com.uleeankin.touristrouteselection.activity.model.Activity;
 import com.uleeankin.touristrouteselection.activity.model.ActivityStatus;
 import com.uleeankin.touristrouteselection.activity.service.ActivityService;
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
+import com.uleeankin.touristrouteselection.route.feedback.model.RouteFeedback;
+import com.uleeankin.touristrouteselection.route.feedback.service.RouteFeedbackService;
+import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
 import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
+import com.uleeankin.touristrouteselection.route.service.AgencyRouteService;
 import com.uleeankin.touristrouteselection.route.service.RouteService;
 import com.uleeankin.touristrouteselection.user.model.User;
 import com.uleeankin.touristrouteselection.user.service.UserService;
@@ -40,6 +44,8 @@ public class AgencyController {
     private final CategoryService categoryService;
     private final RouteService routeService;
     private final UserService userService;
+    private final AgencyRouteService agencyRouteService;
+    private final RouteFeedbackService routeFeedbackService;
 
     @Autowired
     public AgencyController(SessionContext sessionContext,
@@ -47,13 +53,17 @@ public class AgencyController {
                             PreliminaryActivityService preliminaryActivityService,
                             CategoryService categoryService,
                             RouteService routeService,
-                            UserService userService) {
+                            UserService userService,
+                            AgencyRouteService agencyRouteService,
+                            RouteFeedbackService routeFeedbackService) {
         this.sessionContext = sessionContext;
         this.activityService = activityService;
         this.preliminaryActivityService = preliminaryActivityService;
         this.categoryService = categoryService;
         this.routeService = routeService;
         this.userService = userService;
+        this.agencyRouteService = agencyRouteService;
+        this.routeFeedbackService = routeFeedbackService;
     }
 
     @GetMapping
@@ -232,8 +242,29 @@ public class AgencyController {
     @GetMapping("/route/{id}")
     public String getRouteInfo(@PathVariable("id") Long routeId, Model model) {
         this.sessionContext.addUserNameToPage(model);
-        Route route = this.routeService.getById(routeId);
-        model.addAttribute("name", route.getName());
+        AgencyRoute route = this.agencyRouteService.getById(routeId);
+        model.addAttribute("name", route.getRoute().getName());
+        model.addAttribute("price", route.getRoute().getPrice());
+        model.addAttribute("time", route.getRoute().getTime());
+        model.addAttribute("length", route.getRoute().getLength());
+        model.addAttribute("startDate", route.getStartDate());
+        model.addAttribute("endDate", route.getEndDate());
+        List<Activity> activities = this.routeService.getRouteActivities(routeId);
+        model.addAttribute("points", activities);
+        model.addAttribute("locationJSON",
+                new JSONConverter().getCoordinatesJSON(activities));
+        this.addFeedback(model, routeId);
         return "agency/routeInfo";
+    }
+
+    private void addFeedback(Model model, Long routeId) {
+        List<RouteFeedback> feedback =
+                this.routeFeedbackService.getAll(routeId);
+        model.addAttribute("feedbacks", feedback);
+        model.addAttribute("commentNumber",
+                this.routeFeedbackService.getFeedbackNumber(routeId));
+
+        model.addAttribute("averageAssessment",
+                this.routeFeedbackService.getAverageAssessment(routeId));
     }
 }

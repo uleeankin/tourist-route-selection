@@ -99,4 +99,6 @@ route:
   usesNumber: select getRouteUsesNumber(?) as uses_number;
   saveAgency: insert into agency_route (route_id, start_date, end_date, max_tourist_number) values (?, ?, ?, ?);
 
+agency:
+  byId: select route.route_id, route_name, description, route_owner, time_duration, price, path_length, public_status, creation_date, city_id, city_name, start_date, end_date, max_tourist_number from (route join city on route.city = city.city_id) join agency_route on route.route_id = agency_route.route_id where route.route_id = ?;
 

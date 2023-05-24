@@ -38,6 +38,14 @@
                                     th:text="${route.name}">
                             </button>
                         </form>
+                        <span th:if="${route.status}">
+                            <img th:src="@{/images/unblock.png}" src="/static/images/unblock.png"
+                                 height="20" width="20">
+                        </span>
+                        <span th:unless="${route.status}">
+                            <img th:src="@{/images/block.png}" src="/static/images/block.png"
+                                 height="20" width="20">
+                        </span>
                     </div>
                     <textarea readonly class="description-textarea"
                               th:text="${route.description}"/>
