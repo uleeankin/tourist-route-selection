@@ -30,6 +30,23 @@
         <div class="heading-panel">
             <div style="display: flex;">
                 <h1 class="heading" th:text="${name}"></h1>
+                <span th:if="${routeStatus}">
+                    <form action="#" th:method="post"
+                          th:action="@{/agency/status/{id}(id=${routeId})}">
+                        <button style="padding-left: 25px; padding-top: 25px;">
+                            <img th:src="@{/images/unblock.png}" src="/static/images/unblock.png"
+                                 height="30" width="30">
+                        </button>
+                    </form>
+                </span>
+                <span th:unless="${routeStatus}">
+                    <form action="#" th:method="post" th:action="@{/agency/status/{id}(id=${routeId})}">
+                        <button style="padding-left: 25px; padding-top: 25px;">
+                            <img th:src="@{/images/block.png}" src="/static/images/block.png"
+                                 height="30" width="30">
+                        </button>
+                    </form>
+                </span>
             </div>
         </div>
 
@@ -82,6 +99,11 @@
                     </div><br/>
                 </div>
             </div>
+        </div>
+        <div class="container-login100-form-btn m-b-16 m-l-60" style="justify-content: left; width: 50vh;">
+            <form th:method="get" action="#" th:action="@{/agency/booking/{id}(id = ${routeId})}">
+                <input type="submit" value="Получить бронь" class="login100-form-btn adding-button">
+            </form>
         </div>
         <div class="heading-panel" style="margin-top: 20px;">
             <h1 class="heading">Карта маршрута</h1>

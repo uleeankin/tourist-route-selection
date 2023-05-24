@@ -8,6 +8,7 @@ import com.uleeankin.touristrouteselection.activity.attributes.event.service.Eve
 import com.uleeankin.touristrouteselection.algorithm.RouteCreator;
 import com.uleeankin.touristrouteselection.city.model.City;
 import com.uleeankin.touristrouteselection.activity.attributes.preliminary.model.PreliminaryActivity;
+import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
 import com.uleeankin.touristrouteselection.route.model.CompletedRoute;
 import com.uleeankin.touristrouteselection.route.model.CreatedRoute;
 import com.uleeankin.touristrouteselection.route.model.Route;
@@ -20,17 +21,20 @@ import com.uleeankin.touristrouteselection.activity.attributes.preliminary.servi
 import com.uleeankin.touristrouteselection.activity.attributes.category.service.CategoryService;
 import com.uleeankin.touristrouteselection.city.service.CityService;
 import com.uleeankin.touristrouteselection.route.feedback.service.RouteFeedbackService;
+import com.uleeankin.touristrouteselection.route.service.AgencyRouteService;
 import com.uleeankin.touristrouteselection.route.service.RouteService;
 import com.uleeankin.touristrouteselection.utils.SessionContext;
+import com.uleeankin.touristrouteselection.utils.TimeService;
 import com.uleeankin.touristrouteselection.utils.json.JSONConverter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,8 @@ public class RouteController {
 
     private final RouteService routeService;
 
+    private final AgencyRouteService agencyRouteService;
+
     private final RouteFeedbackService routeFeedbackService;
 
     private final PreliminaryActivityService preliminaryActivityService;
@@ -60,6 +66,7 @@ public class RouteController {
                            ActivityService activityService,
                            EventService eventService,
                            RouteService routeService,
+                           AgencyRouteService agencyRouteService,
                            RouteFeedbackService routeFeedbackService,
                            PreliminaryActivityService preliminaryActivityService,
                            SessionContext sessionContext) {
@@ -68,6 +75,7 @@ public class RouteController {
         this.activityService = activityService;
         this.eventService = eventService;
         this.routeService = routeService;
+        this.agencyRouteService = agencyRouteService;
         this.routeFeedbackService = routeFeedbackService;
         this.preliminaryActivityService = preliminaryActivityService;
         this.sessionContext = sessionContext;
@@ -343,6 +351,12 @@ public class RouteController {
         model.addAttribute("completed",
                 this.routeService.isCompleted(sessionContext.getUserLogin(), routeId));
 
+        model.addAttribute("isAgencyRoute",
+                this.routeService.isAgencyRoute(routeId));
+
+        model.addAttribute("booked",
+                this.agencyRouteService.isBookedRoute(routeId));
+
         return "tourist/routeDetails";
     }
 
@@ -432,6 +446,26 @@ public class RouteController {
         model.addAttribute("time", route.getTime());
         model.addAttribute("length", route.getLength());
         model.addAttribute("description", route.getDescription());
+    }
+
+    @GetMapping("/book/{id}")
+    public String showBookingPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("routeId", id);
+        AgencyRoute route = this.agencyRouteService.getById(id);
+        model.addAttribute("dates",
+                this.getDates(route.getStartDate(), route.getEndDate()));
+        return "route/bookingPage";
+    }
+
+    private List<Date> getDates(Date startDate, Date endDate) {
+        List<Date> dates = new ArrayList<>();
+        LocalDate start = startDate.toLocalDate();
+        LocalDate end = endDate.toLocalDate();
+        for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
+        {
+            dates.add(Date.valueOf(date.toString()));
+        }
+        return dates;
     }
 
 }

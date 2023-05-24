@@ -25,4 +25,10 @@ public class AgencyRouteRepositoryImpl implements AgencyRouteRepository {
         return this.jdbcTemplate.queryForObject(
                 this.config.getById(), new AgencyRouteRowMapper(), id);
     }
+
+    @Override
+    public boolean isBooked(Long id) {
+        return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(
+                this.config.getIsBooked(), (rs, rowNum) -> rs.getBoolean(1), id));
+    }
 }

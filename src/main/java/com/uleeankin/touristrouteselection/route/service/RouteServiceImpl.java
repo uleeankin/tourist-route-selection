@@ -130,4 +130,9 @@ public class RouteServiceImpl implements RouteService {
         return this.routeRepository.getRouteUsesNumber(routeId);
     }
 
+    @Override
+    public boolean isAgencyRoute(Long routeId) {
+        return this.routeRepository.isAgencyRoute(routeId);
+    }
+
 }

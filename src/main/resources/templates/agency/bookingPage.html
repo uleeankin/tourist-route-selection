@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+  <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
+  <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+  <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/agency/all}" class="navigation-text submenu">Все маршруты</a> <br/>
+      <a th:href="@{/agency/add}" class="navigation-text submenu">Создать маршрут</a> <br/>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+      <div style="display: flex;">
+        <h1 class="heading" th:text="${name}"></h1>
+      </div>
+    </div>
+
+    <div class="m-t-20 m-l-60">
+      <div class="table-name moders">
+        <h1 class="p-l-10 p-t-10 p-b-10" style="color: snow">Бронь</h1>
+      </div>
+      <div class="scroll-table moders">
+        <div class="scroll-table-body">
+          <table class="table-body">
+            <tbody>
+              <tr th:each="date : ${dates}">
+                <td class="t-td" th:text="${date.date}"></td>
+                <td class="t-td" th:text="${date.bookings} + '/' + ${maxBookings}"></td>
+                <td class="ex-td" th:text="${date.owners}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -46,23 +46,65 @@
                         </button>
                     </form>
                 </span>
-                <span th:if="${completed}">
-                    <label class="login100-form-btn m-l-20"
-                            style="width: fit-content; height:fit-content;
-                                margin-top: 25px; background-color: #7DC4F7; color: black;
-                                padding-top: 7px; padding-bottom: 7px;">
-                            Пройдено
-                    </label>
+                <span th:unless="${isAgencyRoute}">
+                    <span th:if="${completed}">
+                        <label class="login100-form-btn m-l-20"
+                               style="width: fit-content; height:fit-content;
+                                    margin-top: 25px; background-color: #7DC4F7; color: black;
+                                    padding-top: 7px; padding-bottom: 7px;">
+                                Пройдено
+                        </label>
 
+                    </span>
+                    <span th:unless="${completed}">
+                        <form action="#" th:method="post" th:action="@{/route/complete/{id}(id=${routeId})}">
+                            <button class="login100-form-btn m-l-20"
+                                    style="width: fit-content; height:fit-content; margin-top: 25px;
+                                           padding-top: 7px; padding-bottom: 7px;">
+                                Пройти
+                            </button>
+                        </form>
+                    </span>
                 </span>
-                <span th:unless="${completed}">
-                    <form action="#" th:method="post" th:action="@{/route/complete/{id}(id=${routeId})}">
-                        <button class="login100-form-btn m-l-20"
-                                style="width: fit-content; height:fit-content; margin-top: 25px;
-                                       padding-top: 7px; padding-bottom: 7px;">
-                            Пройти
-                        </button>
-                    </form>
+                <span th:if="${isAgencyRoute}">
+                    <span th:if="${booked}">
+                        <label class="login100-form-btn m-l-20"
+                               style="width: fit-content; height:fit-content;
+                                    margin-top: 25px; background-color: #7DC4F7; color: black;
+                                    padding-top: 7px; padding-bottom: 7px;">
+                            Забронировано
+                        </label>
+
+                    </span>
+                    <span th:unless="${booked}">
+                        <form action="#" th:method="get" th:action="@{/route/book/{id}(id=${routeId})}">
+                            <button class="login100-form-btn m-l-20"
+                                    style="width: fit-content; height:fit-content; margin-top: 25px;
+                                           padding-top: 7px; padding-bottom: 7px;">
+                                Забронировать
+                            </button>
+                        </form>
+                    </span>
+                </span>
+                <span th:unless="${isAgencyRoute}">
+                    <span th:if="${completed}">
+                        <label class="login100-form-btn m-l-20"
+                               style="width: fit-content; height:fit-content;
+                                    margin-top: 25px; background-color: #7DC4F7; color: black;
+                                    padding-top: 7px; padding-bottom: 7px;">
+                                Пройдено
+                        </label>
+
+                    </span>
+                    <span th:unless="${completed}">
+                        <form action="#" th:method="post" th:action="@{/route/complete/{id}(id=${routeId})}">
+                            <button class="login100-form-btn m-l-20"
+                                    style="width: fit-content; height:fit-content; margin-top: 25px;
+                                           padding-top: 7px; padding-bottom: 7px;">
+                                Пройти
+                            </button>
+                        </form>
+                    </span>
                 </span>
             </div>
 

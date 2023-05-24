@@ -157,4 +157,15 @@ public class RouteRepositoryImpl implements RouteRepository {
         this.jdbcTemplate.update(this.routeConfig.getSaveAgency(),
                 id, startDate, endDate, maxTouristsNumber);
     }
+
+    @Override
+    public boolean isAgencyRoute(Long routeId) {
+        return Boolean.TRUE.equals(this.jdbcTemplate.queryForObject(
+                this.routeConfig.getIsAgencyRoute(), new RowMapper<Boolean>() {
+                    @Override
+                    public Boolean mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getBoolean(1);
+                    }
+                }, routeId));
+    }
 }

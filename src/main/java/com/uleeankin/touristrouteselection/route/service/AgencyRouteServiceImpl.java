@@ -19,4 +19,9 @@ public class AgencyRouteServiceImpl implements AgencyRouteService {
     public AgencyRoute getById(Long id) {
         return this.agencyRouteRepository.findById(id);
     }
+
+    @Override
+    public boolean isBookedRoute(Long id) {
+        return this.agencyRouteRepository.isBooked(id);
+    }
 }

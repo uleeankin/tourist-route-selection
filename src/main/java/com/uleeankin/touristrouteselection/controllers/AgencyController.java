@@ -249,6 +249,8 @@ public class AgencyController {
         model.addAttribute("length", route.getRoute().getLength());
         model.addAttribute("startDate", route.getStartDate());
         model.addAttribute("endDate", route.getEndDate());
+        model.addAttribute("routeStatus", route.getRoute().getStatus());
+        model.addAttribute("routeId", route.getRoute().getId());
         List<Activity> activities = this.routeService.getRouteActivities(routeId);
         model.addAttribute("points", activities);
         model.addAttribute("locationJSON",
@@ -266,5 +268,18 @@ public class AgencyController {
 
         model.addAttribute("averageAssessment",
                 this.routeFeedbackService.getAverageAssessment(routeId));
+    }
+
+    @PostMapping("/status/{id}")
+    public String changeRouteStatus(@PathVariable("id") Long routeId) {
+        this.routeService.changeStatus(routeId);
+        return "redirect:/agency/route/{id}";
+    }
+
+    @GetMapping("/booking/{id}")
+    public String getRouteBooking(@PathVariable("id") Long routeId, Model model) {
+        AgencyRoute route = this.agencyRouteService.getById(routeId);
+        model.addAttribute("name", route.getRoute().getName());
+        return "agency/bookingPage";
     }
 }

@@ -4,4 +4,5 @@ import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
 
 public interface AgencyRouteRepository {
     AgencyRoute findById(Long id);
+    boolean isBooked(Long id);
 }

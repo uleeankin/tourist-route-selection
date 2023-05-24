@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "agency")
 public class AgencyRouteConfig {
     private String byId;
+    private String isBooked;
 }

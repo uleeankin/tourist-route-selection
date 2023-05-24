@@ -44,4 +44,6 @@ public interface RouteRepository {
     Integer getRouteUsesNumber(Long routeId);
 
     void saveAgencyRoute(Long id, Date startDate, Date endDate, Integer maxTouristsNumber);
+
+    boolean isAgencyRoute(Long routeId);
 }

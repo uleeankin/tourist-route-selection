@@ -44,4 +44,6 @@ public interface RouteService {
     List<CompletedRoute> getCompleted(String userLogin);
 
     Integer getRouteUsesNumber(Long routeId);
+
+    boolean isAgencyRoute(Long routeId);
 }
