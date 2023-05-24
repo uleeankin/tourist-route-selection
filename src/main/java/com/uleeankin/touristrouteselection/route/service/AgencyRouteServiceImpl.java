@@ -1,11 +1,13 @@
 package com.uleeankin.touristrouteselection.route.service;
 
 import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
+import com.uleeankin.touristrouteselection.route.model.Route;
 import com.uleeankin.touristrouteselection.route.repository.AgencyRouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 @Service
 public class AgencyRouteServiceImpl implements AgencyRouteService {
@@ -35,5 +37,10 @@ public class AgencyRouteServiceImpl implements AgencyRouteService {
     @Override
     public void bookRoute(Long routeId, String userId, String bookingDate, Integer touristNumber) {
         this.agencyRouteRepository.bookRoute(routeId, userId, Date.valueOf(bookingDate), touristNumber);
+    }
+
+    @Override
+    public List<Route> getAllBooked(String userId) {
+        return this.agencyRouteRepository.findAllBooked(userId);
     }
 }

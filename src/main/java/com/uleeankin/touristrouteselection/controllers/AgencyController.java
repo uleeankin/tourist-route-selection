@@ -282,4 +282,12 @@ public class AgencyController {
         model.addAttribute("name", route.getRoute().getName());
         return "agency/bookingPage";
     }
+
+    @PostMapping("/route/complete/{id}")
+    public String completeRoute(@PathVariable("id") Long routeId) {
+
+        this.routeService.completeRoute(sessionContext.getUserLogin(), routeId);
+
+        return "redirect:/route/booked";
+    }
 }

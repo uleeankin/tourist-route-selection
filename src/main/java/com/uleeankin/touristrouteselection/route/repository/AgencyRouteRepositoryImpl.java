@@ -2,12 +2,15 @@ package com.uleeankin.touristrouteselection.route.repository;
 
 import com.uleeankin.touristrouteselection.route.config.AgencyRouteConfig;
 import com.uleeankin.touristrouteselection.route.mapper.AgencyRouteRowMapper;
+import com.uleeankin.touristrouteselection.route.mapper.RouteRowMapper;
 import com.uleeankin.touristrouteselection.route.model.AgencyRoute;
+import com.uleeankin.touristrouteselection.route.model.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 
 @Repository
 public class AgencyRouteRepositoryImpl implements AgencyRouteRepository {
@@ -43,5 +46,11 @@ public class AgencyRouteRepositoryImpl implements AgencyRouteRepository {
     @Override
     public void bookRoute(Long routeId, String userId, Date bookingDate, Integer touristNumber) {
         this.jdbcTemplate.update(this.config.getBookRoute(), routeId, userId, bookingDate, touristNumber);
+    }
+
+    @Override
+    public List<Route> findAllBooked(String userId) {
+        return this.jdbcTemplate.query(this.config.getBookedRoutes(),
+                new RouteRowMapper(), userId);
     }
 }

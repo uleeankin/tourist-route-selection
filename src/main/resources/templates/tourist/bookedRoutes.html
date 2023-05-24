@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourist Guide</title>
+  <link rel="stylesheet" href="/static/css/navigation_panel.css" th:href="@{/css/navigation_panel.css}">
+  <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="main">
+  <div class="navigation">
+    <div class="navigation-block nickname">
+      <label class="nickname-text" th:text="${username}"/>
+    </div>
+    <div class="navigation-block menu admin">
+      <a th:href="@{/tourist}" class="navigation-text submenu">Личный кабинет</a> <br/>
+        <a th:href="@{/tourist/places}" class="navigation-text submenu">Главная</a> <br/>
+        <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
+        <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
+        <div class="current-page-block">
+          <label class="navigation-text submenu current-submenu">Бронь</label> <br/>
+        </div>
+    </div>
+  </div>
+
+  <div class="main-page-content">
+    <div class="heading-panel">
+
+      <div>
+        <h1 class="heading">Маршруты</h1>
+      </div>
+
+    </div>
+
+    <div class="place-labels">
+      <div class="place-label" style="height: 27vh;"  th:each="route : ${routes}">
+        <div style="display: flex;">
+          <label class="place-name"
+                 style="padding-left: 25px; padding-top: 0;"
+                 th:text="${route.name}">
+          </label>
+        </div>
+        <textarea readonly class="description-textarea" th:text="${route.description}"/>
+        <div style="display: flex;">
+          <label class="info-label" th:text="${route.price} + ' руб.'"></label>
+          <form th:method="post"
+                th:action="@{/agency/route/complete/{id}(id=${route.id})}">
+            <button class="login100-form-btn"
+                    style="width: fit-content; height: fit-content; margin-left: 5px;">
+              Пройти
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

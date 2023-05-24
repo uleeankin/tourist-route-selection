@@ -342,6 +342,8 @@ public class RouteController {
 
         List<Activity> activities = this.routeService.getRouteActivities(route.getId());
         model.addAttribute("activities", activities);
+        model.addAttribute("locationJSON",
+                new JSONConverter().getCoordinatesJSON(activities));
 
         this.addFeedback(model, routeId);
 
@@ -483,5 +485,13 @@ public class RouteController {
                     bookingDate, touristNumber);
         }
         return "redirect:/route/{id}";
+    }
+
+    @GetMapping("/booked")
+    public String getBookedRoutes(Model model) {
+        this.sessionContext.addUserNameToPage(model);
+        model.addAttribute("routes",
+                this.agencyRouteService.getAllBooked(this.sessionContext.getUserLogin()));
+        return "tourist/bookedRoutes";
     }
 }

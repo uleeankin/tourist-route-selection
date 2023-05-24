@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/static/css/labels.css" th:href="@{/css/labels.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/util.css" th:href="@{/css/util.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/static/css/map.css" th:href="@{/css/map.css}">
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    <script src="/static/js/routeBuilder.js" th:src="@{/js/routeBuilder.js}"></script>
 </head>
 <body>
 <div class="main">
@@ -21,6 +25,7 @@
             <a th:href="@{/tourist/characteristics}" class="navigation-text submenu">Главная</a> <br/>
             <a th:href="@{/tourist/favourites}" class="navigation-text submenu">Избранное</a> <br/>
             <a th:href="@{/route/completed}" class="navigation-text submenu">Пройденные маршруты</a> <br/>
+            <a th:href="@{/route/booked}" class="navigation-text submenu">Бронь</a> <br/>
         </div>
     </div>
 
@@ -68,12 +73,22 @@
                 </span>
                 <span th:if="${isAgencyRoute}">
                     <span th:if="${booked}">
-                        <label class="login100-form-btn m-l-20"
-                               style="width: fit-content; height:fit-content;
+                        <span th:if="${completed}">
+                            <label class="login100-form-btn m-l-20"
+                                   style="width: fit-content; height:fit-content;
+                                        margin-top: 25px; background-color: #7DC4F7; color: black;
+                                        padding-top: 7px; padding-bottom: 7px;">
+                                    Пройдено
+                            </label>
+                        </span>
+                        <span th:unless="${completed}">
+                            <label class="login100-form-btn m-l-20"
+                                   style="width: fit-content; height:fit-content;
                                     margin-top: 25px; background-color: #7DC4F7; color: black;
                                     padding-top: 7px; padding-bottom: 7px;">
                             Забронировано
                         </label>
+                        </span>
 
                     </span>
                     <span th:unless="${booked}">
@@ -185,6 +200,18 @@
                               readonly></textarea>
                 </div><br/>
             </div>
+        </div>
+
+        <div class="heading-panel" style="margin-top: 20px;">
+            <h1 class="heading">Карта маршрута</h1>
+        </div>
+
+        <div id="map">
+            <script th:inline="javascript">
+                let locations = [[${locationJSON}]];
+                let loc = JSON.parse(locations.toString());
+                addRoute(loc);
+            </script>
         </div>
 
     </div>

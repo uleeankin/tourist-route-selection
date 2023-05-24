@@ -12,4 +12,5 @@ public class AgencyRouteConfig {
     private String isBooked;
     private String freePlaces;
     private String bookRoute;
+    private String bookedRoutes;
 }
