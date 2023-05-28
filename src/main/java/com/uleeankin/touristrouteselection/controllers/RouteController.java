@@ -322,6 +322,8 @@ public class RouteController {
 
         List<Activity> activities = this.routeService.getRouteActivities(route.getId());
         model.addAttribute("activities", activities);
+        model.addAttribute("locationJSON",
+                new JSONConverter().getCoordinatesJSON(activities));
 
         this.addFeedback(model, routeId);
 

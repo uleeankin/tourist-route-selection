@@ -35,7 +35,7 @@ public class RouteCreator {
         }
 
         return new CreatedRoute(
-                finder.findRoute(sortedList.get(sortedList.size() - 1)),
+                finder.findRoute(sortedList.get(0)),
                 finder.getPathTime(), finder.getPathPrice(), finder.getPathDuration());
     }
 

@@ -67,7 +67,7 @@ public class RouteFinder {
                     neighborWrapper.setPriority(BASE_PRIORITY);
 
                     double newDistanceScore = currentNode.getDistanceScore()
-                            + scorer.computeCost(currentNode.getCurrent(), connection);
+                            + scorer.computeDistance(currentNode.getCurrent(), connection);
 
                     double newPriceScore = currentNode.getPriceScore()
                             + scorer.computePrice(currentNode.getCurrent(), connection);
@@ -76,7 +76,7 @@ public class RouteFinder {
                             scorer.computeTime(currentNode.getCurrent(), connection));
 
                     if (this.compareScore(newTimeScore, newPriceScore)) {
-                        this.checkTypeAndAdd(queue, currentNode, neighborWrapper,
+                        this.checkType(queue, currentNode, neighborWrapper,
                                 newDistanceScore, newTimeScore, newPriceScore);
                     }
                 }
@@ -93,9 +93,9 @@ public class RouteFinder {
         throw new IllegalStateException("No route found");
     }
 
-    private void checkTypeAndAdd(Queue<NodeWrapper> openSet, NodeWrapper currentNode,
-                                 NodeWrapper neighborWrapper, double distance,
-                                 Time time, double price) {
+    private void checkType(Queue<NodeWrapper> openSet, NodeWrapper currentNode,
+                           NodeWrapper neighborWrapper, double distance,
+                           Time time, double price) {
         if (neighborWrapper.getCurrent().isEvent()) {
             if (this.scorer.isRightTime(
                     this.scorer.computeTime(

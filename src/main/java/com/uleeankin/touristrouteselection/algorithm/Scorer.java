@@ -6,8 +6,8 @@ import java.sql.Time;
 
 public interface Scorer {
 
-    double computeCost(PreliminaryActivity from,
-                       PreliminaryActivity to);
+    double computeDistance(PreliminaryActivity from,
+                           PreliminaryActivity to);
 
     Time computeTime(PreliminaryActivity from,
                      PreliminaryActivity to);

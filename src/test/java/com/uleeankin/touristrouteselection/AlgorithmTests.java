@@ -68,6 +68,37 @@ public class AlgorithmTests {
     }
 
     @Test
+    public void test() {
+        List<PreliminaryActivity> activities = new ArrayList<>();
+
+        activities.add(new PreliminaryActivity("1",
+                new Activity(1L, "Музей истории Воздушно-десантных войск", "", new Coordinate(1L, 54.6330, 39.7362,
+                        new City(1L, "")),
+                        new Category(1L, ""),
+                        new byte[]{0}, 350.0, DateTimeService.convert("01:20")), false, null));
+
+        activities.add(new PreliminaryActivity("1",
+                new Activity(2L, "Мемориальный музей-усадьба академика И.П. Павлова", "",
+                        new Coordinate(1L, 54.6317, 39.7271,
+                                new City(1L, "")),
+                        new Category(1L, ""),
+                        new byte[]{0}, 400.0, DateTimeService.convert("01:30")), false, null));
+
+        activities.add(new PreliminaryActivity("1",
+                new Activity(3L, "Рязанский кремль", "",
+                        new Coordinate(1L, 54.6295, 39.7419,
+                                new City(1L, "")),
+                        new Category(1L, ""),
+                        new byte[]{0}, 0.0, DateTimeService.convert("00:45")),false, null));
+
+        CreatedRoute route = new RouteCreator().createNewRoute(activities, null, "", "");
+
+        StringBuilder result = new StringBuilder();
+        route.getActivities().forEach(x -> result.append(x.getActivity().getId()));
+        Assertions.assertEquals("642135", result.toString());
+    }
+
+    @Test
     public void priceConstraintTest() {
         List<PreliminaryActivity> activities = new ArrayList<>();
 

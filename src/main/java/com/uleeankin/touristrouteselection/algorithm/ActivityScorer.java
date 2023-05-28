@@ -14,7 +14,7 @@ public class ActivityScorer implements Scorer{
     private static final double V = 4.0;
 
     @Override
-    public double computeCost(
+    public double computeDistance(
             PreliminaryActivity from, PreliminaryActivity to) {
         double firstNodeLatitude = Math.toRadians(from.getActivity().getCoordinate().getLatitude());
         double firstNodeLongitude = Math.toRadians(from.getActivity().getCoordinate().getLongitude());
@@ -36,7 +36,7 @@ public class ActivityScorer implements Scorer{
                             PreliminaryActivity to) {
 
         return DateTimeService.sumTime(DateTimeService.convert(
-                computeCost(from, to) / V),
+                computeDistance(from, to) / V),
                 to.getActivity().getDuration());
     }
 
