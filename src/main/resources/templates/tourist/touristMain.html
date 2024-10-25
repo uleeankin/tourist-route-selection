@@ -45,6 +45,10 @@
                     <input type="submit" value="Создать маршрут"
                            class="login100-form-btn adding-button create-route-button">
                 </form>
+                <form th:method="get" th:action="@{/recommendation/parameters}">
+                    <input type="submit" value="Рекомендации"
+                           class="login100-form-btn adding-button create-route-button">
+                </form>
             </div>
             <div class="place-labels" style="height: 40vh; width: 160vh;">
                 <div class="place-label" style="height: 28vh;" th:each="route : ${routes}">
